@@ -124,6 +124,7 @@ export class CourseEffects {
           .pipe(
             map((items) => {
               if (items != undefined || items != null) {
+                console.log(items);
                 if ((items as any).message) {
                   return CourseAction.getByUserFailure({
                     getErrMess: (items as any).message,
@@ -138,9 +139,12 @@ export class CourseEffects {
                 });
               }
             }),
-            catchError((error) =>
-              of(CourseAction.getByUserFailure({ getErrMess: error }))
-            )
+            catchError((error) => {
+              console.log(error);
+              return of(
+                CourseAction.getByUserFailure({ getErrMess: error.message })
+              );
+            })
           )
       )
     )
