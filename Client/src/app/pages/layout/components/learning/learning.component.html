@@ -21,7 +21,7 @@
           <tui-island
             [hoverable]="true"
             [ngClass]="[selectedLesson?._id === lesson?._id ? 'selected' : '']"
-            *ngFor="let lesson of lessonList$ | async; let index = index"
+            *ngFor="let lesson of lessonList; let index = index"
           >
             <div class="tui-island__content" (click)="selectLesson(lesson)">
               <figure class="tui-island__figure">

@@ -118,12 +118,12 @@ export class LessonComponent implements OnInit, OnDestroy {
         }
       }),
       this.store.select('lesson', 'lessons').subscribe((lessons) => {
-        if (lessons != null && lessons != undefined) {
-          this.lessonList = lessons;
+        if (lessons != null && lessons != undefined && lessons.length > 0) {
+          this.lessonList = [...lessons];
           console.log(this.lessonList);
-          // this.lessonList.sort((a, b) => {
-          //   return a.ordinalNum - b.ordinalNum;
-          // });
+          this.lessonList.sort((a, b) => {
+            return a.ordinalNum - b.ordinalNum;
+          });
         }
       }),
       this.store.select('lesson', 'isGetting').subscribe((val) => {

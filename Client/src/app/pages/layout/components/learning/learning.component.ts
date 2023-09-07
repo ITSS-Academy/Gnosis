@@ -72,12 +72,15 @@ export class LearningComponent implements OnInit, OnDestroy {
       this.store.select('lesson', 'isGetting').subscribe((val) => {
         this.isGettingLessons = val;
       }),
-      // this.store.select('lesson', 'lessons').subscribe((val) => {
-      //   if (val != null && val != undefined) {
-      //     this.lessonList = [...val];
-      //   }
-      //   console.log('lessonList: ', this.lessonList);
-      // }),
+      this.store.select('lesson', 'lessons').subscribe((val) => {
+        if (val != null && val != undefined && val.length > 0) {
+          this.lessonList = [...val];
+          this.lessonList.sort((a, b) => {
+            return a.ordinalNum - b.ordinalNum;
+          });
+        }
+        console.log('lessonList: ', this.lessonList);
+      }),
       this.store.select('lesson', 'getMessError').subscribe((val) => {
         if (val) {
           this.alerts.open(val, { status: 'error' }).subscribe();
