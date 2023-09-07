@@ -1,6 +1,6 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { TuiAlertService } from '@taiga-ui/core';
 import { Observable, Subscription, interval, takeWhile } from 'rxjs';
 
@@ -20,7 +20,7 @@ import { Question } from 'src/app/models/question.model';
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.less']
 })
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, OnDestroy {
   @Input('review') review: null | Review = null;
 
   question$: Observable<Question[]> = this.store.select('question', 'questions');
@@ -33,7 +33,7 @@ export class QuizComponent implements OnInit {
   counter: number = 0;
   timerSubscription: Subscription | undefined;
   formattedTime: string = '';
-  options: any;
+
   // answered: boolean = false;
 
   constructor(
@@ -46,9 +46,6 @@ export class QuizComponent implements OnInit {
       review: ReviewState;
       auth: AuthState;
     }>
-
-
-
   ) { }
 
   quizBank: quizBank[] = [];
@@ -62,9 +59,32 @@ export class QuizComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.questionList.forEach(question => {
-    //   question.selectedOptionIndex = null;
-    // });
+
+
+    this.store.select('review', 'isCreating').
+      subscribe((isCreating) => {
+        if (isCreating) {
+          this.alerts.open('Create review ...', {
+            status: 'success',
+          }).subscribe();
+        }
+      })
+    this.store.select('review', 'isCreateSuccess').
+      subscribe((isCreateSuccess) => {
+        if (isCreateSuccess) {
+          this.alerts.open('Create review success', {
+            status: 'success',
+          }).subscribe();
+        }
+      })
+    this.store.select('review', 'createErrorMessage').
+      subscribe((createErrorMessage) => {
+        if (createErrorMessage) {
+          this.alerts.open(createErrorMessage, {
+            status: 'error',
+          }).subscribe();
+        }
+      })
 
 
     const timer$ = interval(1000);
@@ -76,11 +96,8 @@ export class QuizComponent implements OnInit {
     });
 
     this.formatTime();
-
-
-
     this.route.paramMap.subscribe((params) => {
-      const id = '64f6239327c8b5a3a16aac14';
+      const id = params.get('id');;
       if (id) {
         this.idToken$.subscribe((value) => {
           if (value) {
@@ -101,22 +118,23 @@ export class QuizComponent implements OnInit {
 
     })
   }
-  selectOption(
-    option: any,
-  ) {
-    this.options = option;
-  }
-
-
-
-
+  options: Array<string> = [];
+  selectOption = (option: string) => {
+    for (let i = 0; i < this.questionList.length; i++) {
+      for (let j = 0; j < this.questionList[i].quizBank.options.length; j++) {
+        if (this.questionList[i].quizBank.options[j] === option) {
+          this.options.push(option);
+        }
+      }
+    }
+    console.log(this.options);
+  };
   submit() {
-
     const review: Review = {
       _id: '',
-      quizId: '64f6239327c8b5a3a16aac14',
+      quizId: this.questionList[0].quizId,
       profileId: '64f4c670157abb0afd8bb2bb',
-      // score: 0,
+      score: 0,
       test: this.questionList.map((question) => {
         return {
           answer: this.options,
@@ -124,11 +142,7 @@ export class QuizComponent implements OnInit {
         }
       })
 
-
     };
-
-
-
     this.idToken$.subscribe((value) => {
       if (value) {
         this.store.dispatch(
@@ -157,5 +171,4 @@ export class QuizComponent implements OnInit {
   }
 }
 
-// 
 

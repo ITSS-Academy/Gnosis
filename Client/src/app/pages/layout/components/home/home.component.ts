@@ -102,7 +102,7 @@ export class HomeComponent implements OnDestroy, OnInit {
       auth: AuthState;
       user: UserState;
     }>
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     if (this.timerSubscription) {
@@ -210,10 +210,5 @@ export class HomeComponent implements OnDestroy, OnInit {
       );
     }
   }
-  toReview() {
-    this.router.navigate(['base/review']);
-  }
-  toQuiz() {
-    this.router.navigate(['base/quiz']);
-  }
+
 }
