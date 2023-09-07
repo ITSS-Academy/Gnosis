@@ -1,6 +1,6 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { TuiAlertService } from '@taiga-ui/core';
 import { Observable, Subscription, interval, takeWhile } from 'rxjs';
 
@@ -20,7 +20,7 @@ import { Question } from 'src/app/models/question.model';
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.less']
 })
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, OnDestroy {
   @Input('review') review: null | Review = null;
 
   question$: Observable<Question[]> = this.store.select('question', 'questions');
@@ -33,7 +33,7 @@ export class QuizComponent implements OnInit {
   counter: number = 0;
   timerSubscription: Subscription | undefined;
   formattedTime: string = '';
-  options: any;
+
   // answered: boolean = false;
 
   constructor(
@@ -62,9 +62,33 @@ export class QuizComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.questionList.forEach(question => {
-    //   question.selectedOptionIndex = null;
-    // });
+
+
+    // this.store.select('review', 'isCreating').
+    // subscribe((isCreating) => {
+    //   if (isCreating) {
+    //     this.alerts.open('Create review ...', {
+    //       status: 'success',
+    //     }).subscribe();
+    //   }
+
+    // })
+    // this.store.select('review', 'isCreateSuccess').
+    // subscribe((isCreateSuccess) => {
+    //   if (isCreateSuccess) {
+    //     this.alerts.open('Create review success', {
+    //       status: 'success',
+    //     }).subscribe();
+    //   }
+    // })
+    // this.store.select('review', 'createErrorMessage').
+    // subscribe((createErrorMessage) => {
+    //   if (createErrorMessage) {
+    //     this.alerts.open(createErrorMessage, {
+    //       status: 'error',
+    //     }).subscribe();
+    //   }
+    // })
 
 
     const timer$ = interval(1000);
@@ -76,9 +100,6 @@ export class QuizComponent implements OnInit {
     });
 
     this.formatTime();
-
-
-
     this.route.paramMap.subscribe((params) => {
       const id = '64f6239327c8b5a3a16aac14';
       if (id) {
@@ -101,17 +122,12 @@ export class QuizComponent implements OnInit {
 
     })
   }
-  selectOption(
-    option: any,
-  ) {
-    this.options = option;
+  //option belong to one question.quizBank._id 
+  options: Array<string> = [];
+  selectOption = (option: string) => {
+    this.options.push(option);
     console.log(this.options);
-  }
-  //how to select options with option belong to one quizBankId 
-  //help me please some way to do it
-
-
-
+  };
 
   submit() {
 
