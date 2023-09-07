@@ -63,7 +63,8 @@ const routes: Routes = [
         canActivate: [RoleGuard],
       },
       {
-        path: 'home/course/:courseId/quiz/:id',
+        // path: 'home/course/:courseId/quiz/:id',
+        path: 'quiz',
         component: QuizComponent,
       },
       {

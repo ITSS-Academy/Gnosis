@@ -46,9 +46,6 @@ export class QuizComponent implements OnInit, OnDestroy {
       review: ReviewState;
       auth: AuthState;
     }>
-
-
-
   ) { }
 
   quizBank: quizBank[] = [];
@@ -100,8 +97,9 @@ export class QuizComponent implements OnInit, OnDestroy {
     });
 
     this.formatTime();
+
     this.route.paramMap.subscribe((params) => {
-      const id = '64f6239327c8b5a3a16aac14';
+      const id = '64f96fd6cb126767ffa79263'
       if (id) {
         this.idToken$.subscribe((value) => {
           if (value) {
@@ -122,32 +120,31 @@ export class QuizComponent implements OnInit, OnDestroy {
 
     })
   }
-  //option belong to one question.quizBank._id 
   options: Array<string> = [];
   selectOption = (option: string) => {
-    this.options.push(option);
-    console.log(this.options);
+    for (let i = 0; i < this.questionList.length; i++) {
+      for (let j = 0; j < this.questionList[i].quizBank.options.length; j++) {
+        if (this.questionList[i].quizBank.options[j] === option) {
+          this.options.push(option);
+        }
+      }
+      console.log(this.options);
+    }
   };
 
   submit() {
 
     const review: Review = {
       _id: '',
-      quizId: '64f6239327c8b5a3a16aac14',
+      quizId: '64f96fd6cb126767ffa79263',
       profileId: '64f4c670157abb0afd8bb2bb',
-      // score: 0,
       test: this.questionList.map((question) => {
         return {
           answer: this.options,
           quizBankId: question.quizBank._id,
         }
       })
-
-
     };
-
-
-
     this.idToken$.subscribe((value) => {
       if (value) {
         this.store.dispatch(
@@ -157,7 +154,6 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 
   ngOnDestroy(): void {
     if (this.timerSubscription) {
@@ -176,5 +172,5 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 }
 
-// 
+
 
