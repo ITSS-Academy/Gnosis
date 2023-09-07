@@ -3,11 +3,15 @@
     <div id="myCourse">
       <div id="header">
         <div class="title">
-          <h1>Welcome {{homeForm.value.userName}} to Gnosis</h1>
+          <h1>Welcome {{ homeForm.value.userName }} to Gnosis</h1>
           <div class="date" [innerHTML]="currentTime" id="time"></div>
         </div>
         <div class="search">
-          <tui-input tuiTextfieldIconLeft="tuiIconSearchLarge" [(ngModel)]="search" [tuiTextfieldSize]="'m'">
+          <tui-input
+            tuiTextfieldIconLeft="tuiIconSearchLarge"
+            [(ngModel)]="search"
+            [tuiTextfieldSize]="'m'"
+          >
             Search
           </tui-input>
         </div>
@@ -15,31 +19,58 @@
       <div id="body">
         <div class="onGoing">
           <div class="filter">
-            <form class="group" [formGroup]="testForm">
+            <form class="group" [formGroup]="courseFilterForm">
               <div tuiGroup class="group" [collapsed]="true">
-                <tui-radio-block *ngFor="let course of courses_state" contentAlign="right" formControlName="testValue"
-                  size="m" [hideRadio]="true" [item]="course" (change)="onRadioChange(course)">
+                <tui-radio-block
+                  *ngFor="let course of courses_state"
+                  contentAlign="right"
+                  formControlName="filter"
+                  size="m"
+                  [hideRadio]="true"
+                  [item]="course"
+                  (change)="onRadioChange(course)"
+                >
                   {{ course }}
                 </tui-radio-block>
               </div>
             </form>
           </div>
 
-          <button tuiIconButton type="button" class="tui-space_right-3 tui-space_bottom-3" icon="tuiIconPlusLarge"
-            (click)="toBuy()" [size]="'m'"></button>
+          <button
+            tuiIconButton
+            type="button"
+            class="tui-space_right-3 tui-space_bottom-3"
+            icon="tuiIconPlusLarge"
+            (click)="toBuy()"
+            [size]="'m'"
+          ></button>
         </div>
         <tui-scrollbar class="box">
           <div class="list_course" *ngIf="this.state == 'Chưa học'">
-            <tui-push class="cart_course" *ngFor="let course of courses" heading="{{ course.name }}">
+            <tui-push
+              class="cart_course"
+              *ngFor="let course of courses"
+              heading="{{ course.name }}"
+            >
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
 
               <div class="btn_course">
-                <button tuiButton type="button" class="tui-space_right-3 tui-space_bottom-3" (click)="toCourse(course)">
+                <button
+                  tuiButton
+                  type="button"
+                  class="tui-space_right-3 tui-space_bottom-3"
+                  (click)="toCourse(course)"
+                >
                   Start
                 </button>
 
-                <button tuiButton type="button" appearance="flat" class="tui-space_right-3 tui-space_bottom-3">
+                <button
+                  tuiButton
+                  type="button"
+                  appearance="flat"
+                  class="tui-space_right-3 tui-space_bottom-3"
+                >
                   Reset
                 </button>
               </div>
@@ -47,16 +78,30 @@
           </div>
 
           <div class="list_course" *ngIf="this.state == 'Đang học'">
-            <tui-push class="cart_course" *ngFor="let course of ongoingCourse" heading="{{ course.name }}">
+            <tui-push
+              class="cart_course"
+              *ngFor="let course of ongoingCourse"
+              heading="{{ course.name }}"
+            >
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
 
               <div class="btn_course">
-                <button tuiButton type="button" class="tui-space_right-3 tui-space_bottom-3" (click)="toCourse(course)">
+                <button
+                  tuiButton
+                  type="button"
+                  class="tui-space_right-3 tui-space_bottom-3"
+                  (click)="toCourse(course)"
+                >
                   Start
                 </button>
 
-                <button tuiButton type="button" appearance="flat" class="tui-space_right-3 tui-space_bottom-3">
+                <button
+                  tuiButton
+                  type="button"
+                  appearance="flat"
+                  class="tui-space_right-3 tui-space_bottom-3"
+                >
                   Reset
                 </button>
               </div>
@@ -64,24 +109,44 @@
           </div>
 
           <div class="list_course" *ngIf="this.state == 'Đã học xong'">
-            <tui-push class="cart_course" *ngFor="let course of completedCourse" heading="{{ course.name }}">
+            <tui-push
+              class="cart_course"
+              *ngFor="let course of completedCourse"
+              heading="{{ course.name }}"
+            >
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
 
               <div class="btn_course">
-                <button tuiButton type="button" class="tui-space_right-3 tui-space_bottom-3" (click)="toCourse(course)">
+                <button
+                  tuiButton
+                  type="button"
+                  class="tui-space_right-3 tui-space_bottom-3"
+                  (click)="toCourse(course)"
+                >
                   Start
                 </button>
 
-                <button tuiButton type="button" appearance="flat" class="tui-space_right-3 tui-space_bottom-3">
+                <button
+                  tuiButton
+                  type="button"
+                  appearance="flat"
+                  class="tui-space_right-3 tui-space_bottom-3"
+                >
                   Reset
                 </button>
               </div>
             </tui-push>
           </div>
 
-          <div class="list_course"
-            *ngIf="this.courses.length == 0 && this.ongoingCourse.length == 0 && this.completedCourse.length == 0">
+          <div
+            class="list_course"
+            *ngIf="
+              this.courses.length == 0 &&
+              this.ongoingCourse.length == 0 &&
+              this.completedCourse.length == 0
+            "
+          >
             <p>Hãy bắt đầu học đi nào !!!</p>
           </div>
         </tui-scrollbar>
@@ -92,15 +157,25 @@
     <div id="myProfile_cart">
       <div class="myProfile_header">
         <h2>PROFILE USER</h2>
-        <button tuiButton type="button" class="tui-space_right-3 tui-space_bottom-3" icon="tuiIconEdit3" [size]="'s'"
-          (click)="toEdit()">
+        <button
+          tuiButton
+          type="button"
+          class="tui-space_right-3 tui-space_bottom-3"
+          icon="tuiIconEdit3"
+          [size]="'s'"
+          (click)="toEdit()"
+        >
           Edit
         </button>
       </div>
       <div class="myProfile_body">
         <div class="avatar">
-          <tui-avatar text="alex inkin" class="tui-space_top-1" [size]="'xl'"
-            avatarUrl="{{ homeForm.value.avatar }}"></tui-avatar>
+          <tui-avatar
+            text="alex inkin"
+            class="tui-space_top-1"
+            [size]="'xl'"
+            avatarUrl="{{ homeForm.value.avatar }}"
+          ></tui-avatar>
         </div>
 
         <p class="name">{{ homeForm.value.userName }}</p>
@@ -141,7 +216,4 @@
       </div>
     </div>
   </div>
-
-
-
 </div>
