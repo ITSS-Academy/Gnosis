@@ -11,7 +11,7 @@ export class LessonService {
 
   getAllByCourseId(idToken: string, courseId: string) {
     return this.http.get<Lesson[]>(
-      environment.local_url + 'lesson/course/' + courseId,
+      environment.host_url + 'lesson/course/' + courseId,
       {
         headers: new HttpHeaders({
           Authorization: `Bearer ${idToken}`,
@@ -20,7 +20,7 @@ export class LessonService {
     );
   }
   create(idToken: string, lesson: Lesson) {
-    return this.http.post<any>(environment.local_url + 'lesson', lesson, {
+    return this.http.post<any>(environment.host_url + 'lesson', lesson, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${idToken}`,
       }),
@@ -28,7 +28,7 @@ export class LessonService {
   }
   update(idToken: string, lesson: Lesson) {
     return this.http.put<any>(
-      environment.local_url + `lesson/${lesson._id}`,
+      environment.host_url + `lesson/${lesson._id}`,
       lesson,
       {
         headers: new HttpHeaders({
@@ -39,7 +39,7 @@ export class LessonService {
   }
   remove(idToken: string, lessonId: string) {
     return this.http.delete<Lesson>(
-      environment.local_url + `lesson/${lessonId}`,
+      environment.host_url + `lesson/${lessonId}`,
       {
         headers: new HttpHeaders({
           Authorization: `Bearer ${idToken}`,

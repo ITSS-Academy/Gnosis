@@ -7,17 +7,20 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class QuestionService {
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
   getQuestionByQuizId(idToken: string, id: string) {
-    return this.httpClient.get<Question[]>(environment.local_url + `question/${id}`, {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${idToken}`,
-      }),
-    });
+    return this.httpClient.get<Question[]>(
+      environment.host_url + `question/${id}`,
+      {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${idToken}`,
+        }),
+      }
+    );
   }
   create(idToken: string, question: Question) {
     return this.httpClient.post<Question>(
-      environment.local_url + 'question',
+      environment.host_url + 'question',
       question,
       {
         headers: new HttpHeaders({
@@ -29,7 +32,7 @@ export class QuestionService {
 
   remove(idToken: string, id: string) {
     return this.httpClient.delete<Question>(
-      environment.local_url + `question/${id}`,
+      environment.host_url + `question/${id}`,
       {
         headers: new HttpHeaders({
           Authorization: `Bearer ${idToken}`,

@@ -22,7 +22,6 @@ export class QuizController {
   async getById(@Param('id') id: string) {
     try {
       const quiz = await this.quizService.getQuizById(id);
-      // console.log(quiz);
       return quiz;
     } catch (error) {
       throw new HttpException(error.message, error.status);
@@ -33,7 +32,6 @@ export class QuizController {
   async getQuizById(@Param('id') id: string) {
     try {
       const quiz = await this.quizService.getById(id);
-      // console.log(quiz);
       return quiz;
     } catch (error) {
       throw new HttpException(error.message, error.status);
@@ -67,7 +65,6 @@ export class QuizController {
       if (!updatedQuiz) {
         throw new HttpException('Quiz not found', HttpStatus.BAD_REQUEST);
       }
-      // console.log(updatedQuiz);
       return updatedQuiz;
     } catch (error) {
       throw new HttpException(error.message, error.status);

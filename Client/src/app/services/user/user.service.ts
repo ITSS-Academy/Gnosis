@@ -17,23 +17,16 @@ export class UserService {
       Authorization: `Bearer ${idToken}`,
     });
 
-    return this.httpClient.post<UserInfo>(
-      environment.local_url + 'user',
-      null,
-      {
-        headers,
-      }
-    );
+    return this.httpClient.post<UserInfo>(environment.host_url + 'user', null, {
+      headers,
+    });
   }
 
   getUser(uid: string, idToken: string) {
-    return this.httpClient.get<UserInfo>(
-      environment.local_url + `user/${uid}`,
-      {
-        headers: new HttpHeaders({
-          Authorization: `Bearer ${idToken}`,
-        }),
-      }
-    );
+    return this.httpClient.get<UserInfo>(environment.host_url + `user/${uid}`, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${idToken}`,
+      }),
+    });
   }
 }

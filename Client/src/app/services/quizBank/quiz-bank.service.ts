@@ -10,7 +10,7 @@ export class QuizBankService {
   constructor(private http: HttpClient) {}
 
   add(idToken: string, quizBank: quizBank) {
-    return this.http.post<any>(environment.local_url + 'quiz-bank', quizBank, {
+    return this.http.post<any>(environment.host_url + 'quiz-bank', quizBank, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${idToken}`,
       }),
@@ -19,7 +19,7 @@ export class QuizBankService {
 
   update(idToken: string, quizBank: quizBank) {
     return this.http.put<any>(
-      environment.local_url + `quiz-bank/${quizBank._id}`,
+      environment.host_url + `quiz-bank/${quizBank._id}`,
       quizBank,
       {
         headers: new HttpHeaders({

@@ -10,7 +10,7 @@ export class CourseService {
   constructor(private httpClient: HttpClient) {}
   getCourse(idToken: string) {
     return this.httpClient.get<Course[] | any>(
-      environment.local_url + 'course',
+      environment.host_url + 'course',
       {
         headers: new HttpHeaders({
           Authorization: `Bearer ${idToken}`,
@@ -20,7 +20,7 @@ export class CourseService {
   }
   getReleasedCourse(idToken: string) {
     return this.httpClient.get<Course[] | any>(
-      environment.local_url + 'course/released',
+      environment.host_url + 'course/released',
       {
         headers: new HttpHeaders({
           Authorization: `Bearer ${idToken}`,
@@ -29,7 +29,7 @@ export class CourseService {
     );
   }
   getCourseById(idToken: string, id: string) {
-    return this.httpClient.get<Course>(environment.local_url + `course/${id}`, {
+    return this.httpClient.get<Course>(environment.host_url + `course/${id}`, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${idToken}`,
       }),
@@ -37,7 +37,7 @@ export class CourseService {
   }
   create(idToken: string, course: Course) {
     return this.httpClient.post<Course>(
-      environment.local_url + 'course',
+      environment.host_url + 'course',
       course,
       {
         headers: new HttpHeaders({
@@ -49,7 +49,7 @@ export class CourseService {
 
   update(idToken: string, course: Course) {
     return this.httpClient.put<Course>(
-      environment.local_url + `course/${course._id}`,
+      environment.host_url + `course/${course._id}`,
       course,
       {
         headers: new HttpHeaders({
@@ -61,7 +61,7 @@ export class CourseService {
 
   remove(idToken: string, id: string) {
     return this.httpClient.delete<Course>(
-      environment.local_url + `course/${id}`,
+      environment.host_url + `course/${id}`,
       {
         headers: new HttpHeaders({
           Authorization: `Bearer ${idToken}`,
@@ -72,7 +72,7 @@ export class CourseService {
 
   buyCoure(idToken: string, courseId: string, userId: string) {
     return this.httpClient.put<any>(
-      `http://localhost:3000/v1/course/${courseId}`,
+      environment.host_url + `course/${courseId}`,
       { userId },
       {
         headers: new HttpHeaders({
@@ -84,7 +84,7 @@ export class CourseService {
 
   getCourseByUserId(idToken: string, userId: string) {
     return this.httpClient.get<Course[]>(
-      `http://localhost:3000/v1/course/user/${userId}`,
+      environment.host_url + `course/user/${userId}`,
       {
         headers: new HttpHeaders({
           Authorization: `Bearer ${idToken}`,
