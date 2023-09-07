@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 import Quill from 'quill';
 import 'quill-emoji/dist/quill-emoji.js';
@@ -7,6 +14,7 @@ import { ImageDrop } from 'quill-image-drop-module';
 import { ImageHandler, Options } from 'ngx-quill-upload';
 import { ContentChange, EditorChangeSelection } from 'ngx-quill';
 import { CloudStorageService } from 'src/app/services/cloud-storage/cloud-storage.service';
+import { TuiAlertService } from '@taiga-ui/core';
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/imageDrop', ImageDrop);
 Quill.register('modules/imageHandler', ImageHandler);
@@ -36,7 +44,10 @@ export class EditorComponent implements OnInit {
   ngOnInit(): void {}
 
   editor_modules = {};
-  constructor(private cloudService: CloudStorageService) {
+  constructor(
+    private cloudService: CloudStorageService,
+    @Inject(TuiAlertService) private readonly alerts: TuiAlertService
+  ) {
     this.editor_modules = {
       'emoji-shortname': true,
       'emoji-textarea': false,
@@ -67,7 +78,7 @@ export class EditorComponent implements OnInit {
               file.type === 'image/jpg'
             ) {
               // File types supported for image
-              if (file.size < 1000000) {
+              if (file.size / Math.pow(1024, 2) <= 5) {
                 // Customize file size as per requirement
 
                 // Sample API Call
@@ -87,9 +98,15 @@ export class EditorComponent implements OnInit {
               } else {
                 reject('Size too large');
                 // Handle Image size large logic
+                this.alerts
+                  .open('Size too large', { status: 'error' })
+                  .subscribe();
               }
             } else {
               reject('Unsupported type');
+              this.alerts
+                .open('Unsupported type', { status: 'error' })
+                .subscribe();
               // Handle Unsupported type logic
             }
           });
