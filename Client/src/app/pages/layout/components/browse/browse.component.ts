@@ -44,8 +44,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.push(
       this.cartList$.subscribe((cartList) => {
-        if (cartList != undefined) {
-          this.cartList = cartList;
+        if (cartList != undefined && cartList != null && cartList.length > 0) {
+          this.cartList = [...cartList];
           console.log('cartList: ', this.cartList);
         }
       }),

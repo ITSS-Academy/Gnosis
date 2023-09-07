@@ -11,7 +11,7 @@ import * as AuthActions from 'src/app/ngrx/actions/auth.actions';
 @Component({
   selector: 'app-loading',
   templateUrl: './loading.component.html',
-  styleUrls: ['./loading.component.less'],
+  styleUrls: ['./loading.component.less', './loading.component.scss'],
 })
 export class LoadingComponent {
   idToken$ = this.store.select('auth', 'idToken');
@@ -93,6 +93,6 @@ export class LoadingComponent {
           }
         })
       );
-    }, 2000);
+    }, 5000);
   }
 }

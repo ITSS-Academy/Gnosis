@@ -109,6 +109,7 @@ export class CartComponent implements OnInit {
     this.store.dispatch(CartAction.removeCourseFromCart({ course }));
   }
   clearAllCart() {
+    this.cartList = [];
     this.store.dispatch(CartAction.clearAllCart());
   }
 
