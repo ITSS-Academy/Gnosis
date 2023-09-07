@@ -47,7 +47,7 @@
           </div>
 
           <div class="list_course" *ngIf="this.state == 'Đang học'">
-            <tui-push class="cart_course" *ngFor="let course of ongoingCourses" heading="{{ course.name }}">
+            <tui-push class="cart_course" *ngFor="let course of ongoingCourse" heading="{{ course.name }}">
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
 
@@ -64,7 +64,7 @@
           </div>
 
           <div class="list_course" *ngIf="this.state == 'Đã học xong'">
-            <tui-push class="cart_course" *ngFor="let course of completedCourses" heading="{{ course.name }}">
+            <tui-push class="cart_course" *ngFor="let course of completedCourse" heading="{{ course.name }}">
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
 
@@ -81,7 +81,7 @@
           </div>
 
           <div class="list_course"
-            *ngIf="this.courses.length == 0 && this.ongoingCourses.length == 0 && this.completedCourses.length == 0">
+            *ngIf="this.courses.length == 0 && this.ongoingCourse.length == 0 && this.completedCourse.length == 0">
             <p>Hãy bắt đầu học đi nào !!!</p>
           </div>
         </tui-scrollbar>
