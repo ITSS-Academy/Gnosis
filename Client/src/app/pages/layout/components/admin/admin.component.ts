@@ -48,74 +48,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   });
 
   checkboxList = new FormControl('Check');
-  courseList: Course[] = [
-    {
-      _id: '1',
-      name: 'Angular',
-      category: 'Frontend Developer',
-      description:
-        'Angular is a platform for building mobile and desktop web applications.Angular is a platform for building mobile and desktop web applications.Angular is a platform for building mobile and desktop web applications.Angular is a platform for building mobile and desktop web applications.Angular is a platform for building mobile and desktop web applications.Angular is a platform for building mobile and desktop web applications.Angular is a platform for building mobile and desktop web applications.',
-      price: 100,
-      author: 'Google',
-      date_Created: '2021-07-01',
-      date_Updated: '2021-07-01',
-      img: 'https://angular.io/assets/images/logos/angular/angular.svg',
-      rating: 4.5,
-      language: 'English',
-    },
-    {
-      _id: '2',
-      name: 'React',
-      category: 'Frontend Developer',
-      description: 'A JavaScript library for building user interfaces',
-      price: 100,
-      author: 'Facebook',
-      date_Created: '2021-07-01',
-      date_Updated: '2021-07-01',
-      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png',
-      rating: 4.5,
-      language: 'English',
-    },
-    {
-      _id: '3',
-      name: 'Vue',
-      category: 'Frontend Developer',
-      description: 'The Progressive JavaScript Framework',
-      price: 100,
-      author: 'Evan You',
-      date_Created: '2021-07-01',
-      date_Updated: '2021-07-01',
-      img: 'https://vuejs.org/images/logo.png',
-      rating: 4.5,
-      language: 'English',
-    },
-    {
-      _id: '4',
-      name: 'Svelte',
-      category: 'Frontend Developer',
-      description: 'Cybernetically enhanced web apps',
-      price: 100,
-      author: 'Rich Harris',
-      date_Created: '2021-07-01',
-      date_Updated: '2021-07-01',
-      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Svelte_Logo.svg/1200px-Svelte_Logo.svg.png',
-      rating: 4.5,
-      language: 'English',
-    },
-    {
-      _id: '5',
-      name: 'Ember',
-      category: 'Frontend Developer',
-      description: 'A framework for ambitious web developers',
-      price: 100,
-      author: 'Yehuda Katz',
-      date_Created: '2021-07-01',
-      date_Updated: '2021-07-01',
-      img: 'https://ng-web-apis.github.io/dist/assets/images/web-api.svg',
-      rating: 4.5,
-      language: 'English',
-    },
-  ];
+  courseList: Course[] = [];
   isLoading = false;
   idToken = '';
   subscriptions: Subscription[] = [];
@@ -160,8 +93,15 @@ export class AdminComponent implements OnInit, OnDestroy {
           courseList.length > 0
         ) {
           console.log('courseList: ', courseList);
-
           this.courseList = courseList;
+          if (this.selectedCourse != null) {
+            this.courseList.forEach((val, i) => {
+              if (val._id == this.selectedCourse?._id) {
+                this.selectedCourse = val;
+                console.log('selectedCourse: ', this.selectedCourse);
+              }
+            });
+          }
         }
       }),
       this.store.select('course', 'isLoading').subscribe((val) => {
@@ -226,7 +166,7 @@ export class AdminComponent implements OnInit, OnDestroy {
             .open('Deleted Course Success !!!', { status: 'success' })
             .subscribe();
           this.checkboxList.setValue('Check');
-          this.selectCourse = null;
+          this.selectedCourse = null;
           this.store.dispatch(CourseActions.get({ idToken: this.idToken }));
         }
       }),
@@ -258,11 +198,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     );
   }
 
-  selectCourse: Course | null = null;
+  selectedCourse: Course | null = null;
   selectEditCourse(course: Course) {
-    if (this.selectCourse?._id !== course._id) {
-      this.selectCourse = <Course>{ ...course };
-      console.log('select courrse', this.selectCourse._id);
+    if (this.selectedCourse?._id !== course._id) {
+      this.selectedCourse = <Course>{ ...course };
+      console.log('select courrse', this.selectedCourse._id);
     }
   }
 
@@ -282,16 +222,18 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   editLessons($event: boolean) {
     this.openEditSidebar($event);
-    if (this.selectCourse != null) {
-      this.router.navigateByUrl(`/base/admin/course/${this.selectCourse._id}`);
+    if (this.selectedCourse != null) {
+      this.router.navigateByUrl(
+        `/base/admin/course/${this.selectedCourse._id}`
+      );
     }
   }
 
   editQuiz($event: boolean) {
     this.openEditSidebar($event);
-    if (this.selectCourse != null) {
+    if (this.selectedCourse != null) {
       this.router.navigateByUrl(
-        `/base/admin/course/${this.selectCourse._id}/quiz`
+        `/base/admin/course/${this.selectedCourse._id}/quiz`
       );
     }
   }
@@ -360,14 +302,17 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   deleteCourse() {
-    if (this.selectCourse == null) {
+    if (this.selectedCourse == null) {
       this.alerts
         .open('Please select course !!!', { status: 'error' })
         .subscribe();
       return;
     }
     this.store.dispatch(
-      CourseActions.remove({ idToken: this.idToken, id: this.selectCourse._id })
+      CourseActions.remove({
+        idToken: this.idToken,
+        id: this.selectedCourse._id,
+      })
     );
   }
 

@@ -250,8 +250,15 @@ export class LessonComponent implements OnInit, OnDestroy {
   }
 
   updateLessonContent(content: string) {
+    let temp: Lesson = <Lesson>{};
+    this.lessonList.forEach((val, i) => {
+      if (val._id == this.selectedLesson?._id) {
+        temp = val;
+      }
+    });
+    console.log('temp: ', temp);
     let newLesson: any = {
-      ...this.selectedLesson,
+      ...temp,
       content: content,
     };
     if (this.selectLesson == null) return;

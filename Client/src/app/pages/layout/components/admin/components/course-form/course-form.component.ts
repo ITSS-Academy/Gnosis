@@ -35,6 +35,7 @@ export class CourseFormComponent {
     language: new FormControl(null, Validators.required),
     price: new FormControl(null, Validators.required),
     img: new FormControl(null, Validators.required),
+    isReleased: new FormControl(false, Validators.required),
   });
 
   ngOnInit(): void {
@@ -56,6 +57,10 @@ export class CourseFormComponent {
           language: new FormControl(this.course.language, Validators.required),
           price: new FormControl(this.course.price, Validators.required),
           img: new FormControl(this.course.img, Validators.required),
+          isReleased: new FormControl(
+            this.course.isReleased,
+            Validators.required
+          ),
         });
       }
     }

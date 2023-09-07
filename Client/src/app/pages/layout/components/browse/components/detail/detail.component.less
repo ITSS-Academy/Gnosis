@@ -29,7 +29,7 @@
         }
 
         .nav-content {
-            border: 1px solid var(--tui-base-05);
+            border: .5px solid var(--tui-base-04);
             margin: 0 2rem;
         }
 
@@ -58,17 +58,19 @@
                         display: flex;
                         margin: 0 auto;
                         padding: 1rem;
-                        background-color: white;
+                        background-color: var(--tui-base-01);
                         border: 0.02rem solid var(--tui-base-05);
                         border-radius: var(--tui-radius-m);
-                        width: 90%;
+                        text-align: center;
+                        max-width: 100%;
+                        width: 600px;
+                        height: 600px;
+                        overflow: hidden;
 
                         img {
-                            display: flex;
-                            margin: 0 auto;
-                            max-width: 100%;
-                            max-height: auto;
-                            object-fit: cover;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: contain;
                             border-radius: var(--tui-radius-m);
                         }
                     }

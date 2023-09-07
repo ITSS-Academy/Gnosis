@@ -16,7 +16,6 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Profile } from 'src/profile/entities/profile.entity';
 import { Course } from './entities/course.entity';
-import { ProfileService } from 'src/profile/profile.service';
 
 @Controller('v1/course')
 export class CourseController {

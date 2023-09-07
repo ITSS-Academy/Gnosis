@@ -33,7 +33,7 @@
           id="right-sidebar"
         >
           <app-course-form
-            [course]="this.selectCourse"
+            [course]="this.selectedCourse"
             [isEdit]="false"
             (toggle)="openCreateSidebar($event)"
             (create)="createCourse($event)"
@@ -47,7 +47,7 @@
         type="button"
         appearance="secondary"
         class="tui-space_top-3 tui-space_bottom-3"
-        [disabled]="selectCourse == null"
+        [disabled]="selectedCourse == null"
         (click)="openEditSidebar(true)"
         (tuiActiveZoneChange)="openEditSidebar($event)"
       >
@@ -57,7 +57,7 @@
           id="right-sidebar"
         >
           <app-course-form
-            [course]="this.selectCourse"
+            [course]="this.selectedCourse"
             [isEdit]="true"
             (toggle)="openEditSidebar($event)"
             (editLessons)="editLessons($event)"
@@ -73,7 +73,7 @@
         type="button"
         appearance="accent"
         class="tui-space_top-3 tui-space_bottom-3"
-        [disabled]="selectCourse == null"
+        [disabled]="selectedCourse == null"
         (click)="showWarningDialog(template)"
       >
         Delete

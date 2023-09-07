@@ -39,7 +39,6 @@
       Edit Quiz
     </button>
   </div>
-
   <div class="tui-form__row">
     <tui-input tuiTextfieldExampleText="Enter ID" formControlName="_id">
       <span class="tui-required">ID</span>
@@ -79,7 +78,6 @@
       [error]="[] | tuiFieldError | async"
     ></tui-error>
   </div>
-
   <div class="tui-form__row">
     <tui-select formControlName="category">
       Category
@@ -171,6 +169,11 @@
       formControlName="img"
       [error]="[] | tuiFieldError | async"
     ></tui-error>
+  </div>
+  <div class="tui-form__row">
+    <tui-checkbox-labeled formControlName="isReleased" size="l">
+      Release Course
+    </tui-checkbox-labeled>
   </div>
 
   <div id="action-buts">

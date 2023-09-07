@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   #myCourse_box {
     width: 75%;
     padding: 30px;
@@ -15,6 +16,7 @@
 #myCourse {
   width: 100%;
   height: 100%;
+
   #header {
     width: 100%;
     display: flex;
@@ -22,17 +24,36 @@
     justify-content: space-between;
     height: 10%;
     min-height: 4.313rem;
+
     .title {
       display: flex;
       flex-direction: column;
+
+      // .date {
+      //   margin-bottom: .25rem;
+      // }
+
+      #time {
+        margin-left: .25rem;
+        margin-top: 1rem;
+        position: relative;
+        color: #333;
+        font-size: 16px;
+        // font-family: Impact, Charcoal, sans-serif;
+        letter-spacing: 4px;
+
+      }
     }
+
     .search {
       width: 35%;
     }
+
     h1 {
       margin: 0;
       font: var(--tui-font-heading-4);
     }
+
     p {
       margin-top: 7px;
       font: var(--tui-font-text-s);
@@ -42,17 +63,20 @@
   #body {
     width: 100%;
     height: 90%;
+
     .onGoing {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       height: 10%;
       min-height: 3.875rem;
+      margin-top: .25rem;
+
       .tui-space_bottom-3 {
         margin: 0;
       }
 
-      ::ng-deep .tui-group_collapsed > *:not(:last-child) {
+      ::ng-deep .tui-group_collapsed>*:not(:last-child) {
         margin-right: 15px;
       }
 
@@ -77,16 +101,19 @@
       flex-direction: row;
       justify-content: space-evenly;
       flex-wrap: wrap;
-      p{
+
+      p {
         margin: 0;
         font: var(--tui-font-heading-3);
         display: flex;
         align-items: flex-start;
       }
+
       ::ng-deep .t-top,
       ::ng-deep .t-actions {
         height: 0;
       }
+
       ::ng-deep .t-heading {
         margin: 0;
       }
@@ -121,15 +148,18 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+
     .myProfile_header {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       height: 10%;
       min-height: 5.456rem;
+
       h2 {
         margin: 0;
       }
+
       .tui-space_bottom-3 {
         margin: 0;
       }
@@ -142,6 +172,7 @@
       align-items: center;
       height: 90%;
       min-height: 50.231rem;
+
       .tui-space_top-1 {
         margin: 0;
       }
@@ -169,10 +200,12 @@
         flex-direction: row;
         height: 7%;
         align-items: center;
+
         p {
           margin: 0;
           font: var(--tui-font-text-l);
         }
+
         .material-symbols-outlined {
           margin-right: 5px;
         }
@@ -188,14 +221,17 @@
         justify-content: space-between;
         align-items: center;
         padding: 10px 20px;
+
         //margin-top: 15px;
         p {
           margin: 0;
         }
+
         .number {
           font: var(--tui-font-text-xl);
           font-weight: bold;
         }
+
         .text {
           font: var(--tui-font-text-m);
         }
@@ -221,6 +257,7 @@
         //box-shadow: 0 5px 15px rgba(0,0,0,.2);
         //height: 34%;
         margin-top: 5%;
+
         ::ng-deep .ng-star-inserted {
           height: none;
           width: none;

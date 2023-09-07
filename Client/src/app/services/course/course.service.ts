@@ -18,6 +18,16 @@ export class CourseService {
       }
     );
   }
+  getReleasedCourse(idToken: string) {
+    return this.httpClient.get<Course[] | any>(
+      environment.local_url + 'course/released',
+      {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${idToken}`,
+        }),
+      }
+    );
+  }
   getCourseById(idToken: string, id: string) {
     return this.httpClient.get<Course>(environment.local_url + `course/${id}`, {
       headers: new HttpHeaders({

@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { Course } from 'src/app/models/course.model';
 import { Store } from '@ngrx/store';
 import { CourseState } from 'src/app/ngrx/states/course.state';
@@ -22,9 +22,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
   cartList$ = this.store.select('cart', 'cartList');
   cartList: Course[] = [];
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
+  profile$: Observable<Profile> = this.store.select('profile', 'profile');
   subscriptions: Subscription[] = [];
-  idToken = '';
-  profile: Profile = <Profile>{};
 
   constructor(
     @Inject(TuiAlertService) private readonly alerts: TuiAlertService,
@@ -47,41 +46,29 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.cartList$.subscribe((cartList) => {
         if (cartList != undefined) {
           this.cartList = cartList;
-          console.log('cartListL: ', this.cartList);
+          console.log('cartList: ', this.cartList);
         }
       }),
-      this.idToken$.subscribe((value) => {
-        console.log(value);
-        if (value) {
-          this.store.dispatch(CourseAction.get({ idToken: value }));
-        }
-      }),
-
       this.courseList$.subscribe((item) => {
-        if (item != undefined && item.length > 0) {
+        if (item != undefined && item != null && item.length > 0) {
           console.log('courseList: ', item);
         }
       }),
-
-      this.store.select('auth', 'idToken').subscribe((val) => {
-        if (val != '') {
-          this.idToken = val;
-        }
-      }),
-
-      this.store.select('profile', 'profile').subscribe((profile) => {
-        if (profile != null && profile != undefined) {
-          this.profile = profile;
-        }
-      }),
-
-      //how to subscribe getByUser
-      this.store.select('course', 'courseList').subscribe((item) => {
-        if (item != undefined && item.length > 0) {
+      combineLatest({
+        idToken: this.idToken$,
+        profile: this.profile$,
+      }).subscribe((res) => {
+        if (
+          res.idToken != undefined &&
+          res.idToken != null &&
+          res.idToken != '' &&
+          res.profile != undefined &&
+          res.profile != null
+        ) {
           this.store.dispatch(
             CourseAction.getByUser({
-              idToken: this.idToken,
-              userId: this.profile.id,
+              idToken: res.idToken,
+              userId: res.profile.id,
             })
           );
         }

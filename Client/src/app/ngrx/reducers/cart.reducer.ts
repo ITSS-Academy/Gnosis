@@ -30,7 +30,8 @@ export const CartReducer = createReducer(
       cartList: state.cartList.filter(
         (course) => course._id !== action.course._id
       ),
-      total: state.total - action.course.price,
+      // total: state.total - action.course.price,\
+      total: parseFloat((state.total - action.course.price).toFixed(3)),
     };
     return newState;
   }),
