@@ -118,8 +118,6 @@ export class QuizComponent implements OnInit, OnDestroy {
 
     })
   }
-
-
   options: Array<string> = [];
   selectOption = (option: string) => {
     for (let i = 0; i < this.questionList.length; i++) {
@@ -131,11 +129,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
     console.log(this.options);
   };
-
-
-
   submit() {
-
     const review: Review = {
       _id: '',
       quizId: this.questionList[0].quizId,
@@ -177,5 +171,4 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 }
 
-// 
 
