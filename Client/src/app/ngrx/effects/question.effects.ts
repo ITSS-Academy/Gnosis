@@ -9,12 +9,12 @@ export class QuestionEffects {
   constructor(
     private questionService: QuestionService,
     private action$: Actions
-  ) {}
+  ) { }
   get$ = createEffect(() =>
     this.action$.pipe(
       ofType(QuestionAction.getAllByQuizId),
       exhaustMap((action) =>
-        this.questionService.getQuestion(action.idToken).pipe(
+        this.questionService.getQuestionByQuizId(action.idToken, action.quizId).pipe(
           map((item) => {
             if (item != undefined && item != null) {
               return QuestionAction.getAllByQuizIdSuccess({ questions: item });

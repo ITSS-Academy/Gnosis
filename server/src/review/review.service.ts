@@ -105,9 +105,12 @@ export class ReviewService {
       throw new HttpException(error.message, error.status);
     }
   }
-  async findOne(id: string) {
+  async findOneByQuizId(id: string) {
     try {
-      const review = await this.reviewModel.findById({ _id: id });
+      const review = await this.reviewModel.findOne({ quizId: id })
+        .select('-createdAt -updatedAt -__v')
+        // .populate('quizId', '-createdAt -updatedAt -__v')
+        .populate('test.quizBankId', '-createdAt -updatedAt -__v');
       return review;
     } catch (error) {
       throw new HttpException(error.message, error.status);

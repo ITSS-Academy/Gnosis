@@ -53,7 +53,7 @@ export class ReviewController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
-      const review = await this.reviewService.findOne(id);
+      const review = await this.reviewService.findOneByQuizId(id);
       return review;
     } catch (error) {
       throw new HttpException(error.message, error.status);

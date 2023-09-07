@@ -1,82 +1,96 @@
 @import "@taiga-ui/core/styles/taiga-ui-local.less";
 
-#lesson-container {
-  margin-top: 1rem;
+#learning-container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: row;
-  #left-side {
-    height: 100%;
+  #left-loader {
     width: 30%;
+    height: 100%;
     min-width: 429px;
-    padding: 0.625rem;
-    .shadow(4);
-    .breadcrumbs {
-      max-height: 40px;
-    }
-    #lesson-list {
-      overflow: auto;
+    display: flex;
+    #left-side {
+      height: 100%;
       width: 100%;
-      height: calc(100% - 44px - 0.625rem - 40px);
-      .tiles {
-        gap: 1rem;
-        grid-auto-rows: minmax(205px, auto);
+      padding: 0.625rem;
+      .shadow(4);
+      .breadcrumbs {
+        max-height: 40px;
       }
-      tui-island {
-        .transition(box-shadow);
-        margin: 0.625rem;
-        cursor: pointer;
-        tui-tile._dragged & {
-          .shadow(5);
-        }
-        .tui-island__content {
-          .tui-island__figure {
-            .some-figure {
-              border-radius: 50%;
-              width: 3rem;
-              height: 3rem;
-              align-items: center;
-              justify-content: center;
-              display: flex;
-            }
-            .some-figure:hover {
-              background-color: var(--tui-secondary-active);
+      #lesson-list {
+        overflow: auto;
+        width: 100%;
+        height: calc(100% - 44px - 0.625rem - 40px);
+        display: flex;
+        flex-direction: column;
+        tui-island {
+          .transition(box-shadow);
+          margin: 0.625rem;
+          cursor: pointer;
+          tui-tile._dragged & {
+            .shadow(5);
+          }
+          .tui-island__content {
+            .tui-island__figure {
+              .some-figure {
+                border-radius: 50%;
+                width: 3rem;
+                height: 3rem;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+              }
+              .some-figure:hover {
+                background-color: var(--tui-secondary-active);
+              }
             }
           }
+          .tui-island__footer-button:hover {
+            background-color: var(--tui-error-bg);
+          }
         }
-        .tui-island__footer-button:hover {
-          background-color: var(--tui-error-bg);
+        tui-island.selected {
+          .shadow(1);
+          border: 1px solid var(--tui-primary);
         }
-      }
-      tui-island.selected {
-        .shadow(1);
-        border: 1px solid var(--tui-primary);
       }
     }
   }
-  #right-side {
+  #right-loader {
     height: 100%;
     width: 70%;
     min-width: 750px;
-    padding: 0.625rem;
+    display: flex;
 
-    #course-content {
-      overflow: auto;
+    #right-side {
       height: 100%;
       width: 100%;
-      img {
-        height: 300px;
-        width: 300px;
-        display: flex;
-        margin: 0 auto;
+
+      padding: 0.625rem;
+
+      #course-content {
+        overflow: auto;
+        height: 100%;
+        width: 100%;
+        img {
+          height: 300px;
+          width: 300px;
+          display: flex;
+          margin: 0 auto;
+        }
+      }
+      #quiz-form,
+      #editor {
+        height: calc(100% - 2.75rem - 1.25rem);
+        width: 100%;
+      }
+      #quiz-form {
+        overflow: auto;
       }
     }
-    #editor {
-      height: calc(100% - 2.75rem - 1.25rem);
-      width: 100%;
-    }
   }
+
   .top {
     min-height: 2.75rem;
     width: 100%;
@@ -95,152 +109,17 @@
   }
 }
 
-#right-sidebar {
-  overflow: auto;
-  // width: 100%;
-  width: 40rem;
-  padding: 1.875rem 0px 1.875rem 1.875rem;
-  height: 100%;
-}
-
 /* width */
 ::-webkit-scrollbar {
   width: 0rem;
   min-height: 1.25rem;
   height: 51%;
 }
-#quiz-container {
-    width: 100%;
 
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+// }
 
-    #quiz-box {
-        width: 100%;
-
-
-        #quiz-nav {
-
-            margin: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .nav-left {
-                display: flex;
-                justify-content: row;
-                align-items: center;
-                color: var(--tui-primary);
-
-                .nav-home {
-                    cursor: pointer;
-                }
-
-                .nav-learn {
-                    cursor: pointer;
-                }
-            }
-
-            .nav-right {
-                width: 30%;
-            }
-        }
-
-        #container-main {
-            display: flex;
-            justify-content: space-between;
-            flex-direction: row;
-            height: 100%;
-
-            #quiz-left {
-                width: 30%;
-            }
-
-            #quiz-right {
-                width: 70%;
-                margin-left: 1.5rem;
-                margin-right: 1rem;
-
-                #quiz-top {
-                    border-bottom: 1px solid black;
-
-                    .top-nav {
-                        display: flex;
-
-                    }
-
-                    .top-content {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: space-between;
-
-                        .time-score {
-                            margin-top: 1rem;
-                            display: flex;
-                            flex-direction: row;
-                            justify-content: space-between;
-                            width: 20%;
-                            font: var(--tui-font-text-l-2)
-                        }
-
-                        .btn-start {
-                            display: flex;
-                            justify-content: flex-end;
-                        }
-                    }
-                }
-
-                #quiz-center {
-                    display: flex;
-                    justify-content: space-between;
-                    flex-direction: row;
-                    border-bottom: 1px solid black;
-                    padding: 1.25rem;
-
-                    #center-right {
-                        width: 60%;
-
-                        #passed {
-                            display: flex;
-                            flex-direction: row;
-                            min-height: 6.25rem;
-                            border-right: 1px solid black;
-                            margin-bottom: 2rem;
-
-                            .head {
-                                margin-right: .5rem;
-
-                            }
-
-                            .substance {
-                                font: var(--tui-font-text-l)
-                            }
-                        }
-                    }
-
-                    #center-left {
-                        margin-left: 2rem;
-                        width: 40%;
-                    }
-                }
-
-                #quiz-bot {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    gap: 1.25rem;
-
-                    .icon-item {
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        gap: 0.313rem;
-
-                        tui-svg {
-                            cursor: pointer;
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-}
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+// }

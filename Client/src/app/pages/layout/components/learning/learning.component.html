@@ -1,136 +1,112 @@
-<div id="lesson-container">
+<div id="learning-container">
+  <tui-loader
+    id="left-loader"
+    [inheritColor]="true"
+    [overlay]="true"
+    [showLoader]="isGettingLessons"
+  >
     <div id="left-side">
-
-        <div class="top">
-            <div class="tui-text_h6 title">Phát triển Web</div>
-
-        </div>
-
-        <div id="lesson-list">
-            <tui-scrollbar class="scrollbar">
-                <tui-tiles class="tiles">
-                    <tui-tile>
-                        <tui-island [hoverable]="true">
-                            <div class="tui-island__content">
-                                <div>
-                                    <h3 class="tui-island__title">
-                                        {{learnForm.value.title}}
-                                    </h3>
-                                    <p class="tui-island__paragraph">
-                                        {{learnForm.value.description}}
-                                    </p>
-                                </div>
-                            </div>
-
-                        </tui-island>
-
-                    </tui-tile>
-                </tui-tiles>
-            </tui-scrollbar>
-        </div>
+      <tui-breadcrumbs size="l" class="breadcrumbs">
+        <ng-container *ngFor="let item of items">
+          <a *tuiItem tuiLink [routerLink]="item.routerLink">
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+      <div class="top">
+        <div class="tui-text_h6 title">Lesson List</div>
+      </div>
+      <div id="lesson-list">
+        <tui-scrollbar class="scrollbar">
+          <tui-island
+            [hoverable]="true"
+            [ngClass]="[selectedLesson?._id === lesson?._id ? 'selected' : '']"
+            *ngFor="let lesson of lessonList; let index = index"
+          >
+            <div class="tui-island__content" (click)="selectLesson(lesson)">
+              <figure class="tui-island__figure">
+                <div class="some-figure">
+                  <tui-svg src="tuiIconDragLarge"></tui-svg>
+                </div>
+              </figure>
+              <div>
+                <h3 class="tui-island__title">
+                  {{ lesson.title }}
+                </h3>
+                <p class="tui-island__paragraph">
+                  {{ lesson.description }}
+                </p>
+              </div>
+            </div>
+          </tui-island>
+          <tui-island
+            [hoverable]="true"
+            [ngClass]="[selectedQuiz != null ? 'selected' : '']"
+          >
+            <div class="tui-island__content" (click)="selectQuiz()">
+              <figure class="tui-island__figure">
+                <div class="some-figure">
+                  <tui-svg src="tuiIconDragLarge"></tui-svg>
+                </div>
+              </figure>
+              <h3 class="tui-island__title">
+                {{ "Quiz Test" }}
+              </h3>
+            </div>
+          </tui-island>
+        </tui-scrollbar>
+      </div>
     </div>
+  </tui-loader>
 
-    <div id="right-side" [formGroup]="learnForm">
-        <!-- <div
+  <tui-loader
+    id="right-loader"
+    [inheritColor]="true"
+    [overlay]="true"
+    [showLoader]="isGettingCourse"
+  >
+    <div id="right-side">
+      <div
         id="course-content"
-        *ngIf="this.selectedLesson == null; else lessonContent"
+        *ngIf="
+          this.selectedLesson == null && this.selectedQuiz == null;
+          else content
+        "
       >
-        <div class="tui-text_h3 tui-space_top-3 tui-space_bottom-3" formControlName="title">
-
+        <div class="tui-text_h3 tui-space_top-3 tui-space_bottom-3">
+          {{ (course$ | async)?.name }}
         </div>
-        <div class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3" formControlName="description">
-
+        <div class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3">
+          {{ (course$ | async)?.description }}
         </div>
-        <img src="" class="tui-space_top-3 tui-space_bottom-3" />
-      </div> -->
-        <ng-template #lessonContent>
-            <div class="tui-text_h6 title" formControlName="content">
-                {{learnForm.value.content}}
-            </div>
+        <img
+          src="{{ (course$ | async)?.img }}"
+          class="tui-space_top-3 tui-space_bottom-3"
+        />
+      </div>
+      <ng-template #content>
+        <div class="top">
+          <div
+            class="tui-text_h6 title"
+            *ngIf="this.selectLesson != null; else quizTitle"
+          >
+            Lesson
+          </div>
+          <ng-template #quizTitle>
+            <div class="tui-text_h6 title">Quiz Test</div>
+          </ng-template>
+        </div>
+        <div id="editor" *ngIf="this.selectedLesson != null; else quizContent">
+          <app-lesson-content
+            [content]="selectedLesson.content"
+          ></app-lesson-content>
+        </div>
+        <ng-template #quizContent>
+          <div id="quiz-form">
+            <app-quiz-content [quiz]="this.quiz"></app-quiz-content>
+          </div>
         </ng-template>
+      </ng-template>
     </div>
-</div>
-<div id="quiz-container">
-    <div id="quiz-box">
-        <div id="quiz-nav">
-            <div class="nav-left">
-                <h4 class="nav-home" (click)="backhome()">Home</h4>
-                <h4>
-                    <tui-svg src="tuiIconChevronsRight"></tui-svg>
-                </h4>
-                <h4 class="nav-learn">Learning</h4>
-            </div>
-            <div class="nav-right">
-                <tui-input tuiTextfieldIconLeft="tuiIconSearchLarge" [tuiTextfieldSize]="'m'" [(ngModel)]="search">
-                    Search
-                </tui-input>
-            </div>
-        </div>
-        <div id="container-main">
-            <div id="quiz-left">
-                <h2>Title Course of Quiz</h2>
-            </div>
-            <div id="quiz-right">
-                <div id="quiz-top">
-                    <div class="top-nav">
-                        <h2>Quiz Content</h2>
-                    </div>
-                    <div class="top-content">
-                        <h1>This is a quiz content</h1>
-                        <div class="time-score">
-                            <div class="time">
-                                <span>Time:</span>
-                                <span>20 min</span>
-                            </div>
-                            <div class="score">
-                                <span>Total:</span>
-                                <span>100</span>
-                            </div>
-                        </div>
-                        <div id="content" class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3">
-                            <span>The quiz summarizing knowledge learned in the Web Developer course.</span>
-                        </div>
-                        <div class="btn-start">
-                            <button appearance="primary" tuiButton type="button"
-                                class="tui-space_right-3 tui-space_bottom-3">
-                                Start Quiz
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div id="quiz-center">
-                    <div id="center-right">
-                        <div class="title">
-                            <h2>Receive Grade</h2>
-                        </div>
-                        <div id="passed" class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3">
-                            <b class="head">To pass:</b>
-                            <span class="substance">80% or higher</span>
-                        </div>
-                    </div>
-                    <div id="center-left">
-                        <div class="title">
-                            <h2>Your Grade</h2>
-                            <span class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3">100</span>
-                        </div>
-                    </div>
-                </div>
-                <div id="quiz-bot" class="tui-space_top-3 tui-space_bottom-3">
-                    <div class="icon-item tui-text_body-xl">
-                        <tui-svg src="tuiIconThumbsUpLarge"></tui-svg>
-                        Like
-                    </div>
-                    <div class="icon-item tui-text_body-xl">
-                        <tui-svg src="tuiIconThumbsDownLarge"></tui-svg>
-                        Dislike
-                    </div>
-                    <div class="icon-item tui-text_body-xl">
-                        <tui-svg src="tuiIconFlagLarge"></tui-svg>
-                        Report an issue
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
+  </tui-loader>
 </div>

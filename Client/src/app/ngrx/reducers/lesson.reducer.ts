@@ -1,9 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 import { LessonState } from '../states/lesson.state';
 import * as LessonActions from '../actions/lesson.actions';
+import { Lesson } from 'src/app/models/lesson.model';
 
 export const initualState: LessonState = {
-  lessons: [],
+  lessons: <Lesson[]>{},
   isGetting: false,
   isGetSuccess: false,
   getMessError: '',
@@ -27,7 +28,7 @@ export const lessonReducer = createReducer(
       isGetting: true,
       isGetSuccess: false,
       getMessError: '',
-      lessons: [],
+
     };
     return newState;
   }),

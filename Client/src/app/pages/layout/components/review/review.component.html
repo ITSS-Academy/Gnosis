@@ -1,1 +1,61 @@
-<p>review works!</p>
+<div class="container">
+    <div class="container-main">
+        <div class="header">
+            <div class="course">
+                <p class="text-header" (click)="backhome()">Home</p>
+                <tui-svg src="tuiIconChevronsRight" style="color: var(--tui-primary);"></tui-svg>
+
+                <p class="text-header" (click)="backcourse()">Phát triển Web</p>
+                <tui-svg src="tuiIconChevronsRight" style="color: var(--tui-primary);"></tui-svg>
+
+                <p class="text-header">Quizz</p>
+            </div>
+            <div class="title">
+                <p>Phát triển Web</p>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="container-navigation">
+                <div class="header-navigation" style="margin-top: 1rem;">
+                    <p class="title-navigation">Quiz navigation</p>
+                    <p id="timmer">{{formattedTime}}</p>
+                </div>
+                <div class="quiz-list">
+                    <span class="custom-checkbox" *ngFor="let question of questionList; let questionIndex = index">
+                        <div [ngClass]="{'question-selected': question.selectedOptionIndex !== null}"
+                            class="number_question"
+                            style="width: 100%;height: 100%;display: flex;justify-content: center; align-items: center;">
+                            {{
+                            questionIndex + 1 }}</div>
+                    </span>
+                </div>
+            </div>
+            <div class="container-quiz-list">
+                <div class="container-quiz" *ngFor="let question of questionList,let i = index">
+                    <p class="number">Câu {{ i + 1 }}</p>
+                    <p class="title-quiz">{{question.quizBank.question}}</p>
+
+                    <label class="option" *ngFor="let option of question.quizBank.options , let optionIndex = index">
+                        {{ option }}
+                        <input type="radio" [name]="'question-' + i"
+                            [checked]="optionIndex === question.selectedOptionIndex">
+                        <!-- (change)="selectOption(i, optionIndex)" -->
+                        <span class="checkmark"></span>
+                    </label>
+
+
+                </div>
+                <div class="btn">
+                    <button tuiButton type="button" appearance="primary" class="tui-space_right-3 tui-space_bottom-3"
+                        style="font-size: 20px; font-weight: 600;">
+                        Back
+                    </button>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

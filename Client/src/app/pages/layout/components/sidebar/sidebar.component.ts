@@ -31,36 +31,30 @@ export class SidebarComponent {
     },
     {
       id: 1,
-      name: 'LEARNING',
-      link: 'base/learning',
-      icon: 'tuiIconBookmarkLarge',
-    },
-    {
-      id: 2,
       name: 'BROWSE COURSES',
       link: 'base/browse',
       icon: 'tuiIconBookOpenLarge',
     },
     {
-      id: 3,
+      id: 2,
       name: 'PROFILE',
       link: 'base/profile',
       icon: 'tuiIconUserLarge',
     },
     {
-      id: 4,
+      id: 3,
       name: 'CART',
       link: 'base/cart',
       icon: 'tuiIconShoppingCartLarge',
     },
     {
-      id: 5,
+      id: 4,
       name: 'ADMIN',
       link: 'base/admin',
       icon: 'tuiIconCpuLarge',
     },
     {
-      id: 6,
+      id: 5,
       name: 'SETTINGS',
       link: 'base/settings',
       icon: 'tuiIconSettingsLarge',
@@ -81,47 +75,41 @@ export class SidebarComponent {
     }).subscribe((res) => {
       if (res.profile != undefined) {
         if (res.profile.role != 'admin') {
-          if (this.pages.length != 6) {
-            this.pages.splice(5, 1);
+          if (this.pages.length != 5) {
+            this.pages.splice(4, 1);
             this.pages[this.pages.length - 1].id = this.pages.length - 1;
             console.log('pages:', this.pages);
           }
           if (this.router.url != this.url) {
             this.url = this.router.url;
             this.router.url === '/base/home' ? (this.pageSelected = 0) : null;
-            this.router.url.includes('/base/learning')
+            this.router.url.includes('/base/browse')
               ? (this.pageSelected = 1)
               : null;
-            this.router.url.includes('/base/browse')
+            this.router.url === '/base/profile'
               ? (this.pageSelected = 2)
               : null;
-            this.router.url === '/base/profile'
-              ? (this.pageSelected = 3)
-              : null;
-            this.router.url === '/base/cart' ? (this.pageSelected = 4) : null;
+            this.router.url === '/base/cart' ? (this.pageSelected = 3) : null;
             this.router.url === '/base/settings'
-              ? (this.pageSelected = 5)
+              ? (this.pageSelected = 4)
               : null;
           }
         } else {
           if (this.router.url != this.url) {
             this.url = this.router.url;
             this.router.url === '/base/home' ? (this.pageSelected = 0) : null;
-            this.router.url.includes('/base/learning')
+            this.router.url.includes('/base/browse')
               ? (this.pageSelected = 1)
               : null;
-            this.router.url.includes('/base/browse')
+            this.router.url === '/base/profile'
               ? (this.pageSelected = 2)
               : null;
-            this.router.url === '/base/profile'
-              ? (this.pageSelected = 3)
-              : null;
-            this.router.url === '/base/cart' ? (this.pageSelected = 4) : null;
+            this.router.url === '/base/cart' ? (this.pageSelected = 3) : null;
             this.router.url.includes('/base/admin')
-              ? (this.pageSelected = 5)
+              ? (this.pageSelected = 4)
               : null;
             this.router.url === '/base/settings'
-              ? (this.pageSelected = 6)
+              ? (this.pageSelected = 5)
               : null;
           }
         }

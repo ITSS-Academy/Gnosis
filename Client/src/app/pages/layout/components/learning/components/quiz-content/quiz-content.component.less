@@ -1,0 +1,70 @@
+#quiz-editor-container,
+#quiz-preview-container {
+  width: 100%;
+  height: 97%;
+}
+
+#quiz-preview-container {
+  #start-btn {
+    margin-left: auto;
+    display: flex;
+  }
+  #info-box {
+    border-top: 1px solid var(--tui-base-09);
+    border-bottom: 1px solid var(--tui-base-09);
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    #pass-condition {
+      width: 70%;
+
+      #cond {
+        border-right: 1px solid var(--tui-base-09);
+        min-height: 6.25rem;
+      }
+    }
+    #quiz-score {
+      width: 28%;
+    }
+  }
+  #icon-grp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+    .icon-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.313rem;
+      tui-svg {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+#quest-editor-container {
+  .col-form {
+    height: 100%;
+    .header {
+      width: 100%;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tui-form__row.opt-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.625rem;
+      .input-box {
+        width: 100%;
+      }
+    }
+    tui-error.opt-item-err {
+      margin-left: 2.125rem;
+    }
+  }
+}

@@ -3,7 +3,7 @@
     <div id="myCourse">
       <div id="header">
         <div class="title">
-          <h1>WELCOME {{homeForm.value.userName}} TO GNOSIS</h1>
+          <h1>WELCOME {{ homeForm.value.userName }} TO GNOSIS</h1>
           <p>Sat, 24th Aug 2023</p>
         </div>
         <div class="search">
@@ -29,8 +29,8 @@
             (click)="toBuy()" [size]="'m'"></button>
         </div>
         <tui-scrollbar class="box">
-          <div class="list_course" *ngIf="this.state=='Chưa học'">
-            <tui-push class="cart_course" *ngFor="let course of courses" heading="{{course.name}}">
+          <div class="list_course" *ngIf="this.state == 'Chưa học'">
+            <tui-push class="cart_course" *ngFor="let course of courses" heading="{{ course.name }}">
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
 
@@ -46,8 +46,8 @@
             </tui-push>
           </div>
 
-          <div class="list_course" *ngIf="this.state=='Đang học' && this.courses.length != 0">
-            <tui-push class="cart_course" *ngFor="let course of ongoingCourses" heading="{{course.name}}">
+          <div class="list_course" *ngIf="this.state == 'Đang học' && this.courses.length != 0">
+            <tui-push class="cart_course" *ngFor="let course of ongoingCourses" heading="{{ course.name }}">
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
 
@@ -63,8 +63,8 @@
             </tui-push>
           </div>
 
-          <div class="list_course" *ngIf="this.state=='Đã học xong'">
-            <tui-push class="cart_course" *ngFor="let course of completedCourses" heading="{{course.name}}">
+          <div class="list_course" *ngIf="this.state == 'Đã học xong'">
+            <tui-push class="cart_course" *ngFor="let course of completedCourses" heading="{{ course.name }}">
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
 
@@ -99,11 +99,11 @@
       <div class="myProfile_body">
         <div class="avatar">
           <tui-avatar text="alex inkin" class="tui-space_top-1" [size]="'xl'"
-            avatarUrl="{{homeForm.value.avatar}}"></tui-avatar>
+            avatarUrl="{{ homeForm.value.avatar }}"></tui-avatar>
         </div>
 
-        <p class="name">{{homeForm.value.userName}}</p>
-        <p class="email">{{homeForm.value.email}}</p>
+        <p class="name">{{ homeForm.value.userName }}</p>
+        <p class="email">{{ homeForm.value.email }}</p>
 
         <div class="member">
           <span class="material-symbols-outlined"> diamond </span>
@@ -140,4 +140,5 @@
       </div>
     </div>
   </div>
+
 </div>

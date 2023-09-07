@@ -118,9 +118,8 @@ export class LessonComponent implements OnInit, OnDestroy {
         }
       }),
       this.store.select('lesson', 'lessons').subscribe((lessons) => {
-        if (lessons != null && lessons != undefined) {
+        if (lessons != null && lessons != undefined && lessons.length > 0) {
           this.lessonList = [...lessons];
-          //sort lesson list by ordinal num
           console.log(this.lessonList);
           this.lessonList.sort((a, b) => {
             return a.ordinalNum - b.ordinalNum;

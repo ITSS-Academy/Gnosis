@@ -1,0 +1,48 @@
+<div id="quiz-preview-container">
+  <div class="tui-text_h5 tui-space_top-3 tui-space_bottom-3">
+    {{ quizForm.controls["title"].value }}
+  </div>
+  <div class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3">
+    Time: {{ quizForm.controls["duration"].value }} --- --- Total:
+    {{ quizForm.controls["total"].value }}
+  </div>
+  <div class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3">
+    {{ quizForm.controls["content"].value }}
+  </div>
+
+  <button size="m" tuiButton type="button" appearance="primary" id="start-btn"
+    class="tui-space_top-3 tui-space_bottom-3" (click)="toDoQuiz()">
+    Start Quiz
+  </button>
+
+  <div id="info-box">
+    <div id="pass-condition">
+      <div class="tui-text_h5 tui-space_top-3 tui-space_bottom-3">
+        Receive Grade
+      </div>
+      <div class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3" id="cond">
+        <b>To pass: </b> {{ quizForm.controls["passCond"].value }}% or higher
+      </div>
+    </div>
+    <div id="quiz-score">
+      <div class="tui-text_h5 tui-space_top-3 tui-space_bottom-3">
+        Your Grade
+      </div>
+      <div class="tui-text_body-xl tui-space_top-3 tui-space_bottom-3">100</div>
+    </div>
+  </div>
+  <div id="icon-grp" class="tui-space_top-3 tui-space_bottom-3">
+    <div class="icon-item tui-text_body-xl">
+      <tui-svg src="tuiIconThumbsUpLarge"></tui-svg>
+      Like
+    </div>
+    <div class="icon-item tui-text_body-xl">
+      <tui-svg src="tuiIconThumbsDownLarge"></tui-svg>
+      Dislike
+    </div>
+    <div class="icon-item tui-text_body-xl">
+      <tui-svg src="tuiIconFlagLarge"></tui-svg>
+      Report an issue
+    </div>
+  </div>
+</div>

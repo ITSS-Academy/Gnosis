@@ -26,7 +26,9 @@ import { QuizEditorComponent } from './components/admin/components/quiz-editor/q
 import { QuestionEditorComponent } from './components/admin/components/quiz-editor/components/question-editor/question-editor.component';
 import { QuizFormComponent } from './components/admin/components/quiz-editor/components/quiz-form/quiz-form.component';
 import { LearningComponent } from './components/learning/learning.component';
-import { QuizTestComponent } from './components/learning/components/quiz-test/quiz-test.component';
+import { LessonContentComponent } from './components/learning/components/lesson-content/lesson-content.component';
+import { QuizContentComponent } from './components/learning/components/quiz-content/quiz-content.component';
+
 
 @NgModule({
   declarations: [
@@ -52,7 +54,8 @@ import { QuizTestComponent } from './components/learning/components/quiz-test/qu
     QuestionEditorComponent,
     QuizFormComponent,
     LearningComponent,
-    QuizTestComponent,
+    LessonContentComponent,
+    QuizContentComponent,
   ],
   imports: [
     CommonModule,
@@ -61,4 +64,4 @@ import { QuizTestComponent } from './components/learning/components/quiz-test/qu
     QuillModule.forRoot(),
   ],
 })
-export class LayoutModule {}
+export class LayoutModule { }

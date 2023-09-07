@@ -7,9 +7,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class QuestionService {
-  constructor(private httpClient: HttpClient) {}
-  getQuestion(idToken: string) {
-    return this.httpClient.get<Question[]>(environment.local_url + 'question', {
+  constructor(private httpClient: HttpClient) { }
+  getQuestionByQuizId(idToken: string, id: string) {
+    return this.httpClient.get<Question[]>(environment.local_url + `question/${id}`, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${idToken}`,
       }),

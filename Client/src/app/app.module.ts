@@ -36,6 +36,8 @@ import { lessonReducer } from './ngrx/reducers/lesson.reducer';
 import { LessonEffects } from './ngrx/effects/lesson.effects';
 import { questionReducer } from './ngrx/reducers/question.reducer';
 import { QuestionEffects } from './ngrx/effects/question.effects';
+import { ReviewReducer } from './ngrx/reducers/review.reducer';
+import { ReviewEffect } from './ngrx/effects/review.effects';
 import { quizBankReducer } from './ngrx/reducers/quizBank.reducer';
 import { QuizBankEffects } from './ngrx/effects/quizBank.effects';
 @NgModule({
@@ -54,6 +56,7 @@ import { QuizBankEffects } from './ngrx/effects/quizBank.effects';
         lesson: lessonReducer,
         quiz: quizReducer,
         question: questionReducer,
+        review: ReviewReducer,
         quizBank: quizBankReducer,
       },
       {}
@@ -65,6 +68,7 @@ import { QuizBankEffects } from './ngrx/effects/quizBank.effects';
       CourseEffects,
       QuizEffects,
       QuestionEffects,
+      ReviewEffect,
       QuizBankEffects,
       LessonEffects,
     ]),
@@ -82,4 +86,4 @@ import { QuizBankEffects } from './ngrx/effects/quizBank.effects';
   providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -9,6 +9,7 @@ export const getAllByCourseId = createAction(
 export const getAllByCourseIdSuccess = createAction(
   '[Lesson] get all by course id success',
   props<{ lessons: any }>()
+  
 );
 export const getAllByCourseIdFailure = createAction(
   '[Lesson] get all by course id failure',

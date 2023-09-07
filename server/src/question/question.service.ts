@@ -11,7 +11,7 @@ import { Model } from 'mongoose';
 export class QuestionService {
   constructor(
     @InjectModel(Question.name) private questionModel: Model<Question>,
-  ) {}
+  ) { }
 
   async create(createCourseDto: CreateQuestionDto): Promise<Question> {
     try {
@@ -34,10 +34,12 @@ export class QuestionService {
     }
   }
 
-  async findOne(id: string): Promise<Question> {
+  async findOne(id: string): Promise<Question[]> {
     try {
       return await this.questionModel
-        .findById(id)
+        .find({
+          quizId: id,
+        })
         .select('-createdAt -updatedAt -__v')
         .populate('quizBank', '-createdAt -updatedAt -__v')
         .populate('quizId')
