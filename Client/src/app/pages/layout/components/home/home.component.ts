@@ -12,7 +12,7 @@ import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { Router } from '@angular/router';
-import * as ProfileActions from 'src/app/ngrx/actions/profile.actions';
+import * as ProfileAction from 'src/app/ngrx/actions/profile.actions';
 import { UserState } from 'src/app/ngrx/states/user.state';
 import { Course } from 'src/app/models/course.model';
 import { Profile } from 'src/app/models/profile.model';
@@ -47,6 +47,7 @@ export class HomeComponent implements OnDestroy, OnInit {
   courses: Course[] = [];
   ongoingCourses: Course[] = [];
   completedCourses: Course[] = [];
+  profile: Profile = <Profile>{};
 
   homeForm = new FormGroup({
     id: new FormControl('', Validators.required),
@@ -66,7 +67,7 @@ export class HomeComponent implements OnDestroy, OnInit {
       auth: AuthState;
       user: UserState;
     }>
-  ) { }
+  ) {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((val) => {
@@ -93,6 +94,16 @@ export class HomeComponent implements OnDestroy, OnInit {
           console.log('profile: ', profile);
         }
       }),
+      this.store.select('profile', 'profile').subscribe((profile) => {
+        if (profile != null && profile != undefined) {
+          this.profile = profile;
+        }
+      }),
+      this.store.select('auth', 'idToken').subscribe((val) => {
+        if (val != '') {
+          this.idToken = val;
+        }
+      }),
 
       combineLatest({
         idToken: this.idToken$,
@@ -108,7 +119,7 @@ export class HomeComponent implements OnDestroy, OnInit {
           (res.profile == null || res.profile == undefined)
         ) {
           this.store.dispatch(
-            ProfileActions.get({ id: res.user.uid, idToken: res.idToken })
+            ProfileAction.get({ id: res.user.uid, idToken: res.idToken })
           );
         }
       })
@@ -122,9 +133,28 @@ export class HomeComponent implements OnDestroy, OnInit {
   toBuy() {
     this.router.navigate(['base/browse']);
   }
+  ongoingCourseId: any = [];
+  idToken = '';
 
   toCourse(course: Course) {
     this.router.navigate(['base/home/course', course._id]);
+    this.ongoingCourseId = course._id;
+
+    let newProfile: Profile = {
+      ...this.profile,
+      ongoingCourses: [
+        ...(this.profile.ongoingCourses || []), // Use the existing array or start with an empty array
+        ...this.ongoingCourseId,
+      ],
+    };
+
+    this.store.dispatch(
+      ProfileAction.updateProfile({
+        idToken: this.idToken,
+        profile: newProfile,
+      })
+    );
+    console.log(this.profile);
   }
   toReview() {
     this.router.navigate(['base/review']);
@@ -132,5 +162,4 @@ export class HomeComponent implements OnDestroy, OnInit {
   toQuiz() {
     this.router.navigate(['base/quiz']);
   }
-
-} 
+}
