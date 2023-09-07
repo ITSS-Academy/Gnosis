@@ -67,8 +67,7 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-  quiz: Quiz = {
-    _id: Date.now().toString(),
+  quiz: any = {
     content: ``,
     courseId: this.router.url.split('/')[4],
     duration: 0,
@@ -118,7 +117,7 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
       correctOption: 0,
       quizBank: quizBank._id,
       ordinalNum: this.questionList.length + 1,
-      quizId: this.router.url.split('/')[4],
+      quizId: this.quiz._id,
     };
     this.store.dispatch(
       QuestionActions.create({
@@ -161,6 +160,7 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
       this.store.select('auth', 'idToken').subscribe((idToken) => {
         if (idToken != '' && idToken != null && idToken != undefined) {
           this.idToken = idToken;
+          console.log(`quiz's course id: `, this.router.url.split('/')[4]);
           this.store.dispatch(
             QuizActions.get({
               idToken: this.idToken,
@@ -175,7 +175,7 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
           this.store.dispatch(
             QuestionActions.getAllByQuizId({
               idToken: this.idToken,
-              quizId: quiz._id,
+              quizId: this.quiz._id,
             })
           );
         }
@@ -193,6 +193,14 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
       this.store.select('quiz', 'getMessError').subscribe((getMessError) => {
         if (getMessError != '') {
           this.alerts.open(getMessError, { status: 'error' }).subscribe();
+          if (getMessError == 'Quiz is undefined or null') {
+            this.store.dispatch(
+              QuizActions.create({
+                idToken: this.idToken,
+                quiz: this.quiz as Quiz,
+              })
+            );
+          }
         }
       }),
       this.store
@@ -280,8 +288,14 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
             .subscribe();
         }
       }),
+      this.store.select('question', 'getMessError').subscribe((val) => {
+        if (val != null && val != undefined && val != '') {
+          this.alerts.open(val, { status: 'error' }).subscribe();
+        }
+      }),
       this.store.select('question', 'questions').subscribe((val) => {
-        if (val != null && val != undefined) {
+        console.log('questionList: ', val);
+        if (val != null && val != undefined && val.length > 0) {
           this.questionList = [...val];
           console.log('questionList: ', this.questionList);
         }

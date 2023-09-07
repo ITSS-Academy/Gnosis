@@ -11,7 +11,6 @@ export class Quiz {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Course' })
   courseId: string;
 
-
   @Prop()
   content: string;
 

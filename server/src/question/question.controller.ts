@@ -16,7 +16,7 @@ import { Question } from './entities/question.entity';
 
 @Controller('v1/question')
 export class QuestionController {
-  constructor(private questionService: QuestionService) { }
+  constructor(private questionService: QuestionService) {}
 
   @Post()
   async create(@Body() createQuestionDto: CreateQuestionDto) {
@@ -43,6 +43,7 @@ export class QuestionController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Question[]> {
     try {
+      console.log(id);
       const question = await this.questionService.findOne(id);
       return question;
     } catch (error) {

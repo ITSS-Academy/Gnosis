@@ -106,8 +106,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.profile$.subscribe((profile) => {
         if (profile != null && profile != undefined) {
           this.courses = profile.courses || [];
-          this.ongoingCourses = profile.ongoingCourses || [];
-          this.completedCourses = profile.completedCourses || [];
+          this.ongoingCourses = profile.ongoingCourse || [];
+          this.completedCourses = profile.completedCourse || [];
           console.log(profile);
         }
       }),
