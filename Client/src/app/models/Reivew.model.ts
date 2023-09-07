@@ -4,7 +4,7 @@ export interface Review {
     _id: string,
     quizId: string,
     profileId: string,
-    // score: number,
+    score: number,
     test: Array<{
         answer: string[];
         quizBankId: string;
