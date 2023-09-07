@@ -13,6 +13,7 @@ export class CourseEffects {
       exhaustMap((action) =>
         this.courseService.getCourse(action.idToken).pipe(
           map((items) => {
+            console.log(items);
             if (items != undefined || items != null) {
               if (items.message) {
                 return CourseAction.getFailure({ error: items.message });
@@ -123,6 +124,11 @@ export class CourseEffects {
           .pipe(
             map((items) => {
               if (items != undefined || items != null) {
+                if ((items as any).message) {
+                  return CourseAction.getByUserFailure({
+                    getErrMess: (items as any).message,
+                  });
+                }
                 return CourseAction.getByUserSuccess({
                   courseList: items,
                 });

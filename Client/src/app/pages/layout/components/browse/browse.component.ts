@@ -19,6 +19,7 @@ import { Profile } from 'src/app/models/profile.model';
 })
 export class BrowseComponent implements OnInit, OnDestroy {
   courseList$: Observable<Course[]> = this.store.select('course', 'courseList');
+  courselist: Course[] = [];
   cartList$ = this.store.select('cart', 'cartList');
   cartList: Course[] = [];
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
@@ -44,12 +45,13 @@ export class BrowseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.push(
       this.cartList$.subscribe((cartList) => {
-        if (cartList != undefined) {
-          this.cartList = cartList;
+        if (cartList != undefined && cartList != null && cartList.length > 0) {
+          this.cartList = [...cartList];
           console.log('cartList: ', this.cartList);
         }
       }),
       this.courseList$.subscribe((item) => {
+        console.log('item: ', item);
         if (item != undefined && item != null && item.length > 0) {
           console.log('courseList: ', item);
         }
@@ -65,12 +67,18 @@ export class BrowseComponent implements OnInit, OnDestroy {
           res.profile != undefined &&
           res.profile != null
         ) {
+          // console.log(res);
           this.store.dispatch(
             CourseAction.getByUser({
               idToken: res.idToken,
               userId: res.profile.id,
             })
           );
+        }
+      }),
+      this.store.select('course', 'getErrMess').subscribe((val) => {
+        if (val != '') {
+          this.alerts.open(val, { status: 'error' }).subscribe();
         }
       })
     );
@@ -98,8 +106,18 @@ export class BrowseComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(CartAction.addCourseToCart({ course }));
+    this.successNotification(`${course.name} has been added to the cart`);
   }
 
+  successNotification(message: string): void {
+    this.alerts
+      .open('', {
+        label: message,
+        status: 'success',
+        autoClose: 4000,
+      })
+      .subscribe();
+  }
   warningNotification(message: string): void {
     this.alerts
       .open('', {

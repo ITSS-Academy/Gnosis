@@ -13,7 +13,7 @@ import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { Router } from '@angular/router';
-import * as ProfileActions from 'src/app/ngrx/actions/profile.actions';
+import * as ProfileAction from 'src/app/ngrx/actions/profile.actions';
 import { UserState } from 'src/app/ngrx/states/user.state';
 import { Course } from 'src/app/models/course.model';
 import { Profile } from 'src/app/models/profile.model';
@@ -81,6 +81,7 @@ export class HomeComponent implements OnDestroy, OnInit {
   courses: Course[] = [];
   ongoingCourses: Course[] = [];
   completedCourses: Course[] = [];
+  profile: Profile = <Profile>{};
 
   homeForm = new FormGroup({
     id: new FormControl('', Validators.required),
@@ -130,9 +131,19 @@ export class HomeComponent implements OnDestroy, OnInit {
       this.profile$.subscribe((profile) => {
         if (profile != null && profile != undefined) {
           this.courses = profile.courses || [];
-          this.ongoingCourses = profile.ongoingCourses || [];
-          this.completedCourses = profile.completedCourses || [];
+          this.ongoingCourses = profile.ongoingCourse || [];
+          this.completedCourses = profile.completedCourse || [];
           console.log('profile: ', profile);
+        }
+      }),
+      this.store.select('profile', 'profile').subscribe((profile) => {
+        if (profile != null && profile != undefined) {
+          this.profile = profile;
+        }
+      }),
+      this.store.select('auth', 'idToken').subscribe((val) => {
+        if (val != '') {
+          this.idToken = val;
         }
       }),
 
@@ -150,7 +161,7 @@ export class HomeComponent implements OnDestroy, OnInit {
           (res.profile == null || res.profile == undefined)
         ) {
           this.store.dispatch(
-            ProfileActions.get({ id: res.user.uid, idToken: res.idToken })
+            ProfileAction.get({ id: res.user.uid, idToken: res.idToken })
           );
         }
       })
@@ -164,9 +175,40 @@ export class HomeComponent implements OnDestroy, OnInit {
   toBuy() {
     this.router.navigate(['base/browse']);
   }
+  ongoingCourseId: any = '';
+  idToken = '';
 
   toCourse(course: Course) {
     this.router.navigate(['base/home/course', course._id]);
+    this.ongoingCourseId = course._id;
+
+    console.log(this.profile);
+    let newProfile: any = {
+      ...this.profile,
+    };
+    if (this.profile.ongoingCourse.includes(this.ongoingCourseId)) {
+      this.store.dispatch(
+        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
+      );
+    } else {
+      newProfile.courses = this.profile.courses.filter(
+        (courseId) => courseId._id != this.ongoingCourseId
+      );
+      newProfile.ongoingCourse = [
+        ...newProfile.ongoingCourse,
+        this.ongoingCourseId,
+      ];
+
+      this.store.dispatch(
+        ProfileAction.updateProfile({
+          idToken: this.idToken,
+          profile: newProfile,
+        })
+      );
+      this.store.dispatch(
+        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
+      );
+    }
   }
 
 }

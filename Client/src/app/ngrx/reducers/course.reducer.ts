@@ -186,6 +186,7 @@ export const courseReducer = createReducer(
       isGetLoading: true,
       isGetSuccess: false,
       getErrMess: '',
+      courseList: [],
     };
     return newState;
   }),
