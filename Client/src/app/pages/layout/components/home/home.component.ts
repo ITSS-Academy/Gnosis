@@ -63,15 +63,15 @@ export class HomeComponent implements OnDestroy, OnInit {
   open = false;
 
   readonly courseFilterForm = new FormGroup({
-    filter: new FormControl('Chưa học'),
+    filter: new FormControl('Courses'),
   });
-  readonly courses_state = ['Chưa học', 'Đang học', 'Đã học xong'];
+  readonly courses_state = ['Courses', 'Ongoing Courses', 'Completed Courses'];
 
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
   profile$: Observable<Profile> = this.store.select('profile', 'profile');
   user$: Observable<UserInfo> = this.store.select('user', 'user');
 
-  state: string = 'Chưa học';
+  state: string = 'Courses';
   onRadioChange(selectedState: string) {
     this.state = selectedState;
     console.log(this.profile.ongoingCourse);
