@@ -74,13 +74,14 @@ export class HomeComponent implements OnDestroy, OnInit {
   state: string | undefined = '';
   onRadioChange(selectedState: string) {
     this.state = selectedState;
+    console.log(this.profile.ongoingCourse);
     console.log(this.state);
   }
 
   subscriptions: Subscription[] = [];
   courses: Course[] = [];
-  ongoingCourses: Course[] = [];
-  completedCourses: Course[] = [];
+  ongoingCourse: Course[] = [];
+  completedCourse: Course[] = [];
   profile: Profile = <Profile>{};
 
   homeForm = new FormGroup({
@@ -90,8 +91,8 @@ export class HomeComponent implements OnDestroy, OnInit {
     displayName: new FormControl('', Validators.required),
     userName: new FormControl('', Validators.required),
     courses: new FormArray([], Validators.required),
-    ongoingCourses: new FormArray([], Validators.required),
-    completedCourses: new FormArray([], Validators.required),
+    ongoingCourse: new FormArray([], Validators.required),
+    completedCourse: new FormArray([], Validators.required),
   });
 
   constructor(
@@ -131,8 +132,8 @@ export class HomeComponent implements OnDestroy, OnInit {
       this.profile$.subscribe((profile) => {
         if (profile != null && profile != undefined) {
           this.courses = profile.courses || [];
-          this.ongoingCourses = profile.ongoingCourse || [];
-          this.completedCourses = profile.completedCourse || [];
+          this.ongoingCourse = profile.ongoingCourse || [];
+          this.completedCourse = profile.completedCourse || [];
           console.log('profile: ', profile);
         }
       }),
@@ -181,12 +182,15 @@ export class HomeComponent implements OnDestroy, OnInit {
   toCourse(course: Course) {
     this.router.navigate(['base/home/course', course._id]);
     this.ongoingCourseId = course._id;
-
+    console.log(this.ongoingCourseId);
     console.log(this.profile);
     let newProfile: any = {
       ...this.profile,
     };
-    if (this.profile.ongoingCourse.includes(this.ongoingCourseId)) {
+
+    if (
+      this.ongoingCourse.some((course) => course._id === this.ongoingCourseId)
+    ) {
       this.store.dispatch(
         ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
       );
