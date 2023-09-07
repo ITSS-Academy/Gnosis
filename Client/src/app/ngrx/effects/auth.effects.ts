@@ -6,13 +6,14 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { Store } from '@ngrx/store';
 import { AuthState } from '../states/auth.state';
 import * as UserActions from '../actions/user.actions';
+import * as ProfileAction from '../actions/profile.actions';
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private action$: Actions,
     private authService: AuthService,
-    private store: Store<{ auth: AuthState }>
+    private store: Store<{}>
   ) {}
 
   login$ = createEffect(() => {
@@ -45,6 +46,7 @@ export class AuthEffects {
       map((res) => {
         if (res == 'Logout success!!!') {
           this.store.dispatch(UserActions.clearUserInfo());
+          this.store.dispatch(ProfileAction.clearState());
           return AuthActions.logoutSuccess();
         }
         return AuthActions.loginFailure({ errorMessage: 'Login fail' });
