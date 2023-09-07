@@ -96,7 +96,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
           res.profile != undefined &&
           res.profile != null
         ) {
-          console.log(res);
+          // console.log(res);
           this.store.dispatch(
             CourseAction.getByUser({
               idToken: res.idToken,
