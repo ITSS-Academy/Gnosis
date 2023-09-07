@@ -63,9 +63,10 @@ export class CartComponent implements OnInit {
       }),
       this.store.select('profile', 'isUpdateSuccess').subscribe((val) => {
         if (val) {
-          this.alerts
-            .open('Buy Course Success !!!', { status: 'success' })
-            .subscribe();
+          // this.alerts
+          //   .open('Buy Course Success !!!', { status: 'success' })
+          //   .subscribe();
+          this.successNotification('Buy Course Success !!!');
           this.clearAllCart();
           this.store.dispatch(ProfileAction.clearState());
           this.store.dispatch(
@@ -144,19 +145,25 @@ export class CartComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   buyCourse() {
-    this.courseId = this.cartList.map((course) => course._id);
+    if (this.cartList.length == 0) {
+      // this.alerts.open('Cart is empty', { status: 'warning' }).subscribe();
+      this.warningNotification('Cart is empty');
+      return;
+    } else {
+      this.courseId = this.cartList.map((course) => course._id);
 
-    let newProfile: Profile = {
-      ...this.profile,
-      courses: [...this.profile.courses, ...this.courseId],
-    };
+      let newProfile: Profile = {
+        ...this.profile,
+        courses: [...this.profile.courses, ...this.courseId],
+      };
 
-    console.log(newProfile);
-    this.store.dispatch(
-      ProfileAction.updateProfile({
-        idToken: this.idToken,
-        profile: newProfile,
-      })
-    );
+      console.log(newProfile);
+      this.store.dispatch(
+        ProfileAction.updateProfile({
+          idToken: this.idToken,
+          profile: newProfile,
+        })
+      );
+    }
   }
 }
