@@ -16,15 +16,13 @@ import { Course } from 'src/course/entities/course.entity';
 export class ProfileService {
   constructor(
     @InjectModel(Profile.name) private profileModel: Model<Profile>,
-  ) {}
+  ) { }
 
   async create(createProfileDto: CreateProfileDto): Promise<Profile> {
     try {
       const profile = new this.profileModel(createProfileDto);
-      console.log(profile);
       return await profile.save();
     } catch (error) {
-      console.log(error);
       throw new HttpException(error.message, error.status);
     }
   }

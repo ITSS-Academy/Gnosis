@@ -12,7 +12,7 @@ export class CourseService {
   constructor(
     @InjectModel(Course.name) private courseModel: Model<Course>,
     @InjectModel(Profile.name) private profileModel: Model<Profile>,
-  ) {}
+  ) { }
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     try {
@@ -76,9 +76,7 @@ export class CourseService {
 
   async getCourseByUserId(userId: string): Promise<Course[]> {
     try {
-      // console.log(userId);
       const profile = await this.profileModel.findOne({ id: userId });
-      // console.log(profile);
       const courses = await this.courseModel.find({
         _id: {
           $nin: [
