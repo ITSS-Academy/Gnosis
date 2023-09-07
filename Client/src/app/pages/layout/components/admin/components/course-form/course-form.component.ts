@@ -90,18 +90,11 @@ export class CourseFormComponent {
     this.createEvent.emit(newCourse);
   }
   categories = [
-    'Frontend Developer',
-    'Backend Developer',
-    'Mobile Developer',
-    'AI',
-    'Database',
-    'Algorithm',
-    'Security',
-    'Network',
+    'IT',
+    'HR',
+    'Logitech',
+    'Finance',
     'Bussiness',
-    'Software',
-    'Hardware',
-    'OS',
     'Math',
     'Science',
     'Chemistry',

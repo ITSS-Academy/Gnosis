@@ -71,70 +71,44 @@
             </div>
         </div>
         <tui-scrollbar class="box">
-            <div class="browse-header">
-                <button tuiButton type="button" class="tui-space_right-3 tui-space_bottom-3" [size]="'m'">
+            <div class="filters-with-all tui-space_top-3 tui-space_bottom-3">
+                <button size="m" tuiButton type="button" class="tui-space_right-1"
+                    [appearance]="(buttonAppearance$ | async) || ''" (click)="toggleAll()">
                     All
                 </button>
-                <button tuiButton type="button" appearance="outline" class="tui-space_right-3 tui-space_bottom-3"
-                    [size]="'m'">
-                    Popular
-                </button>
-                <button tuiButton type="button" appearance="outline" class="tui-space_right-3 tui-space_bottom-3"
-                    [size]="'m'">
-                    IT
-                </button>
-                <button tuiButton type="button" appearance="outline" class="tui-space_right-3 tui-space_bottom-3"
-                    [size]="'m'">
-                    Marketing
-                </button>
-                <button tuiButton type="button" appearance="outline" class="tui-space_right-3 tui-space_bottom-3"
-                    [size]="'m'">
-                    Language
-                </button>
-                <button tuiButton type="button" appearance="outline" class="tui-space_right-3 tui-space_bottom-3"
-                    [size]="'m'">
-                    Music
-                </button>
-                <button tuiButton type="button" appearance="outline" class="tui-space_right-3 tui-space_bottom-3"
-                    [size]="'m'">
-                    Cook
-                </button>
+
+                <tui-filter [items]="categories" [ngModel]="model$ | async"
+                    (ngModelChange)="onModelChange($event)"></tui-filter>
             </div>
         </tui-scrollbar>
         <div id="browse-course">
             <tui-scrollbar class="main-rol">
                 <div class="main">
-                    <tui-push class="course" *ngFor="let course of courseList$ | async; let i=index;"
-                        heading={{course.name}}>
-                        <img [src]=course.img alt="" />
-                        <div class="cate-price">
-                            <p>
-                                {{course.category}}
-                            </p>
-                            <p class="price">
-                                $ {{course.price}}
-                            </p>
-                        </div>
-                        <div class="btn-course">
-                            <button tuiButton type="button" appearance="secondary"
-                                class="tui-space_right-3 tui-space_bottom-3" (click)="description(course._id)">
-                                Detail
-                            </button>
-                            <button tuiButton type="button" appearance="flat"
-                                class="tui-space_right-3 tui-space_bottom-3" icon="tuiIconShoppingCart"
-                                (click)="addCourseToCart(course)">
-                                ADD TO CART
-                            </button>
-                        </div>
-                    </tui-push>
-
-
-
+                    <ng-container *ngFor="let course of courseList$ | async; let i = index">
+                        <tui-push class="course" heading="{{ course.name }}"
+                            *ngIf="this.filterList.includes(course.category)">
+                            <img [src]="course.img" alt="" />
+                            <div class="cate-price">
+                                <p>
+                                    {{ course.category }}
+                                </p>
+                                <p class="price">$ {{ course.price }}</p>
+                            </div>
+                            <div class="btn-course">
+                                <button tuiButton type="button" appearance="secondary"
+                                    class="tui-space_right-3 tui-space_bottom-3" (click)="description(course._id)">
+                                    Detail
+                                </button>
+                                <button tuiButton type="button" appearance="flat"
+                                    class="tui-space_right-3 tui-space_bottom-3" icon="tuiIconShoppingCart"
+                                    (click)="addCourseToCart(course)">
+                                    ADD TO CART
+                                </button>
+                            </div>
+                        </tui-push>
+                    </ng-container>
                 </div>
             </tui-scrollbar>
         </div>
-
-
-
     </div>
 </div>

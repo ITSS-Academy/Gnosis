@@ -70,6 +70,7 @@ import { TuiMultiSelectModule } from '@taiga-ui/kit';
 import { TuiCheckboxBlockModule } from '@taiga-ui/kit';
 import { TuiPreviewModule } from '@taiga-ui/addon-preview';
 import { TuiLineClampModule } from '@taiga-ui/kit';
+import { TuiFilterModule } from '@taiga-ui/kit';
 
 @NgModule({
   declarations: [],
@@ -146,6 +147,7 @@ import { TuiLineClampModule } from '@taiga-ui/kit';
     TuiCheckboxBlockModule,
     TuiPreviewModule,
     TuiLineClampModule,
+    TuiFilterModule,
   ],
   exports: [
     FormsModule,
@@ -218,6 +220,7 @@ import { TuiLineClampModule } from '@taiga-ui/kit';
     TuiCheckboxBlockModule,
     TuiPreviewModule,
     TuiLineClampModule,
+    TuiFilterModule,
   ],
 })
 export class SharedModule {}
