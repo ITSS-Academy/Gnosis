@@ -64,7 +64,12 @@ const routes: Routes = [
       },
       {
         path: 'home/course/:courseId/quiz/:id',
+        // path: 'quiz',
         component: QuizComponent,
+      },
+      {
+        path: 'home/course/:courseId/review/:id',
+        component: ReviewComponent,
       },
       {
         path: 'browse/detail/:id',
@@ -78,10 +83,7 @@ const routes: Routes = [
         path: 'learning/:id',
         component: LearningComponent,
       },
-      {
-        path: 'review',
-        component: ReviewComponent,
-      },
+
       {
         path: 'home/course/:id',
         component: LearningComponent,
@@ -94,4 +96,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class LayoutRoutingModule {}
+export class LayoutRoutingModule { }
