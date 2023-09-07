@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -7,7 +8,7 @@ import {
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { TuiBooleanHandler } from '@taiga-ui/cdk';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { Observable, Subscription, combineLatest, interval } from 'rxjs';
 import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
 import { ProfileService } from 'src/app/services/profile/profile.service';
@@ -25,6 +26,39 @@ import { UserInfo } from 'src/app/models/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnDestroy, OnInit {
+  private timerSubscription: Subscription | undefined;
+  currentTime: string = '';
+
+  getOrdinal(n) {
+    if (n === 1 || n === 21 || n === 31) {
+      return n + 'st';
+    } else if (n === 2 || n === 22) {
+      return n + 'nd';
+    } else if (n === 3 || n === 23) {
+      return n + 'rd';
+    } else {
+      return n + 'th';
+    }
+  }
+
+  getDateTime() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.toLocaleString('default', { month: 'short' });
+    const day = this.getOrdinal(now.getDate());
+    const hour = String(now.getHours()).padStart(2, '0');
+    const minute = String(now.getMinutes()).padStart(2, '0');
+    const second = String(now.getSeconds()).padStart(2, '0');
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const dayOfWeek = daysOfWeek[now.getDay()];
+    return `${dayOfWeek},${day} ${month} ${year} --- ${hour}:${minute}:${second}`;
+  }
+
+  updateCurrentTime() {
+    this.currentTime = this.getDateTime();
+    this.cdr.detectChanges();
+  }
+
   search = '';
   open = false;
 
@@ -60,21 +94,29 @@ export class HomeComponent implements OnDestroy, OnInit {
   });
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private router: Router,
     private store: Store<{
       profile: ProfileState;
       auth: AuthState;
       user: UserState;
     }>
-  ) { }
+  ) {}
 
   ngOnDestroy(): void {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
     this.subscriptions.forEach((val) => {
       val.unsubscribe();
     });
   }
 
   ngOnInit(): void {
+    this.updateCurrentTime();
+    this.timerSubscription = interval(1000).subscribe(() => {
+      this.updateCurrentTime();
+    });
     this.subscriptions.push(
       this.store.select('profile', 'profile').subscribe((val) => {
         if (val != null && val != undefined) {
@@ -132,5 +174,4 @@ export class HomeComponent implements OnDestroy, OnInit {
   toQuiz() {
     this.router.navigate(['base/quiz']);
   }
-
-} 
+}

@@ -10,4 +10,5 @@ export interface Course {
   img: string;
   rating: number;
   language: string;
+  isReleased: boolean;
 }

@@ -33,8 +33,8 @@ export class Course {
   @Prop()
   language: string;
 
-  // @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }])
-  // students: string[];
+  @Prop({ default: false })
+  isReleased: boolean;
 
   @Prop()
   author: string;

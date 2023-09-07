@@ -9,5 +9,6 @@ export class CreateCourseDto {
     public language: string,
     public price: number,
     public author: string,
-  ) { }
+    public isReleased: boolean,
+  ) {}
 }

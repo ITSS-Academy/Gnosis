@@ -19,11 +19,11 @@
         <div id="cart-content">
             <div id="course-cart">
                 <div id="title-course">
-                    <h2>You have 2 course in your cart</h2>
+                    <h2>You have {{cartCount}} course in your cart</h2>
                 </div>
                 <hr>
-                <div id="course-box" *ngFor="let course of cartList$ | async">
-                    <div id="product-course">
+                <div id="course-box">
+                    <div id="product-course" *ngFor="let course of cartList$ | async">
                         <div class="course-ima">
                             <img src={{course.img}}>
                         </div>

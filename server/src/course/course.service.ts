@@ -25,7 +25,7 @@ export class CourseService {
 
   async findAll(): Promise<Course[]> {
     try {
-      return await this.courseModel.find().exec();
+      return await this.courseModel.find({}).exec();
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -79,6 +79,7 @@ export class CourseService {
       const profile = await this.profileModel.findOne({ id: userId });
       const courses = await this.courseModel.find({
         _id: { $nin: profile.courses },
+        isReleased: true,
       });
       return courses;
     } catch (error) {

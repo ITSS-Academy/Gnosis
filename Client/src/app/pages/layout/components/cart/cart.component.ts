@@ -24,6 +24,7 @@ export class CartComponent implements OnInit {
   total$ = this.store.select((state) => state.cart.total);
   total: number = 0;
   profile: Profile = <Profile>{};
+  cartCount: number = 0;
 
   constructor(
     @Inject(TuiAlertService) private readonly alerts: TuiAlertService,
@@ -37,10 +38,16 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.total$.subscribe((total) => {
+      if (total != undefined) {
+        this.total = Number(total.toFixed(3));
+      }
+    });
     this.subscriptions.push(
       this.cartList$.subscribe((cartList) => {
         if (cartList != undefined) {
           this.cartList = cartList;
+          this.cartCount = cartList.length;
           console.log(this.cartList);
         }
       }),
