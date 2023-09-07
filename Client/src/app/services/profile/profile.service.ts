@@ -16,7 +16,7 @@ export class ProfileService {
     });
     console.log(profile.id);
     return this.httpClient.put<any>(
-      environment.local_url + `profile/${profile.id}`,
+      environment.host_url + `profile/${profile.id}`,
       profile,
       {
         headers,
@@ -26,7 +26,7 @@ export class ProfileService {
 
   create(profile: Profile, idToken: string) {
     return this.httpClient.post<any>(
-      environment.local_url + `profile`,
+      environment.host_url + `profile`,
       profile,
       {
         headers: new HttpHeaders({
@@ -38,7 +38,7 @@ export class ProfileService {
 
   getById(id: string, idToken: string) {
     return this.httpClient.get<Profile>(
-      environment.local_url + `profile/${id}`,
+      environment.host_url + `profile/${id}`,
       {
         headers: new HttpHeaders({
           Authorization: `Bearer ${idToken}`,

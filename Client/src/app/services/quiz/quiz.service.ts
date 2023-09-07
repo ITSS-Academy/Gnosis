@@ -10,14 +10,14 @@ export class QuizService {
   constructor(private http: HttpClient) {}
 
   getById(idToken: string, id: string) {
-    return this.http.get<Quiz>(environment.local_url + 'quiz/' + id, {
+    return this.http.get<Quiz>(environment.host_url + 'quiz/' + id, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${idToken}`,
       }),
     });
   }
   create(idToken: string, quiz: Quiz) {
-    return this.http.post<Quiz>(environment.local_url + 'quiz', quiz, {
+    return this.http.post<Quiz>(environment.host_url + 'quiz', quiz, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${idToken}`,
       }),
@@ -25,7 +25,7 @@ export class QuizService {
   }
   update(idToken: string, quiz: Quiz) {
     return this.http.put<Quiz>(
-      environment.local_url + `quiz/${quiz._id}`,
+      environment.host_url + `quiz/${quiz._id}`,
       quiz,
       {
         headers: new HttpHeaders({
