@@ -61,31 +61,30 @@ export class QuizComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
 
-    // this.store.select('review', 'isCreating').
-    // subscribe((isCreating) => {
-    //   if (isCreating) {
-    //     this.alerts.open('Create review ...', {
-    //       status: 'success',
-    //     }).subscribe();
-    //   }
-
-    // })
-    // this.store.select('review', 'isCreateSuccess').
-    // subscribe((isCreateSuccess) => {
-    //   if (isCreateSuccess) {
-    //     this.alerts.open('Create review success', {
-    //       status: 'success',
-    //     }).subscribe();
-    //   }
-    // })
-    // this.store.select('review', 'createErrorMessage').
-    // subscribe((createErrorMessage) => {
-    //   if (createErrorMessage) {
-    //     this.alerts.open(createErrorMessage, {
-    //       status: 'error',
-    //     }).subscribe();
-    //   }
-    // })
+    this.store.select('review', 'isCreating').
+      subscribe((isCreating) => {
+        if (isCreating) {
+          this.alerts.open('Create review ...', {
+            status: 'success',
+          }).subscribe();
+        }
+      })
+    this.store.select('review', 'isCreateSuccess').
+      subscribe((isCreateSuccess) => {
+        if (isCreateSuccess) {
+          this.alerts.open('Create review success', {
+            status: 'success',
+          }).subscribe();
+        }
+      })
+    this.store.select('review', 'createErrorMessage').
+      subscribe((createErrorMessage) => {
+        if (createErrorMessage) {
+          this.alerts.open(createErrorMessage, {
+            status: 'error',
+          }).subscribe();
+        }
+      })
 
 
     const timer$ = interval(1000);
@@ -97,9 +96,8 @@ export class QuizComponent implements OnInit, OnDestroy {
     });
 
     this.formatTime();
-
     this.route.paramMap.subscribe((params) => {
-      const id = '64f96fd6cb126767ffa79263'
+      const id = params.get('id');;
       if (id) {
         this.idToken$.subscribe((value) => {
           if (value) {
@@ -120,6 +118,8 @@ export class QuizComponent implements OnInit, OnDestroy {
 
     })
   }
+
+
   options: Array<string> = [];
   selectOption = (option: string) => {
     for (let i = 0; i < this.questionList.length; i++) {
@@ -128,22 +128,26 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.options.push(option);
         }
       }
-      console.log(this.options);
     }
+    console.log(this.options);
   };
+
+
 
   submit() {
 
     const review: Review = {
       _id: '',
-      quizId: '64f96fd6cb126767ffa79263',
+      quizId: this.questionList[0].quizId,
       profileId: '64f4c670157abb0afd8bb2bb',
+      score: 0,
       test: this.questionList.map((question) => {
         return {
           answer: this.options,
           quizBankId: question.quizBank._id,
         }
       })
+
     };
     this.idToken$.subscribe((value) => {
       if (value) {
@@ -154,6 +158,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
     });
   }
+
 
   ngOnDestroy(): void {
     if (this.timerSubscription) {
@@ -172,5 +177,5 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 }
 
-
+// 
 

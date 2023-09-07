@@ -38,8 +38,8 @@
 
                     <label class="option" *ngFor="let option of question.quizBank.options , let optionIndex = index">
                         {{ option }}
-                        <input type="radio" [name]="'question-' + i"
-                            [checked]="optionIndex === question.selectedOptionIndex">
+                        <input type="radio" [name]="'question-' + i">
+                        <!-- [checked]="optionIndex === question.selectedOptionIndex" -->
                         <!-- (change)="selectOption(i, optionIndex)" -->
                         <span class="checkmark"></span>
                     </label>

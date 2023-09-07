@@ -73,7 +73,7 @@ export class ReviewComponent implements OnInit {
     this.formatTime();
 
     this.route.paramMap.subscribe((params) => {
-      const id = '64f6239327c8b5a3a16aac14';
+      const id = params.get('id');
       if (id) {
         this.idToken$.subscribe((value) => {
           if (value) {
@@ -86,7 +86,7 @@ export class ReviewComponent implements OnInit {
       }
     });
     this.route.paramMap.subscribe((params) => {
-      const id = '64f6239327c8b5a3a16aac14';
+      const id = params.get('id');
       if (id) {
         this.idToken$.subscribe((value) => {
           if (value) {
