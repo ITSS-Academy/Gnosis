@@ -103,7 +103,7 @@ export class HomeComponent implements OnDestroy, OnInit {
       auth: AuthState;
       user: UserState;
     }>
-  ) { }
+  ) {}
 
   ngOnDestroy(): void {
     if (this.timerSubscription) {
@@ -189,7 +189,7 @@ export class HomeComponent implements OnDestroy, OnInit {
     };
 
     if (
-      this.ongoingCourse.some((course) => course._id === this.ongoingCourseId)
+      this.ongoingCourse.some((course) => course._id == this.ongoingCourseId)
     ) {
       this.store.dispatch(
         ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
@@ -214,5 +214,4 @@ export class HomeComponent implements OnDestroy, OnInit {
       );
     }
   }
-
 }
