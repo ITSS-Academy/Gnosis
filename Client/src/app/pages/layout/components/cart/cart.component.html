@@ -22,7 +22,7 @@
                     <h2>You have {{cartCount}} course in your cart</h2>
                 </div>
                 <hr>
-                <div id="course-box">
+                <div id="course-box" *ngIf="this.cartList.length != 0">
                     <div id="product-course" *ngFor="let course of cartList$ | async">
                         <div class="course-ima">
                             <img src={{course.img}}>

@@ -98,8 +98,18 @@ export class BrowseComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(CartAction.addCourseToCart({ course }));
+    this.successNotification(`${course.name} has been added to the cart`);
   }
 
+  successNotification(message: string): void {
+    this.alerts
+      .open('', {
+        label: message,
+        status: 'success',
+        autoClose: 4000,
+      })
+      .subscribe();
+  }
   warningNotification(message: string): void {
     this.alerts
       .open('', {
