@@ -11,6 +11,7 @@ import { TuiAlertService } from '@taiga-ui/core';
 import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
 import { Profile } from 'src/app/models/profile.model';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-browse',
@@ -24,6 +25,27 @@ export class BrowseComponent implements OnInit, OnDestroy {
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
   profile$: Observable<Profile> = this.store.select('profile', 'profile');
   subscriptions: Subscription[] = [];
+  musicCourses: Course[] = [];
+  webDeveloper: Course[] = [];
+
+  readonly testForm = new FormGroup({
+    testValue: new FormControl('All'),
+  });
+  readonly courses_category = [
+    'All',
+    'Popular',
+    'Web Developer',
+    'Computer Sciene',
+    'English',
+    'Music',
+    'Cook',
+  ];
+
+  state_category: string | undefined = '';
+  onRadioChange(selectedState: string) {
+    this.state_category = selectedState;
+    console.log(this.state_category);
+  }
 
   constructor(
     @Inject(TuiAlertService) private readonly alerts: TuiAlertService,
@@ -52,6 +74,12 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.courseList$.subscribe((item) => {
         if (item != undefined && item != null && item.length > 0) {
           console.log('courseList: ', item);
+          this.musicCourses = item.filter(
+            (course) => course.category == 'Music'
+          );
+          this.webDeveloper = item.filter(
+            (course) => course.category == 'Frontend Developer'
+          );
         }
       }),
       combineLatest({
@@ -98,8 +126,18 @@ export class BrowseComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(CartAction.addCourseToCart({ course }));
+    this.successNotification(`${course.name} has been added to the cart`);
   }
 
+  successNotification(message: string): void {
+    this.alerts
+      .open('', {
+        label: message,
+        status: 'success',
+        autoClose: 4000,
+      })
+      .subscribe();
+  }
   warningNotification(message: string): void {
     this.alerts
       .open('', {

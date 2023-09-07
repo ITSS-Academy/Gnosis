@@ -36,7 +36,6 @@ export class ProfileService {
         .select('-createdAt -updatedAt -__v')
         .populate(
           'courses completedCourse ongoingCourse',
-          // 'ongoingCourse',
           '-createdAt -updatedAt -__v ',
         );
       return profile;

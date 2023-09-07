@@ -78,7 +78,13 @@ export class CourseService {
     try {
       const profile = await this.profileModel.findOne({ id: userId });
       const courses = await this.courseModel.find({
-        _id: { $nin: profile.courses },
+        _id: {
+          $nin: [
+            profile.courses,
+            profile.ongoingCourse,
+            profile.completedCourse,
+          ],
+        },
         isReleased: true,
       });
       return courses;
