@@ -1,17 +1,49 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subscription,
+  combineLatest,
+  map,
+} from 'rxjs';
 import { Course } from 'src/app/models/course.model';
 import { Store } from '@ngrx/store';
 import { CourseState } from 'src/app/ngrx/states/course.state';
 import * as CourseAction from 'src/app/ngrx/actions/course.actions';
 import * as CartAction from 'src/app/ngrx/actions/cart.actions';
 import { CartState } from 'src/app/ngrx/states/cart.state';
-import { TuiAlertService } from '@taiga-ui/core';
+import { TuiAlertService, TuiAppearance } from '@taiga-ui/core';
 import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
 import { Profile } from 'src/app/models/profile.model';
+import { tuiPure } from '@taiga-ui/cdk';
+import { FormControl, FormGroup } from '@angular/forms';
 
+const Category = {
+  IT: 'IT',
+  HR: 'HR',
+  Delivery: 'Delivery',
+  Finance: 'Finance',
+  Bussiness: 'Bussiness',
+  Math: 'Math',
+  Science: 'Science',
+  Chemistry: 'Chemistry',
+  Physics: 'Physics',
+  Biology: 'Biology',
+  Psychology: 'Psychology',
+  History: 'History',
+  Geography: 'Geography',
+  Language: 'Language',
+  Culture: 'Culture',
+  Social: 'Social',
+  Literature: 'Literature',
+  Music: 'Music',
+  Art: 'Art',
+  Engineering: 'Engineering',
+  Architecture: 'Architecture',
+  Marketing: 'Marketing',
+} as const;
 @Component({
   selector: 'app-browse',
   templateUrl: './browse.component.html',
@@ -51,7 +83,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
         }
       }),
       this.courseList$.subscribe((item) => {
-        console.log('item: ', item);
+        // console.log('item: ', item);
         if (item != undefined && item != null && item.length > 0) {
           console.log('courseList: ', item);
         }
@@ -129,4 +161,47 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   search = '';
+
+  readonly categories = Object.values(Category);
+
+  readonly filters$ = new BehaviorSubject<readonly string[]>([
+    ...this.categories,
+  ]);
+
+  @tuiPure
+  get model$(): Observable<readonly string[]> {
+    return this.filters$.pipe(
+      map((value) => (value.length === this.categories.length ? [] : value))
+    );
+  }
+
+  @tuiPure
+  get buttonAppearance$(): Observable<TuiAppearance> {
+    return this.filters$.pipe(
+      map((value) => {
+        if (value.length === this.categories.length) {
+          this.filterList = [...this.categories];
+          console.log(this.filterList);
+        }
+        return value.length === this.categories.length
+          ? TuiAppearance.Primary
+          : TuiAppearance.Whiteblock;
+      })
+    );
+  }
+
+  filterList: string[] = [];
+  onModelChange(model: readonly string[]): void {
+    console.log(model);
+    this.filterList = [...model];
+    this.filters$.next(model);
+  }
+
+  toggleAll(): void {
+    this.filters$.next(
+      this.categories.length === this.filters$.value.length
+        ? []
+        : [...this.categories]
+    );
+  }
 }

@@ -1,4 +1,4 @@
-@import '@taiga-ui/core/styles/taiga-ui-local.less';
+@import "@taiga-ui/core/styles/taiga-ui-local.less";
 
 #browse-container {
   overflow: hidden;
@@ -7,7 +7,7 @@
     overflow: hidden;
     height: 100%;
 
-    ::ng-deep .tui-group_collapsed>*:not(:last-child) {
+    ::ng-deep .tui-group_collapsed > *:not(:last-child) {
       margin-right: 15px;
     }
 
@@ -16,9 +16,11 @@
     }
 
     @mixin white-gradient() {
-      background: linear-gradient(to right,
-          rgba(255, 255, 255, 1) 0%,
-          rgba(255, 255, 255, 0) 100%);
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0) 100%
+      );
     }
 
     //   $animationSpeed: 40s;
@@ -115,7 +117,7 @@
       flex-direction: row;
 
       #btn {
-        background-color: white
+        background-color: white;
       }
     }
 
@@ -143,10 +145,8 @@
           margin-right: 2rem;
           margin-bottom: 1rem;
 
-
-
           .cate-price {
-            margin-top: .25rem;
+            margin-top: 0.25rem;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -173,7 +173,6 @@
 
         ::ng-deep .t-top {
           height: 0;
-
         }
 
         .btn-course {
@@ -181,6 +180,11 @@
           justify-content: space-between;
         }
       }
+    }
+
+    .filters-with-all {
+      display: inline-flex;
+      padding: 0 0.625rem;
     }
   }
 }
