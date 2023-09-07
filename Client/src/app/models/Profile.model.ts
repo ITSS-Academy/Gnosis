@@ -11,7 +11,7 @@ export interface Profile {
   bio: string;
   notifications: string[];
   courses: Course[];
-  ongoingCourses: Course[];
-  completedCourses: Course[];
+  ongoingCourse: Course[];
+  completedCourse: Course[];
   role: string;
 }

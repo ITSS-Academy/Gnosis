@@ -131,8 +131,8 @@ export class HomeComponent implements OnDestroy, OnInit {
       this.profile$.subscribe((profile) => {
         if (profile != null && profile != undefined) {
           this.courses = profile.courses || [];
-          this.ongoingCourses = profile.ongoingCourses || [];
-          this.completedCourses = profile.completedCourses || [];
+          this.ongoingCourses = profile.ongoingCourse || [];
+          this.completedCourses = profile.completedCourse || [];
           console.log('profile: ', profile);
         }
       }),
@@ -175,28 +175,40 @@ export class HomeComponent implements OnDestroy, OnInit {
   toBuy() {
     this.router.navigate(['base/browse']);
   }
-  ongoingCourseId: any = [];
+  ongoingCourseId: any = '';
   idToken = '';
 
   toCourse(course: Course) {
     this.router.navigate(['base/home/course', course._id]);
     this.ongoingCourseId = course._id;
 
-    let newProfile: Profile = {
-      ...this.profile,
-      ongoingCourses: [
-        ...(this.profile.ongoingCourses || []), // Use the existing array or start with an empty array
-        ...this.ongoingCourseId,
-      ],
-    };
-
-    this.store.dispatch(
-      ProfileAction.updateProfile({
-        idToken: this.idToken,
-        profile: newProfile,
-      })
-    );
     console.log(this.profile);
+    let newProfile: any = {
+      ...this.profile,
+    };
+    if (this.profile.ongoingCourse.includes(this.ongoingCourseId)) {
+      this.store.dispatch(
+        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
+      );
+    } else {
+      newProfile.courses = this.profile.courses.filter(
+        (courseId) => courseId._id != this.ongoingCourseId
+      );
+      newProfile.ongoingCourse = [
+        ...newProfile.ongoingCourse,
+        this.ongoingCourseId,
+      ];
+
+      this.store.dispatch(
+        ProfileAction.updateProfile({
+          idToken: this.idToken,
+          profile: newProfile,
+        })
+      );
+      this.store.dispatch(
+        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
+      );
+    }
   }
   toReview() {
     this.router.navigate(['base/review']);

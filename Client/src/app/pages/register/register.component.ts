@@ -116,8 +116,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       courses: [],
       bio: '',
       notifications: [],
-      ongoingCourses: [],
-      completedCourses: [],
+      ongoingCourse: [],
+      completedCourse: [],
       role: 'user',
     };
 
