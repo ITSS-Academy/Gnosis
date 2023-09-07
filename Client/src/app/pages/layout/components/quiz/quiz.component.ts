@@ -105,7 +105,10 @@ export class QuizComponent implements OnInit {
     option: any,
   ) {
     this.options = option;
+    console.log(this.options);
   }
+  //how to select options with option belong to one quizBankId 
+  //help me please some way to do it
 
 
 
