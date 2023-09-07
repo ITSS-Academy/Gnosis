@@ -23,7 +23,7 @@ import { UserInfo } from 'src/app/models/user.model';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnDestroy, OnInit {
   private timerSubscription: Subscription | undefined;
@@ -62,8 +62,8 @@ export class HomeComponent implements OnDestroy, OnInit {
   search = '';
   open = false;
 
-  readonly testForm = new FormGroup({
-    testValue: new FormControl(''),
+  readonly courseFilterForm = new FormGroup({
+    filter: new FormControl('Chưa học'),
   });
   readonly courses_state = ['Chưa học', 'Đang học', 'Đã học xong'];
 
@@ -71,7 +71,7 @@ export class HomeComponent implements OnDestroy, OnInit {
   profile$: Observable<Profile> = this.store.select('profile', 'profile');
   user$: Observable<UserInfo> = this.store.select('user', 'user');
 
-  state: string | undefined = '';
+  state: string = 'Chưa học';
   onRadioChange(selectedState: string) {
     this.state = selectedState;
     console.log(this.profile.ongoingCourse);
