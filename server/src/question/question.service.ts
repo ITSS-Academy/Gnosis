@@ -11,7 +11,7 @@ import { Model } from 'mongoose';
 export class QuestionService {
   constructor(
     @InjectModel(Question.name) private questionModel: Model<Question>,
-  ) { }
+  ) {}
 
   async create(createCourseDto: CreateQuestionDto): Promise<Question> {
     try {
@@ -42,7 +42,6 @@ export class QuestionService {
         })
         .select('-createdAt -updatedAt -__v')
         .populate('quizBank', '-createdAt -updatedAt -__v')
-        .populate('quizId')
         .exec();
     } catch (error) {
       throw new HttpException(error.message, error.status);
