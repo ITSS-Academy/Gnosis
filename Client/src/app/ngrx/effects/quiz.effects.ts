@@ -13,7 +13,6 @@ export class QuizEffects {
       exhaustMap((action) =>
         this.quizService.getById(action.idToken, action.id).pipe(
           map((quiz) => {
-            // console.log(quiz);
             if (quiz != undefined && quiz != null) {
               return QuizActions.getSuccess({ quiz });
             } else {

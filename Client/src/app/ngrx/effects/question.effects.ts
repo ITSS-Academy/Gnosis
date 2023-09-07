@@ -9,25 +9,35 @@ export class QuestionEffects {
   constructor(
     private questionService: QuestionService,
     private action$: Actions
-  ) { }
+  ) {}
   get$ = createEffect(() =>
     this.action$.pipe(
       ofType(QuestionAction.getAllByQuizId),
       exhaustMap((action) =>
-        this.questionService.getQuestionByQuizId(action.idToken, action.quizId).pipe(
-          map((item) => {
-            if (item != undefined && item != null) {
-              return QuestionAction.getAllByQuizIdSuccess({ questions: item });
-            } else {
-              return QuestionAction.getAllByQuizIdFailure({
-                error: 'get failure',
-              });
-            }
-          }),
-          catchError((error) =>
-            of(QuestionAction.getAllByQuizIdFailure({ error }))
+        this.questionService
+          .getQuestionByQuizId(action.idToken, action.quizId)
+          .pipe(
+            map((item) => {
+              if (item != undefined && item != null) {
+                if ((item as any).message) {
+                  console.log((item as any).message);
+                  return QuestionAction.getAllByQuizIdFailure({
+                    error: (item as any).message,
+                  });
+                }
+                return QuestionAction.getAllByQuizIdSuccess({
+                  questions: item,
+                });
+              } else {
+                return QuestionAction.getAllByQuizIdFailure({
+                  error: 'get failure',
+                });
+              }
+            }),
+            catchError((error) =>
+              of(QuestionAction.getAllByQuizIdFailure({ error }))
+            )
           )
-        )
       )
     )
   );
