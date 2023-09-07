@@ -20,6 +20,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class BrowseComponent implements OnInit, OnDestroy {
   courseList$: Observable<Course[]> = this.store.select('course', 'courseList');
+  courselist: Course[] = [];
   cartList$ = this.store.select('cart', 'cartList');
   cartList: Course[] = [];
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
@@ -72,8 +73,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
         }
       }),
       this.courseList$.subscribe((item) => {
+        console.log('item: ', item);
         if (item != undefined && item != null && item.length > 0) {
-          console.log('courseList: ', item);
+          this.courselist = [...item];
+          console.log('courseList: ', this.courselist);
           this.musicCourses = item.filter(
             (course) => course.category == 'Music'
           );
@@ -93,12 +96,18 @@ export class BrowseComponent implements OnInit, OnDestroy {
           res.profile != undefined &&
           res.profile != null
         ) {
+          console.log(res);
           this.store.dispatch(
             CourseAction.getByUser({
               idToken: res.idToken,
               userId: res.profile.id,
             })
           );
+        }
+      }),
+      this.store.select('course', 'getErrMess').subscribe((val) => {
+        if (val != '') {
+          this.alerts.open(val, { status: 'error' }).subscribe();
         }
       })
     );

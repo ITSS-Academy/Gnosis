@@ -20,8 +20,8 @@
 
 .imgLoader {
   position: fixed;
-  -webkit-animation: preLoad 1s steps(1);
-  animation: preLoad 1s steps(1);
+  -webkit-animation: preLoad 0.2s steps(1);
+  animation: preLoad 0.2s steps(1);
   width: 1px;
   height: 1px;
 }
@@ -122,8 +122,8 @@
 }
 .page:nth-child(3) {
   transform: rotateX(60deg) rotateY(6deg);
-  -webkit-animation: nextPage 25s infinite -24s steps(1);
-  animation: nextPage 25s infinite -24s steps(1);
+  -webkit-animation: nextPage 1s infinite -1s steps(1);
+  animation: nextPage 1s infinite -1s steps(1);
   background-size: 420px 300px;
   background-position: -2px -2px;
 }
@@ -146,8 +146,8 @@
   right: 0%;
   transform-origin: center;
   transform: rotateY(180deg);
-  -webkit-animation: nextPage 25s -20s infinite steps(1);
-  animation: nextPage 25s -20s infinite steps(1);
+  -webkit-animation: nextPage 1s -20s infinite steps(1);
+  animation: nextPage 1s -20s infinite steps(1);
   background-size: 420px 300px;
   background-position: 100% -2px;
 }
@@ -244,8 +244,8 @@
   border-width: 2px 2px 2px 0;
 }
 .flip.flip1::after {
-  -webkit-animation: nextFlip1 25s -20s infinite steps(1);
-  animation: nextFlip1 25s -20s infinite steps(1);
+  -webkit-animation: nextFlip1 1s -20s infinite steps(1);
+  animation: nextFlip1 1s -20s infinite steps(1);
 }
 .flip:not(.flip1) {
   right: calc(100% - 2px);
@@ -255,36 +255,36 @@
   animation: flip2 5s ease-in-out infinite;
 }
 .flip.flip2::after {
-  -webkit-animation: nextFlip2 25s -20s infinite steps(1);
-  animation: nextFlip2 25s -20s infinite steps(1);
+  -webkit-animation: nextFlip2 1s -20s infinite steps(1);
+  animation: nextFlip2 1s -20s infinite steps(1);
 }
 .flip.flip3::after {
-  -webkit-animation: nextFlip3 25s -20s infinite steps(1);
-  animation: nextFlip3 25s -20s infinite steps(1);
+  -webkit-animation: nextFlip3 1s -20s infinite steps(1);
+  animation: nextFlip3 1s -20s infinite steps(1);
 }
 .flip.flip4::after {
-  -webkit-animation: nextFlip4 25s -20s infinite steps(1);
-  animation: nextFlip4 25s -20s infinite steps(1);
+  -webkit-animation: nextFlip4 1s -20s infinite steps(1);
+  animation: nextFlip4 1s -20s infinite steps(1);
 }
 .flip.flip5::after {
-  -webkit-animation: nextFlip5 25s -20s infinite steps(1);
-  animation: nextFlip5 25s -20s infinite steps(1);
+  -webkit-animation: nextFlip5 1s -20s infinite steps(1);
+  animation: nextFlip5 1s -20s infinite steps(1);
 }
 .flip.flip6::after {
-  -webkit-animation: nextFlip6 25s -20s infinite steps(1);
-  animation: nextFlip6 25s -20s infinite steps(1);
+  -webkit-animation: nextFlip6 1s -20s infinite steps(1);
+  animation: nextFlip6 1s -20s infinite steps(1);
 }
 .flip.flip7::after {
-  -webkit-animation: nextFlip7 25s -20s infinite steps(1);
-  animation: nextFlip7 25s -20s infinite steps(1);
+  -webkit-animation: nextFlip7 1s -20s infinite steps(1);
+  animation: nextFlip7 1s -20s infinite steps(1);
 }
 .flip.flip7 {
   width: 30px;
   border-width: 2px 0px 2px 2px;
 }
 .flip.flip7::after {
-  -webkit-animation: nextFlip7 25s -20s infinite steps(1);
-  animation: nextFlip7 25s -20s infinite steps(1);
+  -webkit-animation: nextFlip7 1s -20s infinite steps(1);
+  animation: nextFlip7 1s -20s infinite steps(1);
 }
 @-webkit-keyframes flip1 {
   0%,
@@ -1090,7 +1090,7 @@
 .twitterLink img {
   width: 2em;
   filter: grayscale(100%);
-  transition: filter 0.25s;
+  transition: filter 0.1s;
 }
 .twitterLink img:hover {
   filter: grayscale(0%);

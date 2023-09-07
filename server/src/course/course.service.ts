@@ -76,13 +76,15 @@ export class CourseService {
 
   async getCourseByUserId(userId: string): Promise<Course[]> {
     try {
+      // console.log(userId);
       const profile = await this.profileModel.findOne({ id: userId });
+      // console.log(profile);
       const courses = await this.courseModel.find({
         _id: {
           $nin: [
-            profile.courses,
-            profile.ongoingCourse,
-            profile.completedCourse,
+            ...profile.courses,
+            ...profile.ongoingCourse,
+            ...profile.completedCourse,
           ],
         },
         isReleased: true,
