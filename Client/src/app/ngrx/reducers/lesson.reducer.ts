@@ -22,18 +22,15 @@ export const initualState: LessonState = {
 export const lessonReducer = createReducer(
   initualState,
   on(LessonActions.getAllByCourseId, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isGetting: true,
       isGetSuccess: false,
       getMessError: '',
-
     };
     return newState;
   }),
   on(LessonActions.getAllByCourseIdSuccess, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isGetting: false,
@@ -43,18 +40,15 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.getAllByCourseIdFailure, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isGetting: false,
       isGetSuccess: false,
       getMessError: action.error,
     };
-    console.log(newState.getMessError);
     return newState;
   }),
   on(LessonActions.create, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isCreating: true,
@@ -64,7 +58,6 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.createSuccess, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isCreating: false,
@@ -73,7 +66,6 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.createFailure, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isCreating: false,
@@ -83,7 +75,6 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.update, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isUpdating: true,
@@ -93,7 +84,6 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.updateSuccess, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isUpdating: false,
@@ -102,7 +92,6 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.updateFailure, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isUpdating: false,
@@ -112,7 +101,6 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.deleteLesson, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isDeleting: true,
@@ -123,7 +111,6 @@ export const lessonReducer = createReducer(
   }),
 
   on(LessonActions.deleteSuccess, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isDeleting: false,
@@ -132,7 +119,6 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.deleteFailure, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isDeleting: false,
@@ -142,7 +128,6 @@ export const lessonReducer = createReducer(
     return newState;
   }),
   on(LessonActions.clearState, (state, action) => {
-    console.log(action.type);
     let newState: LessonState = {
       ...state,
       isCreating: false,

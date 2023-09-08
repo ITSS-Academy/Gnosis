@@ -13,7 +13,6 @@ import { BrowseComponent } from './components/browse/browse.component';
 import { DetailComponent } from './components/browse/components/detail/detail.component';
 import { ReviewComponent } from './components/review/review.component';
 import { CartComponent } from './components/cart/cart.component';
-import { AnalysticComponent } from './components/analystic/analystic.component';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
 import { AdminComponent } from './components/admin/admin.component';
 import { CourseFormComponent } from './components/admin/components/course-form/course-form.component';
@@ -29,7 +28,6 @@ import { LearningComponent } from './components/learning/learning.component';
 import { LessonContentComponent } from './components/learning/components/lesson-content/lesson-content.component';
 import { QuizContentComponent } from './components/learning/components/quiz-content/quiz-content.component';
 
-
 @NgModule({
   declarations: [
     LayoutComponent,
@@ -43,7 +41,7 @@ import { QuizContentComponent } from './components/learning/components/quiz-cont
     DetailComponent,
     ReviewComponent,
     CartComponent,
-    AnalysticComponent,
+
     AdminComponent,
     CourseFormComponent,
     LessonComponent,
@@ -64,4 +62,4 @@ import { QuizContentComponent } from './components/learning/components/quiz-cont
     QuillModule.forRoot(),
   ],
 })
-export class LayoutModule { }
+export class LayoutModule {}

@@ -23,14 +23,12 @@ export class ProfileEffects {
         return this.profileService.create(action.profile, action.idToken);
       }),
       map((res) => {
-        console.log(res);
         if (res.message) {
           return ProfileActions.createFailure({ errorMessage: res.message });
         }
         return ProfileActions.createSuccess();
       }),
       catchError((error) => {
-        console.log(error);
         return of(
           ProfileActions.createFailure({ errorMessage: error.error.message })
         );
@@ -48,8 +46,6 @@ export class ProfileEffects {
         return ProfileActions.getSuccess({ profile });
       }),
       catchError((error) => {
-        console.log(error);
-
         return of(
           ProfileActions.getFailure({ errorMessage: error.error.message })
         );
@@ -72,13 +68,10 @@ export class ProfileEffects {
             errorMessage: 'Update profile failed',
           });
         } else {
-          console.log(profile);
           return ProfileActions.updateProfileSuccess({ profile });
         }
       }),
       catchError((error) => {
-        console.log(error);
-
         return of(
           ProfileActions.updateProfileFailure({
             errorMessage: error.error.message,

@@ -28,7 +28,6 @@ export class PermissionsService {
     | UrlTree {
     return this.store.select('user', 'user').pipe(
       map((user) => {
-        // console.log(user);
         if (user.uid != '' && user.uid != undefined && user.uid != null) {
           return true;
         } else {

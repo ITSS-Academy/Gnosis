@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TuiAlertService } from '@taiga-ui/core';
@@ -14,14 +13,14 @@ import * as QuestionAction from 'src/app/ngrx/actions/question.actions';
 @Component({
   selector: 'app-review',
   templateUrl: './review.component.html',
-  styleUrls: ['./review.component.less']
+  styleUrls: ['./review.component.less'],
 })
 export class ReviewComponent implements OnInit {
-
-  review$: Observable<Review> = this.store.select(
-    'review',
-    'reviewDetail');
-  question$: Observable<Question[]> = this.store.select('question', 'questions');
+  review$: Observable<Review> = this.store.select('review', 'reviewDetail');
+  question$: Observable<Question[]> = this.store.select(
+    'question',
+    'questions'
+  );
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
   questionList: any[] = [];
   currentquestion: number = 0;
@@ -41,34 +40,28 @@ export class ReviewComponent implements OnInit {
       review: ReviewState;
       auth: AuthState;
     }>
-
-  ) {
-
-
-  }
+  ) {}
 
   backhome() {
     this.router.navigate(['/base/home']);
-
   }
 
   backcourse() {
-    this.router.navigate(['/base/home/course'])
+    this.router.navigate(['/base/home/course']);
   }
 
   ngOnInit(): void {
-    this.questionList.forEach(question => {
+    this.questionList.forEach((question) => {
       question.selectedOptionIndex = null;
     });
 
-
     const timer$ = interval(1000);
-    this.timerSubscription = timer$.pipe(
-      takeWhile(() => this.counter > 0)
-    ).subscribe(() => {
-      this.counter--;
-      this.formatTime();
-    });
+    this.timerSubscription = timer$
+      .pipe(takeWhile(() => this.counter > 0))
+      .subscribe(() => {
+        this.counter--;
+        this.formatTime();
+      });
 
     this.formatTime();
 
@@ -77,11 +70,8 @@ export class ReviewComponent implements OnInit {
       if (id) {
         this.idToken$.subscribe((value) => {
           if (value) {
-            this.store.dispatch(
-              ReviewAction.get({ idToken: value, id })
-            );
+            this.store.dispatch(ReviewAction.get({ idToken: value, id }));
           }
-          console.log(id);
         });
       }
     });
@@ -94,20 +84,14 @@ export class ReviewComponent implements OnInit {
               QuestionAction.getAllByQuizId({ idToken: value, quizId: id })
             );
           }
-          console.log(id);
         });
       }
     });
 
     this.question$.subscribe((value) => {
-      this.questionList = [
-        ...value
-      ]
-
+      this.questionList = [...value];
     });
   }
-
-
 
   selectOption(questionIndex: number, optionIndex: number): void {
     this.questionList[questionIndex].selectedOptionIndex = optionIndex;
@@ -118,7 +102,6 @@ export class ReviewComponent implements OnInit {
     }
   }
 
-
   ngOnDestroy(): void {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
@@ -128,11 +111,12 @@ export class ReviewComponent implements OnInit {
   formatTime(): void {
     const minutes = Math.floor(this.counter / 60);
     const seconds = this.counter % 60;
-    this.formattedTime = `${this.formatNumber(minutes)}:${this.formatNumber(seconds)}`;
+    this.formattedTime = `${this.formatNumber(minutes)}:${this.formatNumber(
+      seconds
+    )}`;
   }
 
   formatNumber(value: number): string {
     return value < 10 ? `0${value}` : value.toString();
   }
-
 }

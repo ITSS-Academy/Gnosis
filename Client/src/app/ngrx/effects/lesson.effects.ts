@@ -15,7 +15,6 @@ export class LessonEffects {
           .getAllByCourseId(action.idToken, action.courseId)
           .pipe(
             map((lessons) => {
-              // console.log(lesson);
               if (
                 lessons != undefined &&
                 lessons != null &&
@@ -29,7 +28,6 @@ export class LessonEffects {
               }
             }),
             catchError((error) => {
-              console.log(error);
               return of(
                 LessonActions.getAllByCourseIdFailure({
                   error: error.err.message,
@@ -47,8 +45,6 @@ export class LessonEffects {
       exhaustMap((action) =>
         this.lessonService.create(action.idToken, action.lesson).pipe(
           map((lesson) => {
-            // console.log(lesson);
-
             if (lesson != undefined && lesson != null) {
               if (lesson.message) {
                 return LessonActions.createFailure({ error: lesson.message });
@@ -71,7 +67,6 @@ export class LessonEffects {
         this.lessonService.update(action.idToken, action.lesson).pipe(
           map((lesson) => {
             if (lesson != undefined && lesson != null) {
-              console.log(lesson);
               if (lesson.message) {
                 return LessonActions.updateFailure({
                   error: lesson.error.message,
@@ -95,7 +90,6 @@ export class LessonEffects {
         this.lessonService.remove(action.idToken, action.lessonId).pipe(
           map((lesson) => {
             if (lesson != undefined && lesson != null) {
-              console.log(lesson);
               return LessonActions.deleteSuccess({ deletedLesson: lesson });
             } else {
               return LessonActions.deleteFailure({ error: 'delete failure' });

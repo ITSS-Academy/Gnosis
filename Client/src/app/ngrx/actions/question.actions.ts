@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { Question } from 'src/app/models/question.model';
-import { quizBank } from 'src/app/models/quizBank.model';
 
 export const getAllByQuizId = createAction(
   '[Question] get all question by quiz id',
