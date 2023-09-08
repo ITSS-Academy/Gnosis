@@ -14,7 +14,6 @@ export class ProfileService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${idToken}`,
     });
-    console.log(profile.id);
     return this.httpClient.put<any>(
       environment.host_url + `profile/${profile.id}`,
       profile,

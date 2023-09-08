@@ -10,7 +10,7 @@
                 <h4>
                     <tui-svg src="tuiIconChevronsRight"></tui-svg>
                 </h4>
-                <h4>Detail Course</h4>
+                <h4 *ngIf="courseDetail$ | async as courseDetail">{{courseDetail.name}}</h4>
             </div>
             <div class="nav-right">
                 <tui-input tuiTextfieldIconLeft="tuiIconSearchLarge" [tuiTextfieldSize]="'m'" [(ngModel)]="search">

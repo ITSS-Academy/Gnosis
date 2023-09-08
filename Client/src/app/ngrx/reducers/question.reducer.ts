@@ -18,7 +18,6 @@ export const initialState: QuestionState = {
 export const questionReducer = createReducer(
   initialState,
   on(QuestionActions.getAllByQuizId, (state, action) => {
-    console.log(action.type);
     return <QuestionState>{
       ...state,
       isGetLoading: true,
@@ -28,7 +27,6 @@ export const questionReducer = createReducer(
     };
   }),
   on(QuestionActions.getAllByQuizIdSuccess, (state, action) => {
-    console.log(action.type);
     return <QuestionState>{
       ...state,
       questions: action.questions,
@@ -37,7 +35,6 @@ export const questionReducer = createReducer(
     };
   }),
   on(QuestionActions.getAllByQuizIdFailure, (state, action) => {
-    console.log(action.type);
     return <QuestionState>{
       ...state,
       isGetLoading: false,
@@ -47,7 +44,6 @@ export const questionReducer = createReducer(
   }),
 
   on(QuestionActions.create, (state, action) => {
-    console.log(action.type);
     return <QuestionState>{
       ...state,
       isCreatedSuccess: false,
@@ -56,7 +52,6 @@ export const questionReducer = createReducer(
     };
   }),
   on(QuestionActions.createSuccess, (state, action) => {
-    console.log(action.type);
     return <QuestionState>{
       ...state,
       isCreating: false,
@@ -64,7 +59,6 @@ export const questionReducer = createReducer(
     };
   }),
   on(QuestionActions.createFailure, (state, action) => {
-    console.log(action.type);
     return <QuestionState>{
       ...state,
       isCreating: false,
@@ -74,7 +68,6 @@ export const questionReducer = createReducer(
   }),
   //làm thêm delete
   on(QuestionActions.remove, (state, action) => {
-    console.log(action.type);
     return <QuestionState>{
       ...state,
       isDeleting: true,
@@ -83,7 +76,6 @@ export const questionReducer = createReducer(
     };
   }),
   on(QuestionActions.removeSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isDeleting: false,
@@ -91,7 +83,6 @@ export const questionReducer = createReducer(
     };
   }),
   on(QuestionActions.removeFailure, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isDeleting: false,
@@ -100,7 +91,6 @@ export const questionReducer = createReducer(
     };
   }),
   on(QuestionActions.clearState, (state, action) => {
-    console.log(action.type);
     return <QuestionState>{
       ...state,
       isGetLoading: false,

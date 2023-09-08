@@ -46,13 +46,11 @@ export class ProfileController {
       const newProfile = await this.profileService.create(createProfileDto);
       if (!newProfile) {
         try {
-          console.log('No profile');
           await this.userService.remove(createProfileDto.id);
         } catch (error) {
           throw new Error(error);
         }
       } else {
-        console.log('Have profile');
         this.userService.update(newProfile.id, {
           profile: newProfile.id,
         });

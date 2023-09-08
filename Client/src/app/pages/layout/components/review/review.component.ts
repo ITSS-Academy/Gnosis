@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TuiAlertService } from '@taiga-ui/core';
@@ -73,7 +72,6 @@ export class ReviewComponent implements OnInit {
           if (value) {
             this.store.dispatch(ReviewAction.get({ idToken: value, id }));
           }
-          console.log(id);
         });
       }
     });
@@ -86,7 +84,6 @@ export class ReviewComponent implements OnInit {
               QuestionAction.getAllByQuizId({ idToken: value, quizId: id })
             );
           }
-          console.log(id);
         });
       }
     });

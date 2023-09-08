@@ -108,13 +108,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.courses = profile.courses || [];
           this.ongoingCourses = profile.ongoingCourse || [];
           this.completedCourses = profile.completedCourse || [];
-          console.log(profile);
         }
       }),
       this.store.select('auth', 'idToken').subscribe((val) => {
         if (val != '') {
           this.idToken = val;
-          console.log(this.idToken);
         }
       }),
       this.store.select('profile', 'profile').subscribe((profile) => {
