@@ -195,4 +195,35 @@ export class HomeComponent implements OnDestroy, OnInit {
       );
     }
   }
+
+  toReset(course: Course) {
+    console.log(course);
+    if (
+      this.courses.some((completedCourse) => completedCourse._id == course._id)
+    ) {
+      this.store.dispatch(
+        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
+      );
+    } else {
+      let newProfile: any = {
+        ...this.profile,
+      };
+
+      newProfile.completedCourse = this.profile.completedCourse.filter(
+        (completedCourseId) => completedCourseId._id != course._id
+      );
+
+      newProfile.courses = [...newProfile.courses, course._id];
+
+      this.store.dispatch(
+        ProfileAction.updateProfile({
+          idToken: this.idToken,
+          profile: newProfile,
+        })
+      );
+      this.store.dispatch(
+        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
+      );
+    }
+  }
 }
