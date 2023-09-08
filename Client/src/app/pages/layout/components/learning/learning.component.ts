@@ -146,6 +146,7 @@ export class LearningComponent implements OnInit, OnDestroy {
     }
     this.selectedLesson = lesson;
     this.selectedQuiz = null;
+    this.chapIndex = this.lessonList.findIndex((l) => l._id === lesson._id);
   }
   selectQuiz() {
     if (this.selectedQuiz != null) {
@@ -156,6 +157,7 @@ export class LearningComponent implements OnInit, OnDestroy {
     }
     this.selectedLesson = null;
     this.selectedQuiz = this.quiz;
+    this.chapIndex = this.lessonList.length;
   }
 
   chapIndex = -1;
