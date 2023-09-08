@@ -157,4 +157,31 @@ export class LearningComponent implements OnInit, OnDestroy {
     this.selectedLesson = null;
     this.selectedQuiz = this.quiz;
   }
+
+  chapIndex = -1;
+  previousChap() {
+    if (this.chapIndex > -1) {
+      this.selectedLesson = this.lessonList[this.chapIndex];
+      this.chapIndex -= 1;
+      if (this.chapIndex == -1) {
+        this.selectedLesson = null;
+        // this.selectedQuiz = null;
+      }
+      if (this.chapIndex == this.lessonList.length - 1) {
+        this.selectedQuiz = null;
+      }
+    }
+    console.log(this.chapIndex);
+  }
+  nextChap() {
+    if (this.chapIndex < this.lessonList.length) {
+      this.chapIndex += 1;
+      if (this.chapIndex == this.lessonList.length) {
+        this.selectedLesson = null;
+        this.selectedQuiz = this.quiz;
+      }
+      this.selectedLesson = this.lessonList[this.chapIndex];
+    }
+    console.log(this.chapIndex);
+  }
 }

@@ -71,7 +71,7 @@
 
       #course-content {
         overflow: auto;
-        height: 100%;
+        height: calc(100% - 2.75rem);
         width: 100%;
         img {
           height: 300px;
@@ -82,11 +82,18 @@
       }
       #quiz-form,
       #editor {
-        height: calc(100% - 2.75rem - 1.25rem);
+        height: calc(100% - 2.75rem - 0.625rem - 2.75rem);
         width: 100%;
       }
       #quiz-form {
         overflow: auto;
+      }
+      .btn-grp {
+        height: 2.75rem;
+        justify-content: flex-end;
+        display: flex;
+        flex-direction: row;
+        // gap: 0.625rem;
       }
     }
   }
@@ -100,11 +107,6 @@
     .title {
       display: flex;
       align-items: center;
-    }
-    .btn-grp {
-      display: flex;
-      flex-direction: row;
-      gap: 0.625rem;
     }
   }
 }
