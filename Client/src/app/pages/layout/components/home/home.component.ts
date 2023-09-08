@@ -163,7 +163,6 @@ export class HomeComponent implements OnDestroy, OnInit {
   idToken = '';
 
   toCourse(course: Course) {
-    this.router.navigate(['base/home/course', course._id]);
     this.ongoingCourseId = course._id;
 
     let newProfile: any = {
@@ -171,12 +170,8 @@ export class HomeComponent implements OnDestroy, OnInit {
     };
 
     if (
-      this.ongoingCourse.some((course) => course._id == this.ongoingCourseId) ||
-      this.completedCourse.some((course) => course._id == this.ongoingCourseId)
+      this.ongoingCourse.some((course) => course._id == this.ongoingCourseId)
     ) {
-      this.store.dispatch(
-        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
-      );
     } else {
       newProfile.courses = this.profile.courses.filter(
         (courseId) => courseId._id != this.ongoingCourseId
@@ -192,10 +187,10 @@ export class HomeComponent implements OnDestroy, OnInit {
           profile: newProfile,
         })
       );
-      this.store.dispatch(
-        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
-      );
     }
+    this.router.navigate([`base/home/course/${course._id}`], {
+      queryParams: { uid: this.profile.id },
+    });
   }
 
   toReset(course: Course) {

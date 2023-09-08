@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TuiAlertService } from '@taiga-ui/core';
 import { Subscription, combineLatest } from 'rxjs';
@@ -44,9 +44,11 @@ export class QuizContentComponent implements OnInit, OnDestroy {
   idToken$ = this.store.select('auth', 'idToken');
   profile$ = this.store.select('profile', 'profile');
   review$ = this.store.select('review', 'reviewDetail');
+  isUpdateSuccess$ = this.store.select('profile', 'isUpdateSuccess');
   completedCourseId = '';
   completedCourse: Course[] = [];
   isPassed: boolean = false;
+  profileId: string = '';
 
   @Input('quiz')
   set quizInput(value: Quiz | null) {
@@ -61,6 +63,7 @@ export class QuizContentComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(TuiAlertService) private readonly alerts: TuiAlertService,
     private router: Router,
+    private route: ActivatedRoute,
 
     private store: Store<{
       review: ReviewState;
@@ -72,8 +75,32 @@ export class QuizContentComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
   ngOnInit(): void {
+    this.profileId = this.route.snapshot.queryParamMap.get('uid') as string;
+    console.log(this.profileId);
+
     this.subscriptions.push(
-      this.store.select('review', 'reviewDetail').subscribe((review) => {}),
+      combineLatest({
+        idToken: this.idToken$,
+        isUpdateSuccess: this.isUpdateSuccess$,
+      }).subscribe((res) => {
+        if (
+          res.idToken != null &&
+          res.idToken != undefined &&
+          res.idToken != '' &&
+          res.isUpdateSuccess == true
+        ) {
+          if (
+            this.profileId != '' &&
+            this.profileId != null &&
+            this.profileId != undefined
+          ) {
+            this.store.dispatch(
+              ProfileActions.get({ idToken: res.idToken, id: this.profileId })
+            );
+            console.log('get profile');
+          }
+        }
+      }),
       combineLatest({
         idToken: this.idToken$,
         profile: this.profile$,
@@ -99,7 +126,9 @@ export class QuizContentComponent implements OnInit, OnDestroy {
             (this.quiz.total * this.quiz.passCond) / 100
           ) {
             this.isPassed = true;
-            this.completedCourseId = this.router.url.split('/')[4];
+            this.completedCourseId = this.router.url
+              .split('/')[4]
+              .split('?')[0];
             this.completedCourse = [...res.profile.completedCourse];
             let newProfile: Profile = {
               ...res.profile,
@@ -110,6 +139,7 @@ export class QuizContentComponent implements OnInit, OnDestroy {
               )
             ) {
             } else {
+              // console.log('update profile');
               newProfile.ongoingCourse = res.profile.ongoingCourse.filter(
                 (ongoingCourseId) =>
                   ongoingCourseId._id != this.completedCourseId
@@ -118,6 +148,7 @@ export class QuizContentComponent implements OnInit, OnDestroy {
                 ...newProfile.completedCourse,
                 this.completedCourseId as any,
               ];
+              console.log(newProfile);
 
               this.store.dispatch(
                 ProfileActions.updateProfile({
