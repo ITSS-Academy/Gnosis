@@ -14,7 +14,7 @@
         </ng-container>
       </tui-breadcrumbs>
       <div class="top">
-        <div class="tui-text_h6 title">Lesson List</div>
+        <div class="tui-text_h6 title">Sections:</div>
       </div>
       <div id="lesson-list">
         <tui-scrollbar class="scrollbar">
@@ -24,11 +24,11 @@
             *ngFor="let lesson of lessonList; let index = index"
           >
             <div class="tui-island__content" (click)="selectLesson(lesson)">
-              <figure class="tui-island__figure">
+              <!-- <figure class="tui-island__figure">
                 <div class="some-figure">
                   <tui-svg src="tuiIconDragLarge"></tui-svg>
                 </div>
-              </figure>
+              </figure> -->
               <div>
                 <h3 class="tui-island__title">
                   {{ lesson.title }}
@@ -44,11 +44,11 @@
             [ngClass]="[selectedQuiz != null ? 'selected' : '']"
           >
             <div class="tui-island__content" (click)="selectQuiz()">
-              <figure class="tui-island__figure">
+              <!-- <figure class="tui-island__figure">
                 <div class="some-figure">
                   <tui-svg src="tuiIconDragLarge"></tui-svg>
                 </div>
-              </figure>
+              </figure> -->
               <h3 class="tui-island__title">
                 {{ "Quiz Test" }}
               </h3>

@@ -14,7 +14,7 @@
         </ng-container>
       </tui-breadcrumbs>
       <div class="top">
-        <div class="tui-text_h6 title">Question List</div>
+        <div class="tui-text_h6 title">Questions:</div>
         <div class="btn-grp">
           <button size="m" tuiButton type="button" (click)="editQuiz()">
             Edit Quiz Info
@@ -47,11 +47,11 @@
             ]"
           >
             <div class="tui-island__content" (click)="selectQuestion(question)">
-              <figure class="tui-island__figure">
+              <!-- <figure class="tui-island__figure">
                 <div class="some-figure">
                   <tui-svg src="tuiIconDragLarge"></tui-svg>
                 </div>
-              </figure>
+              </figure> -->
               <h3 class="tui-island__title">
                 {{ "Question No." + (index + 1) }}
               </h3>
