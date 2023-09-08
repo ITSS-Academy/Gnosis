@@ -9,32 +9,30 @@ import { QuestionState } from 'src/app/ngrx/states/question.state';
 import { ReviewState } from 'src/app/ngrx/states/review.state';
 import * as QuestionAction from 'src/app/ngrx/actions/question.actions';
 import * as ReviewAction from 'src/app/ngrx/actions/review.actions';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { quizBank } from 'src/app/models/quizBank.model';
-import { Quiz } from 'src/app/models/quiz.model';
 import { Review } from 'src/app/models/Reivew.model';
 import { Question } from 'src/app/models/question.model';
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.less']
+  styleUrls: ['./quiz.component.less'],
 })
 export class QuizComponent implements OnInit, OnDestroy {
   @Input('review') review: null | Review = null;
 
-  question$: Observable<Question[]> = this.store.select('question', 'questions');
+  question$: Observable<Question[]> = this.store.select(
+    'question',
+    'questions'
+  );
   review$: Observable<Review> = this.store.select('review', 'reviewDetail');
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
   questionList: any[] = [];
-  // currentquestion: number = 0;
 
   questionTitle: string = '';
   counter: number = 0;
   timerSubscription: Subscription | undefined;
   formattedTime: string = '';
-
-  // answered: boolean = false;
 
   constructor(
     @Inject(TuiAlertService) private readonly alerts: TuiAlertService,
@@ -46,58 +44,61 @@ export class QuizComponent implements OnInit, OnDestroy {
       review: ReviewState;
       auth: AuthState;
     }>
-  ) { }
+  ) {}
 
   quizBank: quizBank[] = [];
   backhome() {
     this.router.navigate(['/base/home']);
-
   }
 
   backcourse() {
-    this.router.navigate(['/base/home/course'])
+    this.router.navigate(['/base/home/course']);
   }
 
   ngOnInit(): void {
-
-
-    this.store.select('review', 'isCreating').
-      subscribe((isCreating) => {
-        if (isCreating) {
-          this.alerts.open('Create review ...', {
+    this.store.select('review', 'isCreating').subscribe((isCreating) => {
+      if (isCreating) {
+        this.alerts
+          .open('Create review ...', {
             status: 'success',
-          }).subscribe();
-        }
-      })
-    this.store.select('review', 'isCreateSuccess').
-      subscribe((isCreateSuccess) => {
+          })
+          .subscribe();
+      }
+    });
+    this.store
+      .select('review', 'isCreateSuccess')
+      .subscribe((isCreateSuccess) => {
         if (isCreateSuccess) {
-          this.alerts.open('Create review success', {
-            status: 'success',
-          }).subscribe();
+          this.alerts
+            .open('Create review success', {
+              status: 'success',
+            })
+            .subscribe();
         }
-      })
-    this.store.select('review', 'createErrorMessage').
-      subscribe((createErrorMessage) => {
+      });
+    this.store
+      .select('review', 'createErrorMessage')
+      .subscribe((createErrorMessage) => {
         if (createErrorMessage) {
-          this.alerts.open(createErrorMessage, {
-            status: 'error',
-          }).subscribe();
+          this.alerts
+            .open(createErrorMessage, {
+              status: 'error',
+            })
+            .subscribe();
         }
-      })
-
+      });
 
     const timer$ = interval(1000);
-    this.timerSubscription = timer$.pipe(
-      takeWhile(() => this.counter > 0)
-    ).subscribe(() => {
-      this.counter--;
-      this.formatTime();
-    });
+    this.timerSubscription = timer$
+      .pipe(takeWhile(() => this.counter > 0))
+      .subscribe(() => {
+        this.counter--;
+        this.formatTime();
+      });
 
     this.formatTime();
     this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');;
+      const id = params.get('id');
       if (id) {
         this.idToken$.subscribe((value) => {
           if (value) {
@@ -105,18 +106,14 @@ export class QuizComponent implements OnInit, OnDestroy {
               QuestionAction.getAllByQuizId({ idToken: value, quizId: id })
             );
           }
-          console.log(id);
         });
       }
     });
 
     this.question$.subscribe((value) => {
-      this.questionList = [
-        ...value
-      ];
+      this.questionList = [...value];
       this.counter = this.questionList.length * 60;
-
-    })
+    });
   }
   options: Array<string> = [];
   selectOption = (option: string) => {
@@ -127,7 +124,6 @@ export class QuizComponent implements OnInit, OnDestroy {
         }
       }
     }
-    console.log(this.options);
   };
   submit() {
     const review: Review = {
@@ -139,20 +135,15 @@ export class QuizComponent implements OnInit, OnDestroy {
         return {
           answer: this.options,
           quizBankId: question.quizBank._id,
-        }
-      })
-
+        };
+      }),
     };
     this.idToken$.subscribe((value) => {
       if (value) {
-        this.store.dispatch(
-          ReviewAction.create({ idToken: value, review })
-        );
-        console.log(review);
+        this.store.dispatch(ReviewAction.create({ idToken: value, review }));
       }
     });
   }
-
 
   ngOnDestroy(): void {
     if (this.timerSubscription) {
@@ -163,12 +154,12 @@ export class QuizComponent implements OnInit, OnDestroy {
   formatTime(): void {
     const minutes = Math.floor(this.counter / 60);
     const seconds = this.counter % 60;
-    this.formattedTime = `${this.formatNumber(minutes)}:${this.formatNumber(seconds)}`;
+    this.formattedTime = `${this.formatNumber(minutes)}:${this.formatNumber(
+      seconds
+    )}`;
   }
 
   formatNumber(value: number): string {
     return value < 10 ? `0${value}` : value.toString();
   }
 }
-
-

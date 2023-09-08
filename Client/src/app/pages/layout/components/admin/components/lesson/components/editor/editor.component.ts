@@ -30,7 +30,6 @@ export class EditorComponent implements OnInit {
   @Input('content')
   set contentInput(contentVal: string | undefined) {
     if (contentVal == undefined) return;
-    console.log('raw', JSON.parse(contentVal));
     this.content = JSON.parse(contentVal);
   }
   @Input('isPreview') isPreview!: boolean;
@@ -92,7 +91,6 @@ export class EditorComponent implements OnInit {
                 if (typeof result === 'object') {
                   reject('upload failed');
                 } else {
-                  console.log('File available at', result);
                   resolve(result);
                 }
               } else {
@@ -123,24 +121,20 @@ export class EditorComponent implements OnInit {
 
   created(event: any) {
     // tslint:disable-next-line:no-console
-    console.log('editor-created', event);
   }
 
   changedContent(event: ContentChange | EditorChangeSelection) {
     // tslint:disable-next-line:no-console
-    console.log('editor-change', event);
   }
 
   focus($event: any) {
     // tslint:disable-next-line:no-console
-    // console.log('focus', $event);
     this.focused = true;
     this.blured = false;
   }
 
   blur($event: any) {
     // tslint:disable-next-line:no-console
-    // console.log('blur', $event);
     this.focused = false;
     this.blured = true;
   }

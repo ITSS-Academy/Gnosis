@@ -48,7 +48,6 @@ export class CartComponent implements OnInit {
         if (cartList != undefined) {
           this.cartList = cartList;
           this.cartCount = cartList.length;
-          console.log(this.cartList);
         }
       }),
       this.store.select('profile', 'profile').subscribe((profile) => {
@@ -63,9 +62,6 @@ export class CartComponent implements OnInit {
       }),
       this.store.select('profile', 'isUpdateSuccess').subscribe((val) => {
         if (val) {
-          // this.alerts
-          //   .open('Buy Course Success !!!', { status: 'success' })
-          //   .subscribe();
           this.successNotification('Buy Course Success !!!');
           this.clearAllCart();
           this.store.dispatch(ProfileAction.clearState());
@@ -158,7 +154,6 @@ export class CartComponent implements OnInit {
         courses: [...this.profile.courses, ...this.courseId],
       };
 
-      console.log(newProfile);
       this.store.dispatch(
         ProfileAction.updateProfile({
           idToken: this.idToken,

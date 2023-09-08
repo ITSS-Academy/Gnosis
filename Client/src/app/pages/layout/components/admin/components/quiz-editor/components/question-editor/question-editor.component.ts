@@ -95,7 +95,6 @@ export class QuestionEditorComponent implements OnInit {
         }
       });
       if (isValid == false) {
-        console.log('check ?');
         return;
       } else {
         if (this.quest != undefined) {
@@ -116,7 +115,6 @@ export class QuestionEditorComponent implements OnInit {
               answerList: ansList,
             },
           };
-          console.log('newQuest', newQuestion);
           this.saveEvent.emit(newQuestion);
         }
       }
@@ -151,7 +149,6 @@ export class QuestionEditorComponent implements OnInit {
   deleteOption(index: number) {
     this.optionList = this.optionList.filter((val, i) => i != index);
     this.checkBoxList = this.checkBoxList.filter((val, i) => i != index);
-    console.log(this.optionList);
   }
 
   showWarningDialog(content: PolymorpheusContent<TuiDialogContext>): void {

@@ -13,8 +13,6 @@ import {
   Subscription,
   debounceTime,
   distinctUntilChanged,
-  pipe,
-  switchMap,
 } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AuthState } from 'src/app/ngrx/states/auth.state';
@@ -72,7 +70,6 @@ export class LessonComponent implements OnInit, OnDestroy {
       this.newList$
         .pipe(debounceTime(500), distinctUntilChanged())
         .subscribe((newList) => {
-          console.log('update ordinal num: ', newList);
           // newList.forEach((val, i) => {
           //   this.store.dispatch(
           //     LessonActions.update({ idToken: this.idToken, lesson: val })
@@ -82,7 +79,6 @@ export class LessonComponent implements OnInit, OnDestroy {
       this.store.select('auth', 'idToken').subscribe((idToken) => {
         if (idToken != '' && idToken != null && idToken != undefined) {
           this.idToken = idToken;
-          console.log(`lesson's course id: `, this.router.url.split('/')[4]);
           this.store.dispatch(
             LessonActions.getAllByCourseId({
               idToken,
@@ -120,7 +116,6 @@ export class LessonComponent implements OnInit, OnDestroy {
       this.store.select('lesson', 'lessons').subscribe((lessons) => {
         if (lessons != null && lessons != undefined && lessons.length > 0) {
           this.lessonList = [...lessons];
-          console.log(this.lessonList);
           this.lessonList.sort((a, b) => {
             return a.ordinalNum - b.ordinalNum;
           });
@@ -202,7 +197,6 @@ export class LessonComponent implements OnInit, OnDestroy {
     }
     this.selectedLesson = lesson;
     this.isPreview = true;
-    // console.log('selectedLesson: ', this.selectedLesson);
   }
   generateDummyContent(lessonTitle: string) {
     let dummyContent = `<p>${lessonTitle} content </p>`;
@@ -256,7 +250,6 @@ export class LessonComponent implements OnInit, OnDestroy {
         temp = val;
       }
     });
-    console.log('temp: ', temp);
     let newLesson: any = {
       ...temp,
       content: content,
@@ -297,14 +290,12 @@ export class LessonComponent implements OnInit, OnDestroy {
   order = new Map();
   updateOrdinalList() {
     let newList = [...this.lessonList];
-    console.log('order change: ', this.order);
     this.order.forEach((val, i) => {
       newList[i] = {
         ...newList[i],
         ordinalNum: val,
       };
     });
-    console.log(newList);
     this.newList$.next(newList);
   }
 }

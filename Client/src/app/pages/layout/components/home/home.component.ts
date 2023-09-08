@@ -7,11 +7,9 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { TuiBooleanHandler } from '@taiga-ui/cdk';
 import { Observable, Subscription, combineLatest, interval } from 'rxjs';
 import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
-import { ProfileService } from 'src/app/services/profile/profile.service';
 import { Router } from '@angular/router';
 import * as ProfileAction from 'src/app/ngrx/actions/profile.actions';
 import { UserState } from 'src/app/ngrx/states/user.state';
@@ -23,7 +21,6 @@ import { UserInfo } from 'src/app/models/user.model';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnDestroy, OnInit {
   private timerSubscription: Subscription | undefined;
@@ -74,8 +71,6 @@ export class HomeComponent implements OnDestroy, OnInit {
   state: string = 'Courses';
   onRadioChange(selectedState: string) {
     this.state = selectedState;
-    console.log(this.profile.ongoingCourse);
-    console.log(this.state);
   }
 
   subscriptions: Subscription[] = [];
@@ -134,15 +129,12 @@ export class HomeComponent implements OnDestroy, OnInit {
           this.courses = val.courses || [];
           this.ongoingCourse = val.ongoingCourse || [];
           this.completedCourse = val.completedCourse || [];
-
-          console.log('profile: ', val);
         }
       }),
       combineLatest({
         idToken: this.idToken$,
         user: this.user$,
       }).subscribe((res) => {
-        // console.log(res);
         if (
           res.user != undefined &&
           res.user != null &&
@@ -173,8 +165,6 @@ export class HomeComponent implements OnDestroy, OnInit {
   toCourse(course: Course) {
     this.router.navigate(['base/home/course', course._id]);
     this.ongoingCourseId = course._id;
-    console.log(this.ongoingCourseId);
-    console.log(this.profile);
     let newProfile: any = {
       ...this.profile,
     };

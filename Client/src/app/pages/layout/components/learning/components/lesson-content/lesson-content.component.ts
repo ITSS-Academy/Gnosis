@@ -18,7 +18,6 @@ export class LessonContentComponent implements OnInit {
   @Input('content')
   set contentInput(contentVal: string | undefined) {
     if (contentVal == undefined) return;
-    console.log('raw', JSON.parse(contentVal));
     this.content = JSON.parse(contentVal);
   }
   ngOnInit(): void {}

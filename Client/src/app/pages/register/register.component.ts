@@ -121,8 +121,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       role: 'user',
     };
 
-    // console.log(regisData);
-
     this.store.dispatch(
       ProfileAction.create({
         profile: regisData,
