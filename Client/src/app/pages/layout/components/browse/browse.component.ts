@@ -55,7 +55,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   cartList$ = this.store.select('cart', 'cartList');
   cartList: Course[] = [];
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
-  profile$: Observable<Profile> = this.store.select('profile', 'profile');
+  profile$ = this.store.select('profile', 'profile');
   subscriptions: Subscription[] = [];
 
   constructor(

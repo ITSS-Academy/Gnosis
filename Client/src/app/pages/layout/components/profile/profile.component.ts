@@ -52,7 +52,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ongoingCourses: Course[] = [];
   completedCourses: Course[] = [];
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
-  profile$: Observable<Profile> = this.store.select('profile', 'profile');
+  profile$ = this.store.select('profile', 'profile');
   user$: Observable<UserInfo> = this.store.select('user', 'user');
   idToken = '';
   id: string[] = [];
