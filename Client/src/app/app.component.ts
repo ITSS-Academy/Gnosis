@@ -31,20 +31,16 @@ export class AppComponent implements OnInit {
   ) {
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
-        console.log('user UID', user.uid);
         let idToken = await user!.getIdToken(true);
-        console.log(' idToken: ', idToken);
         this.store.dispatch(AuthActions.storedIdToken({ idToken }));
         this.store.dispatch(AuthActions.storedUserUid({ uid: user.uid }));
         this.router.navigateByUrl('/loading');
       } else {
-        // console.log('user logout');
       }
     });
 
     combineLatest([this.idToken$, this.uid$]).subscribe((res) => {
       if (res[0] != '' && res[1] != '') {
-        // console.log('Gettingg user info');
         this.store.dispatch(
           UserActions.getUser({ uid: res[1], idToken: res[0] })
         );

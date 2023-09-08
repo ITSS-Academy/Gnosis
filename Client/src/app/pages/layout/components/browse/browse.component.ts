@@ -16,9 +16,7 @@ import { CartState } from 'src/app/ngrx/states/cart.state';
 import { TuiAlertService, TuiAppearance } from '@taiga-ui/core';
 import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
-import { Profile } from 'src/app/models/profile.model';
 import { tuiPure } from '@taiga-ui/cdk';
-import { FormControl, FormGroup } from '@angular/forms';
 
 const Category = {
   IT: 'IT',
@@ -79,13 +77,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.cartList$.subscribe((cartList) => {
         if (cartList != undefined && cartList != null && cartList.length > 0) {
           this.cartList = [...cartList];
-          console.log('cartList: ', this.cartList);
         }
       }),
       this.courseList$.subscribe((item) => {
-        // console.log('item: ', item);
         if (item != undefined && item != null && item.length > 0) {
-          console.log('courseList: ', item);
         }
       }),
       combineLatest({
@@ -99,7 +94,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
           res.profile != undefined &&
           res.profile != null
         ) {
-          // console.log(res);
           this.store.dispatch(
             CourseAction.getByUser({
               idToken: res.idToken,
@@ -127,7 +121,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
   addCourseToCart(course: Course) {
     let isExist = false;
     this.cartList.forEach((item) => {
-      console.log(item);
       if (item._id == course._id) {
         this.warningNotification(`${course.name} is already in the cart`);
         isExist = true;
@@ -181,7 +174,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
       map((value) => {
         if (value.length === this.categories.length) {
           this.filterList = [...this.categories];
-          console.log(this.filterList);
         }
         return value.length === this.categories.length
           ? TuiAppearance.Primary
@@ -192,7 +184,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   filterList: string[] = [];
   onModelChange(model: readonly string[]): void {
-    console.log(model);
     this.filterList = [...model];
     this.filters$.next(model);
   }

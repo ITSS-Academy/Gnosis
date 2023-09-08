@@ -4,7 +4,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Store } from '@ngrx/store';
-import { AuthState } from '../states/auth.state';
 import * as UserActions from '../actions/user.actions';
 import * as ProfileAction from '../actions/profile.actions';
 

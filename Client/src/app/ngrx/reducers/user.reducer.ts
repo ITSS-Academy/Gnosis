@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { UserState } from '../states/user.state';
 import * as UserAction from 'src/app/ngrx/actions/user.actions';
-import { state } from '@angular/animations';
 import { UserInfo } from 'src/app/models/user.model';
 
 export const initualState: UserState = {
@@ -16,7 +15,6 @@ export const initualState: UserState = {
 export const userReducer = createReducer(
   initualState,
   on(UserAction.createUser, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLoading: true,
@@ -25,7 +23,6 @@ export const userReducer = createReducer(
     };
   }),
   on(UserAction.createUserSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLoading: false,
@@ -34,7 +31,6 @@ export const userReducer = createReducer(
     };
   }),
   on(UserAction.createUserFailure, (state, { type, errorMessage }) => {
-    console.log(type);
     return {
       ...state,
       isLoading: false,
@@ -43,7 +39,6 @@ export const userReducer = createReducer(
     };
   }),
   on(UserAction.getUser, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isGetLoading: true,
@@ -53,7 +48,6 @@ export const userReducer = createReducer(
     };
   }),
   on(UserAction.getUserSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isGetLoading: false,
@@ -63,7 +57,6 @@ export const userReducer = createReducer(
     };
   }),
   on(UserAction.getUserFailure, (state, { type, errorMessage }) => {
-    console.log(type);
     return {
       ...state,
       isGetLoading: false,
@@ -72,7 +65,6 @@ export const userReducer = createReducer(
     };
   }),
   on(UserAction.clearUserInfo, (state, { type }) => {
-    console.log(type);
     return {
       ...state,
       user: <UserInfo>{},

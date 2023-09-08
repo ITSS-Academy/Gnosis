@@ -42,7 +42,6 @@ export class DetailComponent implements OnInit {
     this.cartList$.subscribe((cartList) => {
       if (cartList != undefined) {
         this.cartList = cartList;
-        console.log(this.cartList);
       }
     });
 
@@ -55,7 +54,6 @@ export class DetailComponent implements OnInit {
               CourseAction.getCourseDetail({ idToken: value, id })
             );
           }
-          console.log(id);
         });
       }
     });
@@ -64,7 +62,6 @@ export class DetailComponent implements OnInit {
   addCourseToCart(course: Course) {
     let isExist = false;
     this.cartList.forEach((item) => {
-      console.log(item);
       if (item._id == course._id) {
         this.warningNotification(`${course.name} is already in the cart`);
         isExist = true;
@@ -75,6 +72,17 @@ export class DetailComponent implements OnInit {
       return;
     }
     this.store.dispatch(CartAction.addCourseToCart({ course }));
+    this.successNotification(`${course.name} has been added to the cart`);
+  }
+
+  successNotification(message: string): void {
+    this.alerts
+      .open('', {
+        label: message,
+        status: 'success',
+        autoClose: 4000,
+      })
+      .subscribe();
   }
 
   warningNotification(message: string): void {

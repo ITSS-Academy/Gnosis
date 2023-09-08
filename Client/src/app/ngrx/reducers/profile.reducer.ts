@@ -20,7 +20,6 @@ export const initialState: ProfileState = {
 export const profileReducer = createReducer(
   initualState,
   on(ProfileAction.create, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLoading: true,
@@ -30,7 +29,6 @@ export const profileReducer = createReducer(
   }),
 
   on(ProfileAction.createSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLoading: false,
@@ -40,7 +38,6 @@ export const profileReducer = createReducer(
   }),
 
   on(ProfileAction.createFailure, (state, { type, errorMessage }) => {
-    console.log(type);
     return {
       ...state,
       isLoading: false,
@@ -50,7 +47,6 @@ export const profileReducer = createReducer(
   }),
 
   on(ProfileAction.get, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isGetLoading: true,
@@ -60,7 +56,6 @@ export const profileReducer = createReducer(
   }),
 
   on(ProfileAction.getSuccess, (state, { type, profile }) => {
-    console.log(type);
     return {
       ...state,
       isGetLoading: false,
@@ -71,7 +66,6 @@ export const profileReducer = createReducer(
   }),
 
   on(ProfileAction.getFailure, (state, { type, errorMessage }) => {
-    console.log(type);
     return {
       ...state,
       isGetLoading: false,
@@ -80,7 +74,6 @@ export const profileReducer = createReducer(
     };
   }),
   on(ProfileAction.clearState, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLoading: false,
@@ -95,7 +88,6 @@ export const profileReducer = createReducer(
     };
   }),
   on(ProfileAction.updateProfile, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isUpdating: true,
@@ -105,7 +97,6 @@ export const profileReducer = createReducer(
   }),
 
   on(ProfileAction.updateProfileSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isUpdating: false,
@@ -114,7 +105,6 @@ export const profileReducer = createReducer(
   }),
 
   on(ProfileAction.updateProfileFailure, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isUpdating: false,

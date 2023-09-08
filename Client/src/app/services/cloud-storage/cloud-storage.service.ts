@@ -24,7 +24,6 @@ export class CloudStorageService {
     file: File | Blob,
     courseId: string
   ): Promise<string | StorageError> {
-    console.log(file);
     const uploadTask = uploadBytesResumable(
       ref(
         getStorage(this.afApp),
@@ -33,16 +32,10 @@ export class CloudStorageService {
       file
     );
 
-    // Register three observers:
-    // 1. 'state_changed' observer, called any time the state changes
-    // 2. Error observer, called on failure
-    // 3. Completion observer, called on successful completion
     return new Promise((res, rej) => {
       uploadTask.on(
         'state_changed',
         (snapshot) => {
-          // Observe state change events such as progress, pause, and resume
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           this.alerts
@@ -60,14 +53,10 @@ export class CloudStorageService {
           }
         },
         (error) => {
-          // Handle unsuccessful uploads
-          // console.log(error);
           this.alerts.open('Upload failed: ', { status: 'error' }).subscribe();
           res(error);
         },
         () => {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             this.alerts
               .open('Upload success', { status: 'success' })
@@ -83,7 +72,6 @@ export class CloudStorageService {
     file: File | Blob,
     lessonId: string
   ): Promise<string | StorageError> {
-    console.log(file);
     const uploadTask = uploadBytesResumable(
       ref(
         getStorage(this.afApp),
@@ -92,10 +80,6 @@ export class CloudStorageService {
       file
     );
 
-    // Register three observers:
-    // 1. 'state_changed' observer, called any time the state changes
-    // 2. Error observer, called on failure
-    // 3. Completion observer, called on successful completion
     return new Promise((res, rej) => {
       uploadTask.on(
         'state_changed',
@@ -119,14 +103,10 @@ export class CloudStorageService {
           }
         },
         (error) => {
-          // Handle unsuccessful uploads
-          // console.log(error);
           this.alerts.open('Upload failed: ', { status: 'error' }).subscribe();
           res(error);
         },
         () => {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             this.alerts
               .open('Upload success', { status: 'success' })

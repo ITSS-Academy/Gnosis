@@ -5,8 +5,10 @@ export interface Review {
     quizId: string,
     profileId: string,
     score: number,
-    test: Array<{
-        answer: string[];
-        quizBankId: string;
-    }>;
+    test: Answer[]
+}
+
+export interface Answer {
+    answer: string[];
+    quizBankId: string;
 }

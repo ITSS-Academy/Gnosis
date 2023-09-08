@@ -69,7 +69,6 @@ export class LoadingComponent {
           uid: this.uid$,
         }).subscribe((res) => {
           if (res.isGetSuccess && res.user.uid) {
-            console.log(res);
             if (res.user.profile != null) {
               this.router.navigateByUrl('/base');
             } else {
@@ -85,7 +84,6 @@ export class LoadingComponent {
             if (res.uid != this.uid && res.idToken != this.idToken) {
               this.idToken = res.idToken;
               this.uid = res.uid;
-              // console.log('alo');
               this.store.dispatch(
                 UserActions.getUser({ uid: res.uid, idToken: res.idToken })
               );

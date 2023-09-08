@@ -92,13 +92,11 @@ export class AdminComponent implements OnInit, OnDestroy {
           courseList != null &&
           courseList.length > 0
         ) {
-          console.log('courseList: ', courseList);
           this.courseList = courseList;
           if (this.selectedCourse != null) {
             this.courseList.forEach((val, i) => {
               if (val._id == this.selectedCourse?._id) {
                 this.selectedCourse = val;
-                console.log('selectedCourse: ', this.selectedCourse);
               }
             });
           }
@@ -106,7 +104,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       }),
       this.store.select('course', 'isLoading').subscribe((val) => {
         this.isLoading = val;
-        // console.log(this.isLoading);
       }),
       this.store.select('course', 'error').subscribe((val) => {
         if (val != '' && val != undefined && val != null) {
@@ -202,13 +199,11 @@ export class AdminComponent implements OnInit, OnDestroy {
   selectEditCourse(course: Course) {
     if (this.selectedCourse?._id !== course._id) {
       this.selectedCourse = <Course>{ ...course };
-      console.log('select courrse', this.selectedCourse._id);
     }
   }
 
   openEdit = false;
   openEditSidebar(open: boolean): void {
-    console.log('openEditSidebar: ', open);
     if (open != this.openEdit) {
       this.openEdit = open;
     }
@@ -318,7 +313,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   //update func
   updateCourse($event: Course) {
-    // console.log($event);
     this.openEdit = false;
     this.store.dispatch(
       CourseActions.update({ idToken: this.idToken, course: $event })

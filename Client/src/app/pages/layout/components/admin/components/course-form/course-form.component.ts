@@ -40,7 +40,6 @@ export class CourseFormComponent {
 
   ngOnInit(): void {
     if (this.isEdit) {
-      console.log('course form id:', this.course?._id);
       if (this.course != null) {
         this.courseForm = new FormGroup({
           _id: new FormControl(
@@ -86,7 +85,6 @@ export class CourseFormComponent {
       ...this.courseForm.value,
       rating: 0,
     };
-    console.log(newCourse);
     this.createEvent.emit(newCourse);
   }
   categories = [
@@ -132,7 +130,6 @@ export class CourseFormComponent {
       ...this.course,
       ...this.courseForm.value,
     };
-    // console.log(newUpdateCourse);
     this.updateEvent.emit(newUpdateCourse);
   }
   //upload image func
@@ -145,8 +142,6 @@ export class CourseFormComponent {
       if (typeof result === 'object') {
         this.rejectedFiles$.next(this.control.value);
       } else {
-        console.log('File available at', result);
-
         this.courseForm.controls['img'].setValue(result);
       }
     }

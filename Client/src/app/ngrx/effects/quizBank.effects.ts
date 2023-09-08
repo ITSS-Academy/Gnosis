@@ -18,8 +18,6 @@ export class QuizBankEffects {
         this.quizBankService.add(action.idToken, action.quizBank).pipe(
           map((newQuizBank) => {
             if (newQuizBank != undefined && newQuizBank != null) {
-              console.log(newQuizBank);
-
               if (newQuizBank.message) {
                 return QuizBankActions.addFailure({
                   error: newQuizBank.message,
@@ -50,7 +48,6 @@ export class QuizBankEffects {
                   error: quizBank.message,
                 });
               }
-              console.log(quizBank);
               return QuizBankActions.updateSuccess({ quizBank });
             } else {
               return QuizBankActions.updateFailure({
