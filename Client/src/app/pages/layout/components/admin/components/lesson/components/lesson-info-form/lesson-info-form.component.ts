@@ -25,8 +25,6 @@ export class LessonInfoFormComponent {
   });
 
   ngOnInit(): void {
-    console.log(this.lesson);
-
     if (this.lesson != null) {
       this.lessonForm = new FormGroup({
         _id: new FormControl(

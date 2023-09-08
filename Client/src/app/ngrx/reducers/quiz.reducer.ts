@@ -18,7 +18,6 @@ export const initialState: QuizState = {
 export const quizReducer = createReducer(
   initialState,
   on(QuizActions.get, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isGetLoading: true,
@@ -27,7 +26,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.getSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       quiz: action.quiz,
@@ -36,7 +34,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.getFailure, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isGetLoading: false,
@@ -45,7 +42,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.create, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isCreateLoading: true,
@@ -54,7 +50,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.createSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       quiz: action.newQuiz,
@@ -63,7 +58,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.createFailure, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isCreateLoading: false,
@@ -72,7 +66,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.update, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isUpdateLoading: true,
@@ -81,7 +74,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.updateSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       quiz: action.updatedQuiz,
@@ -90,7 +82,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.updateFailure, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isUpdateLoading: false,
@@ -99,7 +90,6 @@ export const quizReducer = createReducer(
     };
   }),
   on(QuizActions.clearState, (state, action) => {
-    console.log(action.type);
     return <QuizState>{
       ...state,
       isGetLoading: false,

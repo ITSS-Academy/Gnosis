@@ -12,7 +12,6 @@ export class UserService {
   constructor(private httpClient: HttpClient) {}
 
   createUser(idToken: string) {
-    // console.log(idToken);
     const headers = new HttpHeaders({
       Authorization: `Bearer ${idToken}`,
     });

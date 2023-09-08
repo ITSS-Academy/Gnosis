@@ -15,7 +15,6 @@ export const initialState: AuthState = {
 export const authReducer = createReducer(
   initialState,
   on(LoginActions.login, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLoading: true,
@@ -24,7 +23,6 @@ export const authReducer = createReducer(
     };
   }),
   on(LoginActions.loginSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLoading: false,
@@ -33,7 +31,6 @@ export const authReducer = createReducer(
     };
   }),
   on(LoginActions.loginFailure, (state, { errorMessage, type }) => {
-    console.log(type);
     return {
       ...state,
       isLoading: false,
@@ -42,7 +39,6 @@ export const authReducer = createReducer(
     };
   }),
   on(LoginActions.logout, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLogoutSuccess: false,
@@ -50,7 +46,6 @@ export const authReducer = createReducer(
     };
   }),
   on(LoginActions.logoutSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isLogoutSuccess: true,
@@ -60,7 +55,6 @@ export const authReducer = createReducer(
     };
   }),
   on(LoginActions.logoutFailure, (state, { errorMessage, type }) => {
-    console.log(type);
     return {
       ...state,
       isLogoutSuccess: false,
@@ -68,14 +62,12 @@ export const authReducer = createReducer(
     };
   }),
   on(LoginActions.storedIdToken, (state, { idToken, type }) => {
-    console.log(type);
     return {
       ...state,
       idToken,
     };
   }),
   on(LoginActions.storedUserUid, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       uid: action.uid,

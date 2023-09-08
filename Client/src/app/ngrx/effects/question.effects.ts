@@ -20,7 +20,6 @@ export class QuestionEffects {
             map((item) => {
               if (item != undefined && item != null) {
                 if ((item as any).message) {
-                  console.log((item as any).message);
                   return QuestionAction.getAllByQuizIdFailure({
                     error: (item as any).message,
                   });
@@ -48,9 +47,7 @@ export class QuestionEffects {
         this.questionService.create(action.idToken, action.question).pipe(
           map((item) => {
             if (item != undefined && item != null) {
-              console.log(item);
               if ((item as any).message) {
-                console.log(item);
                 return QuestionAction.createFailure({
                   error: (item as any).message,
                 });
@@ -73,8 +70,6 @@ export class QuestionEffects {
         this.questionService.remove(action.idToken, action.questionId).pipe(
           map((item) => {
             if (item != undefined && item != null) {
-              console.log(item);
-
               if ((item as any).message) {
                 return QuestionAction.removeFailure({
                   error: (item as any).message,

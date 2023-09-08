@@ -52,7 +52,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ongoingCourses: Course[] = [];
   completedCourses: Course[] = [];
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
-  profile$: Observable<Profile> = this.store.select('profile', 'profile');
+  profile$ = this.store.select('profile', 'profile');
   user$: Observable<UserInfo> = this.store.select('user', 'user');
   idToken = '';
   id: string[] = [];
@@ -108,13 +108,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.courses = profile.courses || [];
           this.ongoingCourses = profile.ongoingCourse || [];
           this.completedCourses = profile.completedCourse || [];
-          console.log(profile);
         }
       }),
       this.store.select('auth', 'idToken').subscribe((val) => {
         if (val != '') {
           this.idToken = val;
-          console.log(this.idToken);
         }
       }),
       this.store.select('profile', 'profile').subscribe((profile) => {

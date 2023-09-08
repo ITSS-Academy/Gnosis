@@ -9,7 +9,6 @@ import { QuestionState } from 'src/app/ngrx/states/question.state';
 import { ReviewState } from 'src/app/ngrx/states/review.state';
 import * as QuestionAction from 'src/app/ngrx/actions/question.actions';
 import * as ReviewAction from 'src/app/ngrx/actions/review.actions';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { quizBank } from 'src/app/models/quizBank.model';
 import { Quiz } from 'src/app/models/quiz.model';
 import { Answer, Review } from 'src/app/models/Reivew.model';
@@ -24,7 +23,7 @@ import { QuizState } from 'src/app/ngrx/states/quiz.state';
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.less']
+  styleUrls: ['./quiz.component.less'],
 })
 export class QuizComponent implements OnInit, OnDestroy {
   @Input('review') review: null | Review = null;
@@ -62,14 +61,15 @@ export class QuizComponent implements OnInit, OnDestroy {
     }>
   ) { }
   subscriptions: Subscription[] = [];
+
+
   quizBank: quizBank[] = [];
   backhome() {
     this.router.navigate(['/base/home']);
-
   }
 
   backcourse() {
-    this.router.navigate(['/base/home/course'])
+    this.router.navigate(['/base/home/course']);
   }
 
   ngOnInit(): void {
@@ -136,12 +136,12 @@ export class QuizComponent implements OnInit, OnDestroy {
 
     );
     const timer$ = interval(1000);
-    this.timerSubscription = timer$.pipe(
-      takeWhile(() => this.counter > 0)
-    ).subscribe(() => {
-      this.counter--;
-      this.formatTime();
-    });
+    this.timerSubscription = timer$
+      .pipe(takeWhile(() => this.counter > 0))
+      .subscribe(() => {
+        this.counter--;
+        this.formatTime();
+      });
 
     this.formatTime();
   }
@@ -181,15 +181,11 @@ export class QuizComponent implements OnInit, OnDestroy {
     };
     this.idToken$.subscribe((value) => {
       if (value) {
-        this.store.dispatch(
-          ReviewAction.create({ idToken: value, review })
-        );
-        console.log(review);
+        this.store.dispatch(ReviewAction.create({ idToken: value, review }));
       }
       this.router.navigate([`/base/home/course/${this.course._id}`]);
     });
   }
-
 
   ngOnDestroy(): void {
     if (this.timerSubscription) {
@@ -200,12 +196,12 @@ export class QuizComponent implements OnInit, OnDestroy {
   formatTime(): void {
     const minutes = Math.floor(this.counter / 60);
     const seconds = this.counter % 60;
-    this.formattedTime = `${this.formatNumber(minutes)}:${this.formatNumber(seconds)}`;
+    this.formattedTime = `${this.formatNumber(minutes)}:${this.formatNumber(
+      seconds
+    )}`;
   }
 
   formatNumber(value: number): string {
     return value < 10 ? `0${value}` : value.toString();
   }
 }
-
-

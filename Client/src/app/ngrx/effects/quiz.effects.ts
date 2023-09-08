@@ -22,7 +22,6 @@ export class QuizEffects {
             }
           }),
           catchError((error) => {
-            console.log(error);
             return of(QuizActions.getFailure({ error }));
           })
         )
@@ -37,7 +36,6 @@ export class QuizEffects {
         this.quizService.create(action.idToken, action.quiz).pipe(
           map((quiz) => {
             if (quiz != undefined && quiz != null) {
-              console.log(quiz);
               return QuizActions.createSuccess({ newQuiz: quiz });
             } else {
               return QuizActions.createFailure({ error: 'create failure' });
@@ -56,7 +54,6 @@ export class QuizEffects {
         this.quizService.update(action.idToken, action.quiz).pipe(
           map((quiz) => {
             if (quiz != undefined && quiz != null) {
-              console.log(quiz);
               return QuizActions.updateSuccess({ updatedQuiz: quiz });
             } else {
               return QuizActions.updateFailure({ error: 'update failure' });

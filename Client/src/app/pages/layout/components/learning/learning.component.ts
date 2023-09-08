@@ -44,7 +44,6 @@ export class LearningComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.store.select('auth', 'idToken').subscribe((idToken) => {
         if (idToken) {
-          console.log(this.router.url.split('/')[4]);
           this.store.dispatch(
             LessonAction.getAllByCourseId({
               idToken,
@@ -79,7 +78,6 @@ export class LearningComponent implements OnInit, OnDestroy {
             return a.ordinalNum - b.ordinalNum;
           });
         }
-        console.log('lessonList: ', this.lessonList);
       }),
       this.store.select('lesson', 'getMessError').subscribe((val) => {
         if (val) {
@@ -92,7 +90,6 @@ export class LearningComponent implements OnInit, OnDestroy {
       this.store.select('course', 'courseDetail').subscribe((val) => {
         if (val) {
           this.course = val;
-          console.log('course: ', this.course);
         }
       }),
       this.store.select('course', 'getErrMess').subscribe((val) => {
@@ -103,7 +100,6 @@ export class LearningComponent implements OnInit, OnDestroy {
       this.store.select('quiz', 'quiz').subscribe((val) => {
         if (val) {
           this.quiz = val;
-          console.log('quiz: ', this.quiz);
         }
       }),
       this.store.select('quiz', 'isGetSuccess').subscribe((val) => {
@@ -132,7 +128,7 @@ export class LearningComponent implements OnInit, OnDestroy {
     }>
   ) {
     this.items.push({
-      caption: 'Current',
+      caption: 'Learning',
       routerLink: this.router.url,
     });
   }
@@ -146,6 +142,7 @@ export class LearningComponent implements OnInit, OnDestroy {
     }
     this.selectedLesson = lesson;
     this.selectedQuiz = null;
+    this.chapIndex = this.lessonList.findIndex((l) => l._id === lesson._id);
   }
   selectQuiz() {
     if (this.selectedQuiz != null) {
@@ -156,5 +153,31 @@ export class LearningComponent implements OnInit, OnDestroy {
     }
     this.selectedLesson = null;
     this.selectedQuiz = this.quiz;
+    this.chapIndex = this.lessonList.length;
+  }
+
+  chapIndex = -1;
+  previousChap() {
+    if (this.chapIndex > -1) {
+      this.selectedLesson = this.lessonList[this.chapIndex];
+      this.chapIndex -= 1;
+      if (this.chapIndex == -1) {
+        this.selectedLesson = null;
+        // this.selectedQuiz = null;
+      }
+      if (this.chapIndex == this.lessonList.length - 1) {
+        this.selectedQuiz = null;
+      }
+    }
+  }
+  nextChap() {
+    if (this.chapIndex < this.lessonList.length) {
+      this.chapIndex += 1;
+      if (this.chapIndex == this.lessonList.length) {
+        this.selectedLesson = null;
+        this.selectedQuiz = this.quiz;
+      }
+      this.selectedLesson = this.lessonList[this.chapIndex];
+    }
   }
 }

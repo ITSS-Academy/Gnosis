@@ -7,11 +7,9 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { TuiBooleanHandler } from '@taiga-ui/cdk';
 import { Observable, Subscription, combineLatest, interval } from 'rxjs';
 import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
-import { ProfileService } from 'src/app/services/profile/profile.service';
 import { Router } from '@angular/router';
 import * as ProfileAction from 'src/app/ngrx/actions/profile.actions';
 import { UserState } from 'src/app/ngrx/states/user.state';
@@ -23,13 +21,12 @@ import { UserInfo } from 'src/app/models/user.model';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnDestroy, OnInit {
   private timerSubscription: Subscription | undefined;
   currentTime: string = '';
 
-  getOrdinal(n) {
+  getOrdinal(n: number) {
     if (n === 1 || n === 21 || n === 31) {
       return n + 'st';
     } else if (n === 2 || n === 22) {
@@ -68,14 +65,12 @@ export class HomeComponent implements OnDestroy, OnInit {
   readonly courses_state = ['Courses', 'Ongoing Courses', 'Completed Courses'];
 
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
-  profile$: Observable<Profile> = this.store.select('profile', 'profile');
+  profile$ = this.store.select('profile', 'profile');
   user$: Observable<UserInfo> = this.store.select('user', 'user');
 
   state: string = 'Courses';
   onRadioChange(selectedState: string) {
     this.state = selectedState;
-    console.log(this.profile.ongoingCourse);
-    console.log(this.state);
   }
 
   subscriptions: Subscription[] = [];
@@ -112,6 +107,7 @@ export class HomeComponent implements OnDestroy, OnInit {
     this.subscriptions.forEach((val) => {
       val.unsubscribe();
     });
+    this.homeForm.reset();
   }
 
   ngOnInit(): void {
@@ -121,46 +117,33 @@ export class HomeComponent implements OnDestroy, OnInit {
     });
     this.subscriptions.push(
       this.store.select('profile', 'profile').subscribe((val) => {
-        if (val != null && val != undefined) {
+        if (val != null && val != undefined && val.id != '') {
+          this.profile = val;
+
           this.homeForm.controls.avatar.setValue(val.avatar);
           this.homeForm.controls.id.setValue(val.id);
           this.homeForm.controls.email.setValue(val.email);
           this.homeForm.controls.displayName.setValue(val.displayName);
           this.homeForm.controls.userName.setValue(val.userName);
-        }
-      }),
-      this.profile$.subscribe((profile) => {
-        if (profile != null && profile != undefined) {
-          this.courses = profile.courses || [];
-          this.ongoingCourse = profile.ongoingCourse || [];
-          this.completedCourse = profile.completedCourse || [];
-          console.log('profile: ', profile);
-        }
-      }),
-      this.store.select('profile', 'profile').subscribe((profile) => {
-        if (profile != null && profile != undefined) {
-          this.profile = profile;
-        }
-      }),
-      this.store.select('auth', 'idToken').subscribe((val) => {
-        if (val != '') {
-          this.idToken = val;
-        }
-      }),
 
+          this.courses = val.courses || [];
+          this.ongoingCourse = val.ongoingCourse || [];
+          this.completedCourse = val.completedCourse || [];
+        }
+      }),
       combineLatest({
         idToken: this.idToken$,
         user: this.user$,
-        profile: this.profile$,
       }).subscribe((res) => {
         if (
           res.user != undefined &&
-          res.idToken != undefined &&
           res.user != null &&
+          res.user.uid != '' &&
+          res.idToken != undefined &&
           res.idToken != null &&
-          res.idToken != '' &&
-          (res.profile == null || res.profile == undefined)
+          res.idToken != ''
         ) {
+          this.idToken = res.idToken;
           this.store.dispatch(
             ProfileAction.get({ id: res.user.uid, idToken: res.idToken })
           );
@@ -182,8 +165,6 @@ export class HomeComponent implements OnDestroy, OnInit {
   toCourse(course: Course) {
     this.router.navigate(['base/home/course', course._id]);
     this.ongoingCourseId = course._id;
-    console.log(this.ongoingCourseId);
-    console.log(this.profile);
     let newProfile: any = {
       ...this.profile,
     };

@@ -78,7 +78,6 @@ export class SidebarComponent {
           if (this.pages.length != 5) {
             this.pages.splice(4, 1);
             this.pages[this.pages.length - 1].id = this.pages.length - 1;
-            console.log('pages:', this.pages);
           }
           if (this.router.url != this.url) {
             this.url = this.router.url;

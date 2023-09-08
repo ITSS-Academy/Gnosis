@@ -88,7 +88,6 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
         .subscribe();
       return;
     }
-    console.log('selected quest', question);
     this.selectedQuestion = question;
   }
 
@@ -160,7 +159,6 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
       this.store.select('auth', 'idToken').subscribe((idToken) => {
         if (idToken != '' && idToken != null && idToken != undefined) {
           this.idToken = idToken;
-          console.log(`quiz's course id: `, this.router.url.split('/')[4]);
           this.store.dispatch(
             QuizActions.get({
               idToken: this.idToken,
@@ -266,7 +264,6 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
       }),
       this.store.select('question', 'isCreatedSuccess').subscribe((val) => {
         if (val) {
-          console.log('alo');
           this.alerts
             .open('Create question success !!!', { status: 'success' })
             .subscribe();
@@ -294,10 +291,8 @@ export class QuizEditorComponent implements OnInit, OnDestroy {
         }
       }),
       this.store.select('question', 'questions').subscribe((val) => {
-        console.log('questionList: ', val);
         if (val != null && val != undefined && val.length > 0) {
           this.questionList = [...val];
-          console.log('questionList: ', this.questionList);
         }
       }),
       this.store.select('quizBank', 'newQuizBank').subscribe((newQuizBank) => {

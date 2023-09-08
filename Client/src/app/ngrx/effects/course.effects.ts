@@ -13,7 +13,6 @@ export class CourseEffects {
       exhaustMap((action) =>
         this.courseService.getCourse(action.idToken).pipe(
           map((items) => {
-            console.log(items);
             if (items != undefined || items != null) {
               if (items.message) {
                 return CourseAction.getFailure({ error: items.message });
@@ -67,7 +66,6 @@ export class CourseEffects {
         this.courseService.create(action.idToken, action.course).pipe(
           map((item) => {
             if (item != undefined && item != null) {
-              console.log(item);
               return CourseAction.createSuccess({ newCourse: item });
             } else {
               return CourseAction.createFailure({ error: 'create failure' });
@@ -124,7 +122,6 @@ export class CourseEffects {
           .pipe(
             map((items) => {
               if (items != undefined || items != null) {
-                console.log(items);
                 if ((items as any).message) {
                   return CourseAction.getByUserFailure({
                     getErrMess: (items as any).message,
@@ -140,7 +137,6 @@ export class CourseEffects {
               }
             }),
             catchError((error) => {
-              console.log(error);
               return of(
                 CourseAction.getByUserFailure({ getErrMess: error.message })
               );
