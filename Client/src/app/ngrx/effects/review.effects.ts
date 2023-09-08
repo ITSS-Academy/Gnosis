@@ -6,7 +6,7 @@ import * as ReviewAction from '../actions/review.actions';
 
 @Injectable()
 export class ReviewEffect {
-  constructor(private reviewService: ReviewService, private action$: Actions) {}
+  constructor(private reviewService: ReviewService, private action$: Actions) { }
   get$ = createEffect(() =>
     this.action$.pipe(
       ofType(ReviewAction.get),
