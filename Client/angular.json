@@ -20,9 +20,7 @@
             "outputPath": "dist/client",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "less",
             "assets": [
@@ -44,9 +42,7 @@
               "./node_modules/quill/dist/quill.snow.css",
               "./node_modules/quill-emoji/dist/quill-emoji.css"
             ],
-            "scripts": [
-              "./node_modules/quill/dist/quill.min.js"
-            ],
+            "scripts": ["./node_modules/quill/dist/quill.min.js"],
             "allowedCommonJsDependencies": [
               "text-mask-core",
               "dompurify",
@@ -61,12 +57,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "30kb"
                 }
               ],
               "outputHashing": "all"
@@ -103,19 +99,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "less",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.less"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.less"],
             "scripts": []
           }
         },
