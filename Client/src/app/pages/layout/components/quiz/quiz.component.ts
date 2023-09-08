@@ -206,7 +206,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
     if (
       this.completedCourse.some(
-        (course) => course._id == this.completedCourseId
+        (ongoingCourse) => ongoingCourse._id == this.completedCourseId
       )
     ) {
       this.store.dispatch(
