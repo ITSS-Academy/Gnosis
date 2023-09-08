@@ -13,11 +13,9 @@ export class ReviewService {
     @InjectModel(Review.name) private reviewModel: Model<Review>,
     @InjectModel(QuizBank.name) private quizBankModel: Model<QuizBank>,
     @InjectModel(Quiz.name) private quizModel: Model<Quiz>,
-  ) { }
-
+  ) {}
 
   async compareAnswer(data: CreateReviewDto) {
-
     try {
       const { quizId, profileId, test } = data;
       const quiz = await this.quizModel.findById({ _id: quizId });
@@ -27,7 +25,9 @@ export class ReviewService {
         const element = test[i];
         const quizBankId = element.quizBankId;
         const answer = element.answer;
-        const quizBankData = await this.quizBankModel.findById({ _id: quizBankId });
+        const quizBankData = await this.quizBankModel.findById({
+          _id: quizBankId,
+        });
         const correctAnswer = quizBankData.answerList;
         let countCorrect = 0;
         for (let j = 0; j < correctAnswer.length; j++) {
@@ -44,7 +44,7 @@ export class ReviewService {
         quizId,
         profileId,
         score,
-        test
+        test,
       });
       await createReview.save();
       return createReview;
@@ -62,7 +62,9 @@ export class ReviewService {
         const element = test[i];
         const quizBankId = element.quizBankId;
         const answer = element.answer;
-        const quizBankData = await this.quizBankModel.findById({ _id: quizBankId });
+        const quizBankData = await this.quizBankModel.findById({
+          _id: quizBankId,
+        });
         const correctAnswer = quizBankData.answerList;
         let countCorrect = 0;
         for (let j = 0; j < correctAnswer.length; j++) {
@@ -81,12 +83,10 @@ export class ReviewService {
         { new: true },
       );
       return redoReview;
-    }
-    catch (error) {
+    } catch (error) {
       throw new HttpException(error.message, error.status);
     }
   }
-
 
   async create(createReviewDto: CreateReviewDto): Promise<Review> {
     try {
@@ -107,11 +107,14 @@ export class ReviewService {
   }
   async findOneByQuizId(id: string) {
     try {
-      const review = await this.reviewModel.findOne({ quizId: id })
+      const review = await this.reviewModel
+        .find({ quizId: id })
         .select('-createdAt -updatedAt -__v')
         // .populate('quizId', '-createdAt -updatedAt -__v')
-        .populate('test.quizBankId', '-createdAt -updatedAt -__v');
-      return review;
+        .populate('test.quizBankId', '-createdAt -updatedAt -__v')
+        .sort({ _id: -1 })
+        .limit(1);
+      return review[0];
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

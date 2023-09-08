@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Put,
+  HttpException,
+} from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 
 @Controller('v1/review')
 export class ReviewController {
-  constructor(private reviewService: ReviewService) { }
+  constructor(private reviewService: ReviewService) {}
   // @Post()
   // create(@Body() createReviewDto: CreateReviewDto) {
   //   try {
@@ -29,7 +39,6 @@ export class ReviewController {
   @Put('redo/:id')
   async redoReview(@Param('id') id: string, @Body() data: UpdateReviewDto) {
     try {
-
       const redo = await this.reviewService.redoReview(id, data);
 
       return redo;
@@ -37,8 +46,6 @@ export class ReviewController {
       throw new HttpException(error.message, error.status);
     }
   }
-
-
 
   @Get()
   async findAll() {
@@ -61,7 +68,10 @@ export class ReviewController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateReviewDto: UpdateReviewDto,
+  ) {
     try {
       const review = await this.reviewService.update(id, updateReviewDto);
       return review;
