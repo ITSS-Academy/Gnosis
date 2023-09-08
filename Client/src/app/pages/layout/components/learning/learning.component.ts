@@ -92,6 +92,7 @@ export class LearningComponent implements OnInit, OnDestroy {
       this.store.select('course', 'courseDetail').subscribe((val) => {
         if (val) {
           this.course = val;
+
           console.log('course: ', this.course);
         }
       }),
@@ -132,7 +133,7 @@ export class LearningComponent implements OnInit, OnDestroy {
     }>
   ) {
     this.items.push({
-      caption: 'Current',
+      caption: 'Learning',
       routerLink: this.router.url,
     });
   }

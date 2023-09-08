@@ -7,7 +7,7 @@
     overflow: hidden;
     height: 100%;
 
-    ::ng-deep .tui-group_collapsed > *:not(:last-child) {
+    ::ng-deep .tui-group_collapsed>*:not(:last-child) {
       margin-right: 15px;
     }
 
@@ -16,11 +16,9 @@
     }
 
     @mixin white-gradient() {
-      background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 0) 100%
-      );
+      background: linear-gradient(to right,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(255, 255, 255, 0) 100%);
     }
 
     //   $animationSpeed: 40s;
@@ -122,9 +120,6 @@
     }
 
     #browse-course {
-      // :host {
-      //     display: block;
-      // }
       height: 40%;
       overflow: hidden;
 

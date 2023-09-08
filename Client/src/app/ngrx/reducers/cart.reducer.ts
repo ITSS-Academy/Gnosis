@@ -11,9 +11,7 @@ export const initualState: CartState = {
 export const CartReducer = createReducer(
   initualState,
   on(CartAction.addCourseToCart, (state, action) => {
-    console.log(action.type);
     const cartList = [...state.cartList, action.course];
-    //console.log(cartList);
     const total = state.total + action.course.price;
     let newState: CartState = {
       ...state,
@@ -24,7 +22,6 @@ export const CartReducer = createReducer(
   }),
 
   on(CartAction.removeCourseFromCart, (state, action) => {
-    console.log(action.type);
     let newState: CartState = {
       ...state,
       cartList: state.cartList.filter(

@@ -18,7 +18,6 @@ export const initialState: quizBankState = {
 export const quizBankReducer = createReducer(
   initialState,
   on(QuizBankActions.add, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isCreateLoading: true,
@@ -28,7 +27,6 @@ export const quizBankReducer = createReducer(
     };
   }),
   on(QuizBankActions.addSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isCreateLoading: false,
@@ -37,7 +35,6 @@ export const quizBankReducer = createReducer(
     };
   }),
   on(QuizBankActions.addFailure, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isCreateLoading: false,
@@ -47,7 +44,6 @@ export const quizBankReducer = createReducer(
   }),
 
   on(QuizBankActions.update, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isUpdateLoading: true,
@@ -56,7 +52,6 @@ export const quizBankReducer = createReducer(
     };
   }),
   on(QuizBankActions.updateSuccess, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isUpdateLoading: false,
@@ -64,7 +59,6 @@ export const quizBankReducer = createReducer(
     };
   }),
   on(QuizBankActions.updateFailure, (state, action) => {
-    console.log(action.type);
     return {
       ...state,
       isUpdateLoading: false,
@@ -73,7 +67,6 @@ export const quizBankReducer = createReducer(
     };
   }),
   on(QuizBankActions.clearState, (state, action) => {
-    console.log(action.type);
     return <quizBankState>{
       ...state,
       isCreateLoading: false,
