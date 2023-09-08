@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TuiAlertService } from '@taiga-ui/core';
 import { Subscription } from 'rxjs';
@@ -37,13 +37,24 @@ export class LearningComponent implements OnInit, OnDestroy {
     },
   ];
 
+  isCompleted = false;
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
   ngOnInit(): void {
+    this.isCompleted = Boolean(
+      this.route.snapshot.queryParamMap.get('isCompleted')
+    );
+
     this.subscriptions.push(
       this.store.select('auth', 'idToken').subscribe((idToken) => {
         if (idToken) {
+          let courseId = this.router.url.split('/')[4];
+          if (this.router.url.split('/')[4].includes('?')) {
+            courseId = this.router.url.split('/')[4].split('?')[0];
+          }
+
           this.store.dispatch(
             LessonAction.getAllByCourseId({
               idToken,
@@ -100,6 +111,10 @@ export class LearningComponent implements OnInit, OnDestroy {
       this.store.select('quiz', 'quiz').subscribe((val) => {
         if (val) {
           this.quiz = val;
+          if (this.isCompleted) {
+            this.selectedQuiz = this.quiz;
+            this.chapIndex = this.lessonList.length;
+          }
         }
       }),
       this.store.select('quiz', 'isGetSuccess').subscribe((val) => {
@@ -117,6 +132,7 @@ export class LearningComponent implements OnInit, OnDestroy {
     );
   }
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     @Inject(TuiAlertService)
     private readonly alerts: TuiAlertService,

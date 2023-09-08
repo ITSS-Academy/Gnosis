@@ -3,10 +3,16 @@
     <div class="header">
       <div class="course">
         <p class="text-header" (click)="backhome()">Home</p>
-        <tui-svg src="tuiIconChevronsRight" style="color: var(--tui-primary);"></tui-svg>
+        <tui-svg
+          src="tuiIconChevronsRight"
+          style="color: var(--tui-primary)"
+        ></tui-svg>
 
         <p class="text-header" (click)="backcourse()">Learning</p>
-        <tui-svg src="tuiIconChevronsRight" style="color: var(--tui-primary);"></tui-svg>
+        <tui-svg
+          src="tuiIconChevronsRight"
+          style="color: var(--tui-primary)"
+        ></tui-svg>
 
         <p class="text-header">Quiz</p>
       </div>
@@ -17,32 +23,59 @@
 
     <div class="main">
       <div class="container-navigation">
-        <div class="header-navigation" style="margin-top: 1rem;">
+        <div class="header-navigation" style="margin-top: 1rem">
           <p class="title-navigation">Quiz navigation</p>
-          <p id="timmer">{{formattedTime}}</p>
+          <p id="timmer">{{ formattedTime }}</p>
         </div>
-        <div class="quiz-list">
-          <span class="custom-checkbox" *ngFor="let question of questionList; let questionIndex = index">
-            <div [ngClass]="{'question-on-selected': question.selectedOptionIndex !== null}"
-              style="width: 100%;height: 100%;display: flex;justify-content: center; align-items: center;">{{
-              questionIndex + 1 }}</div>
+        <div class="quiz-list" *ngIf="options.length > 0">
+          <span
+            class="custom-checkbox"
+            *ngFor="let question of questionList; let questionIndex = index"
+          >
+            <div
+              [ngClass]="{
+                'question-on-selected': options[questionIndex].answer.length > 0
+              }"
+              style="
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              {{ questionIndex + 1 }}
+            </div>
           </span>
         </div>
       </div>
       <div class="container-quiz-list">
-        <div class="container-quiz" *ngFor="let question of questionList,let i = index">
+        <div
+          class="container-quiz"
+          *ngFor="let question of questionList; let i = index"
+        >
           <p class="number">Câu {{ i + 1 }}</p>
-          <p class="title-quiz">{{question.quizBank.question}}</p>
+          <p class="title-quiz">{{ question.quizBank.question }}</p>
 
-          <label class="option" *ngFor="let option of question.quizBank.options">
+          <label
+            class="option"
+            *ngFor="let option of question.quizBank.options; let j = index"
+          >
             {{ option }}
-            <input type="checkbox" (click)="selectOption(option)">
+            <input type="checkbox" (click)="selectOption(option, i)" />
             <span class="checkmark"></span>
           </label>
         </div>
         <div class="btn">
-          <button tuiButton type="button" appearance="primary" class="tui-space_right-3 tui-space_bottom-3"
-            style="font-size: 20px; font-weight: 600;" (click)="submit()">
+          <button
+            tuiButton
+            size="m"
+            type="button"
+            appearance="primary"
+            class="tui-space_right-3 tui-space_bottom-3"
+            style="font-size: 20px; font-weight: 600"
+            (click)="submit()"
+          >
             Finish
           </button>
         </div>

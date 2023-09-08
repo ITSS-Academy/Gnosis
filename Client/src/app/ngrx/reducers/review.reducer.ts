@@ -26,6 +26,7 @@ export const ReviewReducer = createReducer(
       isGetLoading: true,
       isGetSuccess: false,
       getErrorMessage: '',
+      reviewDetail: <Review>{},
     };
     return newState;
   }),
@@ -34,7 +35,7 @@ export const ReviewReducer = createReducer(
       ...state,
       isGetLoading: false,
       isGetSuccess: true,
-      review: action.review,
+      reviewDetail: action.review,
     };
     return newState;
   }),
@@ -53,6 +54,7 @@ export const ReviewReducer = createReducer(
       isCreating: true,
       isCreateSuccess: false,
       createErrorMessage: '',
+      reviewDetail: <Review>{},
     };
     return newState;
   }),
@@ -61,7 +63,7 @@ export const ReviewReducer = createReducer(
       ...state,
       isCreating: false,
       isCreateSuccess: true,
-      review: action.newReview,
+      reviewDetail: action.newReview,
     };
     return newState;
   }),
@@ -98,6 +100,21 @@ export const ReviewReducer = createReducer(
       isUpdating: false,
       isUpdateSuccess: false,
       updateErrorMessage: action.error,
+    };
+    return newState;
+  }),
+  on(ReviewActions.clearState, (state, action) => {
+    let newState = {
+      ...state,
+      isGetLoading: false,
+      isGetSuccess: false,
+      getErrorMessage: '',
+      isCreating: false,
+      isCreateSuccess: false,
+      createErrorMessage: '',
+      isUpdating: false,
+      isUpdateSuccess: false,
+      updateErrorMessage: '',
     };
     return newState;
   })

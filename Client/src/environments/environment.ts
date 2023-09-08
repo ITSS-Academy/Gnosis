@@ -9,6 +9,6 @@ export const environment = {
     messagingSenderId: '605313017607',
     measurementId: 'G-WQB8P2L6XT',
   },
-  local_url: 'http://localhost:3000/v1/',
-  host_url: 'https://gnosis-avfvo7thiq-as.a.run.app/v1/',
+  local_url: '',
+  host_url: 'http://localhost:3000/v1/',
 };

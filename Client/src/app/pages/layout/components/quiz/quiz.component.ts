@@ -8,15 +8,13 @@ import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { QuestionState } from 'src/app/ngrx/states/question.state';
 import { ReviewState } from 'src/app/ngrx/states/review.state';
 import * as QuestionAction from 'src/app/ngrx/actions/question.actions';
-import * as ReviewAction from 'src/app/ngrx/actions/review.actions';
+import * as ReviewActions from 'src/app/ngrx/actions/review.actions';
 import { quizBank } from 'src/app/models/quizBank.model';
 import { Quiz } from 'src/app/models/quiz.model';
 import { Answer, Review } from 'src/app/models/Reivew.model';
 import { Question } from 'src/app/models/question.model';
 import { ProfileState } from 'src/app/ngrx/states/profile.state';
 import { Profile } from 'src/app/models/profile.model';
-import * as ProfileAction from 'src/app/ngrx/actions/profile.actions';
-import { idToken } from '@angular/fire/auth';
 import { CourseState } from 'src/app/ngrx/states/course.state';
 import { Course } from 'src/app/models/course.model';
 import { QuizState } from 'src/app/ngrx/states/quiz.state';
@@ -47,8 +45,6 @@ export class QuizComponent implements OnInit, OnDestroy {
   course: Course = <Course>{};
   question: Question = <Question>{};
   quiz: Quiz = <Quiz>{};
-  ongoingCourse: Course[] = [];
-  completedCourse: Course[] = [];
 
   constructor(
     @Inject(TuiAlertService) private readonly alerts: TuiAlertService,
@@ -80,7 +76,7 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.store.select('review', 'isCreating').subscribe((isCreating) => {
         if (isCreating) {
           this.alerts
-            .open('Create review ...', {
+            .open('Submiting ...', {
               status: 'success',
             })
             .subscribe();
@@ -91,18 +87,61 @@ export class QuizComponent implements OnInit, OnDestroy {
         .subscribe((isCreateSuccess) => {
           if (isCreateSuccess) {
             this.alerts
-              .open('Create review success', {
+              .open('Submited success', {
                 status: 'success',
               })
               .subscribe();
+            this.store.dispatch(
+              ReviewActions.get({
+                idToken: this.idToken,
+                id: this.questionList[0].quizId,
+              })
+            );
           }
         }),
       this.store
         .select('review', 'createErrorMessage')
         .subscribe((createErrorMessage) => {
-          if (createErrorMessage) {
+          if (
+            createErrorMessage != null &&
+            createErrorMessage != undefined &&
+            createErrorMessage != ''
+          ) {
             this.alerts
               .open(createErrorMessage, {
+                status: 'error',
+              })
+              .subscribe();
+          }
+        }),
+      this.store.select('review', 'getErrorMessage').subscribe((val) => {
+        if (val != null && val != undefined && val != '') {
+          this.alerts
+            .open(val, {
+              status: 'error',
+            })
+            .subscribe();
+        }
+      }),
+
+      this.store.select('review', 'isGetSuccess').subscribe((isGetSuccess) => {
+        if (isGetSuccess) {
+          this.router.navigate([`/base/home/course/${this.course._id}`], {
+            queryParams: { isCompleted: true },
+          });
+          this.store.dispatch(ReviewActions.clearState());
+        }
+      }),
+      this.store
+        .select('review', 'getErrorMessage')
+        .subscribe((getErrorMessage) => {
+          if (
+            getErrorMessage != null &&
+            getErrorMessage != undefined &&
+            getErrorMessage != ''
+          ) {
+            this.alerts
+              .open(getErrorMessage, {
                 status: 'error',
               })
               .subscribe();
@@ -118,14 +157,21 @@ export class QuizComponent implements OnInit, OnDestroy {
                 QuestionAction.getAllByQuizId({ idToken: value, quizId: id })
               );
             }
-            //console.log(id);
           });
         }
       }),
 
       this.question$.subscribe((value) => {
-        this.questionList = [...value];
-        this.counter = this.questionList.length * 60;
+        if (value.length > 0) {
+          this.questionList = [...value];
+          this.options = this.questionList.map((question) => {
+            return {
+              quizBankId: (question as any).quizBank._id,
+              answer: [],
+            };
+          });
+          this.counter = this.questionList.length * 60;
+        }
       }),
 
       this.profile$.subscribe((profile) => {
@@ -158,86 +204,38 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   options: Answer[] = [];
-  selectOption(option: string) {
-    for (let i = 0; i < this.questionList.length; i++) {
-      // Iterate through the options for each question
-      for (let j = 0; j < this.questionList[i].quizBank.options.length; j++) {
-        // If the selected option is found
-        if (this.questionList[i].quizBank.options[j] === option) {
-          // Check if the options for the current quizBankId already exist in the `options` array
-          const index = this.options.findIndex(
-            (ele: Answer) =>
-              ele.quizBankId === this.questionList[i].quizBank._id
-          );
-          if (index === -1) {
-            this.options.push({
-              answer: [option],
-              quizBankId: this.questionList[i].quizBank._id,
-            });
-          } else {
-            this.options[index].answer.push(option);
-          }
-        }
-      }
+  selectOption(option: string, questIndex: number) {
+    if (this.options[questIndex].answer.includes(option)) {
+      this.options[questIndex].answer = this.options[questIndex].answer.filter(
+        (ans) => ans != option
+      );
+    } else {
+      this.options[questIndex] = {
+        ...this.options[questIndex],
+        answer: [...this.options[questIndex].answer, option],
+      };
     }
-    // console.log(this.options);
   }
-  completedCourseId: any = '';
+
   idToken = '';
   submit() {
-    const review: Review = {
-      _id: '',
+    const review: any = {
       quizId: this.questionList[0].quizId,
       profileId: this.profile.id,
       score: 0,
       test: this.options,
     };
-    this.idToken$.subscribe((value) => {
-      if (value) {
-        this.store.dispatch(ReviewAction.create({ idToken: value, review }));
-      }
-      this.router.navigate([`/base/home/course/${this.course._id}`]);
-    });
 
-    this.completedCourseId = this.course._id;
-    let newProfile: any = {
-      ...this.profile,
-    };
-
-    if (
-      this.completedCourse.some(
-        (course) => course._id == this.completedCourseId
-      )
-    ) {
-      this.store.dispatch(
-        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
-      );
-    } else {
-      newProfile.ongoingCourse = this.profile.ongoingCourse.filter(
-        (ongoingCourseId) => ongoingCourseId._id != this.completedCourseId
-      );
-      newProfile.completedCourse = [
-        ...newProfile.completedCourse,
-        this.completedCourseId,
-      ];
-      // console.log(newProfile);
-
-      this.store.dispatch(
-        ProfileAction.updateProfile({
-          idToken: this.idToken,
-          profile: newProfile,
-        })
-      );
-      this.store.dispatch(
-        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
-      );
-    }
+    this.store.dispatch(
+      ReviewActions.create({ idToken: this.idToken, review })
+    );
   }
 
   ngOnDestroy(): void {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   formatTime(): void {

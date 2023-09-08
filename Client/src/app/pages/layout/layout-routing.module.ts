@@ -79,11 +79,6 @@ const routes: Routes = [
         component: CourseComponent,
       },
       {
-        path: 'learning/:id',
-        component: LearningComponent,
-      },
-
-      {
         path: 'home/course/:id',
         component: LearningComponent,
       },

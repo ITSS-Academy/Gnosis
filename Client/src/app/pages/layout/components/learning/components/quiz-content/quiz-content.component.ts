@@ -1,21 +1,24 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TuiAlertService } from '@taiga-ui/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { Review } from 'src/app/models/Reivew.model';
 import { Quiz } from 'src/app/models/quiz.model';
 import { AuthState } from 'src/app/ngrx/states/auth.state';
 import { ReviewState } from 'src/app/ngrx/states/review.state';
 import * as ReviewActions from 'src/app/ngrx/actions/review.actions';
+import { ProfileState } from 'src/app/ngrx/states/profile.state';
+import { Profile } from 'src/app/models/profile.model';
+import * as ProfileActions from 'src/app/ngrx/actions/profile.actions';
+import { Course } from 'src/app/models/course.model';
 @Component({
   selector: 'app-quiz-content',
   templateUrl: './quiz-content.component.html',
   styleUrls: ['./quiz-content.component.less'],
 })
-export class QuizContentComponent implements OnInit {
-
+export class QuizContentComponent implements OnInit, OnDestroy {
   quizForm: FormGroup = new FormGroup({
     _id: new FormControl({ value: '', disabled: true }, Validators.required),
     courseId: new FormControl(
@@ -28,10 +31,23 @@ export class QuizContentComponent implements OnInit {
     duration: new FormControl(0, Validators.required),
     passCond: new FormControl(0, Validators.required),
   });
-  quiz!: Quiz;
-  review: Review = <Review>{};
+
+  review: Review = {
+    _id: '',
+    quizId: '',
+    score: 0,
+    profileId: '',
+    test: [],
+  };
   subscriptions: Subscription[] = [];
-  review$: Observable<Review> = this.store.select('review', 'reviewDetail');
+  quiz!: Quiz;
+  idToken$ = this.store.select('auth', 'idToken');
+  profile$ = this.store.select('profile', 'profile');
+  review$ = this.store.select('review', 'reviewDetail');
+  completedCourseId = '';
+  completedCourse: Course[] = [];
+  isPassed: boolean = false;
+
   @Input('quiz')
   set quizInput(value: Quiz | null) {
     if (value != null) {
@@ -46,28 +62,78 @@ export class QuizContentComponent implements OnInit {
     @Inject(TuiAlertService) private readonly alerts: TuiAlertService,
     private router: Router,
 
-    private store: Store<{ review: ReviewState, auth: AuthState; }>
-  ) { }
+    private store: Store<{
+      review: ReviewState;
+      auth: AuthState;
+      profile: ProfileState;
+    }>
+  ) {}
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
   ngOnInit(): void {
-    // this.subscriptions.push(
-    //   this.store.select('auth', 'idToken').subscribe((idToken) => {
-    //     if (idToken) {
-    //       this.store.dispatch(
-    //         ReviewActions.get({
-    //           idToken: idToken,
-    //           id: this.quiz._id,
-    //         })
-    //       );
-    //     }
-    //   }));
+    this.subscriptions.push(
+      this.store.select('review', 'reviewDetail').subscribe((review) => {}),
+      combineLatest({
+        idToken: this.idToken$,
+        profile: this.profile$,
+        review: this.review$,
+      }).subscribe((res) => {
+        if (
+          res.review != null &&
+          res.review != undefined &&
+          res.review.score != undefined &&
+          res.review.score != null &&
+          res.idToken != null &&
+          res.idToken != undefined &&
+          res.idToken != '' &&
+          res.profile != null &&
+          res.profile != undefined &&
+          res.profile.id != null &&
+          res.profile.id != undefined &&
+          res.profile.id != ''
+        ) {
+          this.review = res.review;
+          if (
+            this.review.score >=
+            (this.quiz.total * this.quiz.passCond) / 100
+          ) {
+            this.isPassed = true;
+            this.completedCourseId = this.router.url.split('/')[4];
+            this.completedCourse = [...res.profile.completedCourse];
+            let newProfile: Profile = {
+              ...res.profile,
+            };
+            if (
+              newProfile.completedCourse.some(
+                (course) => course._id == this.completedCourseId
+              )
+            ) {
+            } else {
+              newProfile.ongoingCourse = res.profile.ongoingCourse.filter(
+                (ongoingCourseId) =>
+                  ongoingCourseId._id != this.completedCourseId
+              );
+              newProfile.completedCourse = [
+                ...newProfile.completedCourse,
+                this.completedCourseId as any,
+              ];
 
-    // this.review$.subscribe((review) => {
-    //   if (review) {
-    //     console.log(review);
-    //     this.review = review;
-    //   }
-    // });
-
+              this.store.dispatch(
+                ProfileActions.updateProfile({
+                  idToken: res.idToken,
+                  profile: newProfile,
+                })
+              );
+            }
+          } else {
+            this.alerts
+              .open("You haven't passed this quiz!!!", { status: 'error' })
+              .subscribe();
+          }
+        }
+      })
+    );
   }
 
   toDoQuiz() {

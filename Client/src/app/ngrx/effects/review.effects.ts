@@ -6,15 +6,20 @@ import * as ReviewAction from '../actions/review.actions';
 
 @Injectable()
 export class ReviewEffect {
-  constructor(private reviewService: ReviewService, private action$: Actions) { }
+  constructor(private reviewService: ReviewService, private action$: Actions) {}
   get$ = createEffect(() =>
     this.action$.pipe(
       ofType(ReviewAction.get),
       exhaustMap((action) =>
         this.reviewService.getReviewByQuizId(action.idToken, action.id).pipe(
-          map((items) => {
-            if (items != undefined || items != null) {
-              return ReviewAction.getSuccess({ review: items });
+          map((item) => {
+            if (item != undefined && item != null) {
+              if ((item as any).message) {
+                return ReviewAction.getFailure({
+                  error: (item as any).message,
+                });
+              }
+              return ReviewAction.getSuccess({ review: item });
             } else {
               return ReviewAction.getFailure({
                 error: 'Review is undefined or null',
