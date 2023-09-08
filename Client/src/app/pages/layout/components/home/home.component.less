@@ -110,10 +110,15 @@
 
       ::ng-deep .t-heading {
         margin: 0;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       ::ng-deep .t-content {
         margin-top: 5px;
+        
       }
 
       .cart_course {
@@ -123,7 +128,7 @@
 
       .btn_course {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
         margin: 5px 0;
       }
