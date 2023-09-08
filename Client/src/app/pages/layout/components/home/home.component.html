@@ -90,7 +90,7 @@
 
           <div class="list_course" *ngIf="
               this.ongoingCourse.length == 0  && this.state == 'Ongoing Courses'
-            ">
+            " style="display: flex; justify-content: center;">
             <p>YOU HAVEN'T STUDIED ANY SUBJECT YET !!!</p>
             <img src="../../../../../assets/images/ongoing_courses.png" alt=""
               style="width: 40rem;height: 55%; margin: 1rem ;">
@@ -98,7 +98,7 @@
 
           <div class="list_course" *ngIf="
               this.completedCourse.length == 0 && this.state == 'Completed Courses'
-            ">
+            " style="display: flex; justify-content: center;">
             <p>YOU HAVEN'T COMPLETED ANY SUBJECT YET !!!</p>
             <img src="../../../../../assets/images/completed_courses.png" alt=""
               style="width: 40rem;height: 55%; margin: 1rem ;">
