@@ -31,7 +31,7 @@ export class SidebarComponent {
     },
     {
       id: 1,
-      name: 'BROWSE COURSES',
+      name: 'BROWSE',
       link: 'base/browse',
       icon: 'tuiIconBookOpenLarge',
     },
