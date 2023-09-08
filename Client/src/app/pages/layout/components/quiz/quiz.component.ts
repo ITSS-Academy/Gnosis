@@ -28,8 +28,10 @@ import { QuizState } from 'src/app/ngrx/states/quiz.state';
 export class QuizComponent implements OnInit, OnDestroy {
   @Input('review') review: null | Review = null;
 
-
-  question$: Observable<Question[]> = this.store.select('question', 'questions');
+  question$: Observable<Question[]> = this.store.select(
+    'question',
+    'questions'
+  );
   review$: Observable<Review> = this.store.select('review', 'reviewDetail');
   idToken$: Observable<string> = this.store.select('auth', 'idToken');
   // quiz$: Observable<Quiz> = this.store.select('quiz', 'quizDetail');
@@ -45,6 +47,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   course: Course = <Course>{};
   question: Question = <Question>{};
   quiz: Quiz = <Quiz>{};
+  ongoingCourse: Course[] = [];
+  completedCourse: Course[] = [];
 
   constructor(
     @Inject(TuiAlertService) private readonly alerts: TuiAlertService,
@@ -57,11 +61,10 @@ export class QuizComponent implements OnInit, OnDestroy {
       auth: AuthState;
       profile: ProfileState;
       course: CourseState;
-      quiz: QuizState
+      quiz: QuizState;
     }>
-  ) { }
+  ) {}
   subscriptions: Subscription[] = [];
-
 
   quizBank: quizBank[] = [];
   backhome() {
@@ -73,36 +76,41 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.subscriptions.push(
-      this.store.select('review', 'isCreating').
-        subscribe((isCreating) => {
-          if (isCreating) {
-            this.alerts.open('Create review ...', {
+      this.store.select('review', 'isCreating').subscribe((isCreating) => {
+        if (isCreating) {
+          this.alerts
+            .open('Create review ...', {
               status: 'success',
-            }).subscribe();
-          }
-        }),
-      this.store.select('review', 'isCreateSuccess').
-        subscribe((isCreateSuccess) => {
+            })
+            .subscribe();
+        }
+      }),
+      this.store
+        .select('review', 'isCreateSuccess')
+        .subscribe((isCreateSuccess) => {
           if (isCreateSuccess) {
-            this.alerts.open('Create review success', {
-              status: 'success',
-            }).subscribe();
+            this.alerts
+              .open('Create review success', {
+                status: 'success',
+              })
+              .subscribe();
           }
         }),
-      this.store.select('review', 'createErrorMessage').
-        subscribe((createErrorMessage) => {
+      this.store
+        .select('review', 'createErrorMessage')
+        .subscribe((createErrorMessage) => {
           if (createErrorMessage) {
-            this.alerts.open(createErrorMessage, {
-              status: 'error',
-            }).subscribe();
+            this.alerts
+              .open(createErrorMessage, {
+                status: 'error',
+              })
+              .subscribe();
           }
         }),
-
 
       this.route.paramMap.subscribe((params) => {
-        const id = params.get('id');;
+        const id = params.get('id');
         if (id) {
           this.idToken$.subscribe((value) => {
             if (value) {
@@ -110,17 +118,14 @@ export class QuizComponent implements OnInit, OnDestroy {
                 QuestionAction.getAllByQuizId({ idToken: value, quizId: id })
               );
             }
-            console.log(id);
+            //console.log(id);
           });
         }
       }),
 
       this.question$.subscribe((value) => {
-        this.questionList = [
-          ...value
-        ];
+        this.questionList = [...value];
         this.counter = this.questionList.length * 60;
-
       }),
 
       this.profile$.subscribe((profile) => {
@@ -128,12 +133,18 @@ export class QuizComponent implements OnInit, OnDestroy {
           this.profile = profile;
         }
       }),
+
       this.course$.subscribe((course) => {
         if (course != null && course != undefined) {
           this.course = course;
         }
-      })
+      }),
 
+      this.store.select('auth', 'idToken').subscribe((val) => {
+        if (val != '') {
+          this.idToken = val;
+        }
+      })
     );
     const timer$ = interval(1000);
     this.timerSubscription = timer$
@@ -154,22 +165,25 @@ export class QuizComponent implements OnInit, OnDestroy {
         // If the selected option is found
         if (this.questionList[i].quizBank.options[j] === option) {
           // Check if the options for the current quizBankId already exist in the `options` array
-          const index = this.options.findIndex((ele: Answer) => ele.quizBankId === this.questionList[i].quizBank._id);
+          const index = this.options.findIndex(
+            (ele: Answer) =>
+              ele.quizBankId === this.questionList[i].quizBank._id
+          );
           if (index === -1) {
             this.options.push({
               answer: [option],
               quizBankId: this.questionList[i].quizBank._id,
             });
-          }
-          else {
+          } else {
             this.options[index].answer.push(option);
           }
         }
       }
     }
-    console.log(this.options);
-
+    // console.log(this.options);
   }
+  completedCourseId: any = '';
+  idToken = '';
   submit() {
     const review: Review = {
       _id: '',
@@ -177,7 +191,6 @@ export class QuizComponent implements OnInit, OnDestroy {
       profileId: this.profile.id,
       score: 0,
       test: this.options,
-
     };
     this.idToken$.subscribe((value) => {
       if (value) {
@@ -185,6 +198,40 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
       this.router.navigate([`/base/home/course/${this.course._id}`]);
     });
+
+    this.completedCourseId = this.course._id;
+    let newProfile: any = {
+      ...this.profile,
+    };
+
+    if (
+      this.completedCourse.some(
+        (course) => course._id == this.completedCourseId
+      )
+    ) {
+      this.store.dispatch(
+        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
+      );
+    } else {
+      newProfile.ongoingCourse = this.profile.ongoingCourse.filter(
+        (ongoingCourseId) => ongoingCourseId._id != this.completedCourseId
+      );
+      newProfile.completedCourse = [
+        ...newProfile.completedCourse,
+        this.completedCourseId,
+      ];
+      // console.log(newProfile);
+
+      this.store.dispatch(
+        ProfileAction.updateProfile({
+          idToken: this.idToken,
+          profile: newProfile,
+        })
+      );
+      this.store.dispatch(
+        ProfileAction.get({ id: this.profile.id, idToken: this.idToken })
+      );
+    }
   }
 
   ngOnDestroy(): void {
