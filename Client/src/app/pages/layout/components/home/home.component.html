@@ -29,7 +29,7 @@
             (click)="toBuy()" [size]="'m'"></button>
         </div>
         <tui-scrollbar class="box">
-          <div class="list_course" *ngIf="this.state == 'Courses'">
+          <div class="list_course" *ngIf="this.state == 'Remaining'">
             <tui-push class="cart_course" *ngFor="let course of courses" heading="{{ course.name }}">
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
@@ -46,7 +46,7 @@
             </tui-push>
           </div>
 
-          <div class="list_course" *ngIf="this.state == 'Ongoing Courses'">
+          <div class="list_course" *ngIf="this.state == 'Ongoing'">
             <tui-push class="cart_course" *ngFor="let course of ongoingCourse" heading="{{ course.name }}">
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
@@ -63,7 +63,7 @@
             </tui-push>
           </div>
 
-          <div class="list_course" *ngIf="this.state == 'Completed Courses'">
+          <div class="list_course" *ngIf="this.state == 'Completed'">
             <tui-push class="cart_course" *ngFor="let course of completedCourse" heading="{{ course.name }}">
               <img src="{{ course.img }}" alt="" />
               {{ course.category }}
@@ -78,7 +78,7 @@
           </div>
 
           <div class="list_course" *ngIf="
-              this.courses.length == 0 && this.state == 'Courses'
+              this.courses.length == 0 && this.state == 'Remaining'
             " style="display: flex; flex-direction: column; align-items: center;">
             <p>LET'S START LEARNING !!!</p>
             <img src="../../../../../assets/images/education.png" alt=""
@@ -86,7 +86,7 @@
           </div>
 
           <div class="list_course" *ngIf="
-              this.ongoingCourse.length == 0  && this.state == 'Ongoing Courses'
+              this.ongoingCourse.length == 0  && this.state == 'Ongoing'
             " style="display: flex; justify-content: center;">
             <p>YOU HAVEN'T STUDIED ANY SUBJECT YET !!!</p>
             <img src="../../../../../assets/images/ongoing_courses.png" alt=""
@@ -94,7 +94,7 @@
           </div>
 
           <div class="list_course" *ngIf="
-              this.completedCourse.length == 0 && this.state == 'Completed Courses'
+              this.completedCourse.length == 0 && this.state == 'Completed'
             " style="display: flex; justify-content: center;">
             <p>YOU HAVEN'T COMPLETED ANY SUBJECT YET !!!</p>
             <img src="../../../../../assets/images/completed_courses.png" alt=""
